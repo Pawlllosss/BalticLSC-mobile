@@ -1,8 +1,11 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
+
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
+    kotlin("plugin.serialization") version "1.5.31"
+
     id("com.android.library")
 }
 
@@ -33,7 +36,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 //Logger
-                implementation("com.github.aakira:napier:1.4.1")
+                implementation("io.github.aakira:napier:1.4.1")
 
                 // Ktor
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -57,6 +60,10 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1")
+                implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+                implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
+                implementation("com.github.bumptech.glide:glide:4.11.0")
+//                annotationProcessor("com.github.bumptech.glide:compiler:4.11.0")
             }
         }
         val androidTest by getting {
