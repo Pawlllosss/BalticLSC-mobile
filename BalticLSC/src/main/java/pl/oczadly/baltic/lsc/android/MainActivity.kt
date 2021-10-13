@@ -12,6 +12,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.app.AppApi
 import kotlin.coroutines.CoroutineContext
+import com.bumptech.glide.Glide
+
 
 fun greet(): String {
     return Greeting().greeting()
@@ -28,13 +30,21 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val tv: TextView = findViewById(R.id.text_view)
-        tv.text = greet()
 
         val appApi = AppApi()
         launch(Dispatchers.Main) {
             try {
-                val result = withContext(Dispatchers.IO) { appApi.fetchApplications().data[0] }
+                // TODO: Only the original thread that created a view hierarchy can touch its views.
+                val result = withContext(Dispatchers.IO) {
+                    val tv: TextView = findViewById(R.id.text_view)
+                    val app = appApi.fetchApplications().data[0]
+                    tv.text = app.unit.name
+
+                    Glide.with(applicationContext)
+                        .load("https://www.balticlsc.eu/model/_icons/fcr_001.png")
+                        .into(findViewById(R.id.image))
+
+                }
                 Toast.makeText(this@MainActivity, result.toString(), Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
                 e.printStackTrace()
