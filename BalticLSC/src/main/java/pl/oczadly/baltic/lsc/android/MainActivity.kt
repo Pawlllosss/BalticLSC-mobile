@@ -35,9 +35,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     val tv: TextView = findViewById(R.id.text_view)
                     tv.text = result.unit.name
 
-//                    Glide.with(applicationContext)
-//                        .load("https://www.balticlsc.eu/model/_icons/fcr_001.png")
-//                        .into(findViewById(R.id.image))
+                    Glide.with(applicationContext)
+                        .load("https://kr4m.com/wp-content/uploads/2019/05/Webp.net-compress-image-3.jpg")
+                        .into(findViewById(R.id.image))
                 }
                 Toast.makeText(this@MainActivity, result.toString(), Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
