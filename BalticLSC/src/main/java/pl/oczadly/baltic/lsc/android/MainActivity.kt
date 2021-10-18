@@ -29,14 +29,14 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         launch(Dispatchers.Main) {
             try {
                 val result = withContext(Dispatchers.IO) {
-                    appApi.fetchApplications().data[0]
+                    appApi.fetchApplicationShelf().data
                 }
                 withContext(Dispatchers.Main) {
                     val tv: TextView = findViewById(R.id.text_view)
-                    tv.text = result.unit.name
+                    tv.text = result[0].unit.name
 
                     Glide.with(applicationContext)
-                        .load("https://kr4m.com/wp-content/uploads/2019/05/Webp.net-compress-image-3.jpg")
+                        .load(result[0].unit.icon)
                         .into(findViewById(R.id.image))
                 }
                 Toast.makeText(this@MainActivity, result.toString(), Toast.LENGTH_LONG).show()
