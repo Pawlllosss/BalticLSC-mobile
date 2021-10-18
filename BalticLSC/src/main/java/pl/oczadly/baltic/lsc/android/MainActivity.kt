@@ -1,17 +1,17 @@
 package pl.oczadly.baltic.lsc.android
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.app.AppApi
+import pl.oczadly.baltic.lsc.app.model.App
 import kotlin.coroutines.CoroutineContext
-import com.bumptech.glide.Glide
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
 
@@ -24,21 +24,19 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val appApi = AppApi()
         launch(Dispatchers.Main) {
             try {
                 val result = withContext(Dispatchers.IO) {
                     appApi.fetchApplicationShelf().data
                 }
-                withContext(Dispatchers.Main) {
-                    val tv: TextView = findViewById(R.id.text_view)
-                    tv.text = result[0].unit.name
 
-                    Glide.with(applicationContext)
-                        .load(result[0].unit.icon)
-                        .into(findViewById(R.id.image))
-                }
+                val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+                recyclerView.adapter = AppAdapter(this@MainActivity, result.map { App(it.unit.name, it.unit.icon) })
+
+                // Use this setting to improve performance if you know that changes
+                // in content do not change the layout size of the RecyclerView
+                recyclerView.setHasFixedSize(true)
                 Toast.makeText(this@MainActivity, result.toString(), Toast.LENGTH_LONG).show()
             } catch (e: Exception) {
                 e.printStackTrace()
