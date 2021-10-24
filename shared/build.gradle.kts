@@ -47,7 +47,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.1.0")
 
                 // Coroutines
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.0.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:1.2.2")
             }
         }
         val commonTest by getting {

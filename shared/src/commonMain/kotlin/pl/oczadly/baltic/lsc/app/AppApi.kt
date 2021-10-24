@@ -32,7 +32,7 @@ class AppApi {
         return client.get("https://dev.balticlsc.iem.pw.edu.pl/app/shelf/") {
             headers {
                 append("Accept", "application/json")
-                append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRlbW8iLCJzdWIiOiJkZW1vIiwianRpIjoiYTBiMzJjYzllNTNmNGUwZWE0MTVlZDM3OGUwYzhkZTAiLCJzaWQiOiIyODJkMTJiNzgwYTI0OTE2OTdjMDQ4MmQ1MWM2ZWQwMyIsImV4cCI6MTYzNDU3NjkyOSwiaXNzIjoid3V0LmJhbHRpY2xzYy5ldSIsImF1ZCI6Ind1dC5iYWx0aWNsc2MuZXUifQ.iB0b5XRHkbJqR5eRN87srd45ikPnkYV3afQKB1yS2Fw")
+                append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRlbW8iLCJzdWIiOiJkZW1vIiwianRpIjoiNDdmOTUzNzdkYmFlNGU0YmI3ZTNmNDFiMGFmNDVmMWEiLCJzaWQiOiJkNzBiMzE0M2QzNzQ0NjJiODk4MTJkNTA2MzRkMzEzYSIsImV4cCI6MTYzNTA3OTIyMywiaXNzIjoid3V0LmJhbHRpY2xzYy5ldSIsImF1ZCI6Ind1dC5iYWx0aWNsc2MuZXUifQ.VPXt8EH1Or_CugcVu_AHenHo-KTUp2qU0iIH-2HCQcA")
             }
         }
     }
