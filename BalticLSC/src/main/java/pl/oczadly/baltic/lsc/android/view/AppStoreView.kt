@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.tab
+package pl.oczadly.baltic.lsc.android.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,9 +22,9 @@ import kotlin.coroutines.CoroutineContext
 class AppStoreView : Fragment(), CoroutineScope {
 
     private val job = Job()
+    // TODO: move that to view model
+    // TODO: check in what context should it run
     private val appApi = AppApi()
-
-
     private val apps by lazyPromise {
         withContext(Dispatchers.IO) {
             try {

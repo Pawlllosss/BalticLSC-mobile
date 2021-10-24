@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.tab
+package pl.oczadly.baltic.lsc.android.view
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -12,7 +12,7 @@ class ViewPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
                 AppStoreView()
             }
             else -> {
-                return AppStoreView()
+                return DefaultView()
             }
         }
     }
