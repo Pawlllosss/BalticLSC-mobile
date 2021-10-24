@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -22,6 +21,7 @@ import kotlin.coroutines.CoroutineContext
 class AppStoreView : Fragment(), CoroutineScope {
 
     private val job = Job()
+
     // TODO: move that to view model
     // TODO: check in what context should it run
     private val appApi = AppApi()
@@ -31,7 +31,8 @@ class AppStoreView : Fragment(), CoroutineScope {
                 return@withContext appApi.fetchApplicationShelf().data
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(activity, "Error when fetching api", Toast.LENGTH_LONG).show()
+                // TODO: fix toast there or use either?
+//                Toast.makeText(activity, "Error when fetching api", Toast.LENGTH_LONG).show()
                 return@withContext listOf()
             }
         }
