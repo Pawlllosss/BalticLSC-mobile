@@ -29,18 +29,14 @@ class LoginApi {
         }
     }
 
-    suspend fun login(
-        loginRequest: LoginRequest = LoginRequest(
-            "demo",
-            "BalticDemo"
-        )
+    suspend fun login(username: String = "demo", password: String = "BalticDemo"
     ): SingleResponse<Login> {
         return client.post("https://dev.balticlsc.iem.pw.edu.pl/Login") {
             headers {
                 append("Accept", "application/json")
                 append("Content-Type", "application/json")
             }
-            body = loginRequest
+            body = LoginRequest(username, password)
         }
     }
 }

@@ -1,15 +1,16 @@
 package pl.oczadly.baltic.lsc.android.view
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
-class ViewPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class ViewPageAdapter(fm: FragmentManager, private val applicationContext: Context) : FragmentPagerAdapter(fm) {
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {
-                AppStoreView()
+                AppStoreView(applicationContext)
             }
             else -> {
                 return DefaultView()
