@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import pl.oczadly.baltic.lsc.android.AndroidUserState
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.lazyPromise
@@ -58,11 +59,26 @@ class LoginView : AppCompatActivity(), CoroutineScope {
     private fun loginUser() {
         val email = findViewById<EditText>(R.id.edit_text_email).text.toString().trim()
         val password = findViewById<EditText>(R.id.edit_text_password).text.toString().trim()
+        val userState = AndroidUserState(applicationContext)
 
         // TODO: experiment with lifecycleScope
         launch(Dispatchers.Main) {
             try {
-                val authResponse = login.await()!!
+                val authResponse = lazyPromise {
+                    withContext(Dispatchers.IO) {
+                        try {
+                            return@withContext loginApi.login(email, password).data
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            // TODO: fix toast there or use either?
+//                          Toast.makeText(activity, "Error when fetching api", Toast.LENGTH_LONG).show()
+                            return@withContext null
+                        }
+                    }
+                }.value.await()!!
+
+                userState.saveAccessToken(authResponse.token)
+
                 Intent(baseContext, MainActivity::class.java).also {
                     it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(it)
