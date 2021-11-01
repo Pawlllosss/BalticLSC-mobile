@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        val fragmentAdapter = ViewPageAdapter(supportFragmentManager, applicationContext!!)
+        val fragmentAdapter = ViewPageAdapter(supportFragmentManager)
         pager.adapter = fragmentAdapter
 
         val tabLayout: TabLayout = findViewById(R.id.tab_layout)

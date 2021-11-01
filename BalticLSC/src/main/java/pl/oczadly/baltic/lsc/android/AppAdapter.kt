@@ -1,6 +1,5 @@
 package pl.oczadly.baltic.lsc.android
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import pl.oczadly.baltic.lsc.app.model.App
 
-class AppAdapter(private val context: Context, private val apps : List<App>): RecyclerView.Adapter<AppAdapter.ItemViewHolder>() {
+class AppAdapter(private val apps : List<App>): RecyclerView.Adapter<AppAdapter.ItemViewHolder>() {
 
-    class ItemViewHolder(private val view: View): RecyclerView.ViewHolder(view) {
+    class ItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.item_title)
         val imageView: ImageView = view.findViewById(R.id.item_image)
     }
