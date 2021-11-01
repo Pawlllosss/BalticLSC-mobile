@@ -1,6 +1,5 @@
 package pl.oczadly.baltic.lsc.android.view
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,7 @@ import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.app.model.App
 import pl.oczadly.baltic.lsc.lazyPromise
 
-class AppStoreView(applicationContext: Context) : Fragment(), CoroutineScope {
+class AppStoreView() : Fragment(), CoroutineScope {
 
     private val job = Job()
 
@@ -56,9 +55,7 @@ class AppStoreView(applicationContext: Context) : Fragment(), CoroutineScope {
             val apps = apps.await()
             val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
             recyclerView.adapter =
-                AppAdapter(
-                    activity!!.applicationContext,
-                    apps.map { App(it.unit.name, it.unit.icon) })
+                AppAdapter(apps.map { App(it.unit.name, it.unit.icon) })
 
             // Use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView
