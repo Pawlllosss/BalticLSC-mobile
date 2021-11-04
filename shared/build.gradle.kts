@@ -62,6 +62,9 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1")
                 implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
                 implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.2.0")
+
+                // JWT decoder
+                implementation("com.auth0:java-jwt:3.18.2")
             }
         }
         val androidTest by getting {

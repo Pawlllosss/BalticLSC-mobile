@@ -17,12 +17,14 @@ import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.lazyPromise
 import pl.oczadly.baltic.lsc.login.LoginApi
+import pl.oczadly.baltic.lsc.util.JWTVerifier
 
 class LoginView : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
     private val loginApi = LoginApi()
+    private val tokenVerifier = JWTVerifier()
 
     override val coroutineContext: CoroutineContext
         get() = job
@@ -39,7 +41,7 @@ class LoginView : AppCompatActivity(), CoroutineScope {
         }
 
         userState.accessToken.asLiveData().observe(this, { token ->
-            if (token != null) {
+            if (token != null && tokenVerifier.isTokenValid(token)) {
                 Intent(baseContext, MainActivity::class.java).also {
                     it.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(it)
