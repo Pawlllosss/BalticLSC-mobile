@@ -1,6 +1,7 @@
 package pl.oczadly.baltic.lsc.android
 
 import android.os.Bundle
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import androidx.viewpager.widget.ViewPager
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         val pager: ViewPager = findViewById(R.id.pager)
         AndroidUserState(applicationContext!!).accessToken.asLiveData().observe(this, {
@@ -37,4 +39,9 @@ class MainActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(pager)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.action_bar_settings, menu)
+        return true
+    }
 }
