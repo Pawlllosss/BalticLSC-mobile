@@ -5,7 +5,6 @@
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#5fcbe3"
     tools:context=".view.LoginView">
 
 
@@ -25,13 +24,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif"
                 android:text="BalticLSC"
                 android:textAllCaps="false"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-                android:textColor="#969EEE"
-                android:textStyle="bold"
-                android:typeface="monospace"
-                app:fontFamily="casual" />
+                android:textColor="#2D3CD5"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -40,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/linearLayout1"
-            android:background="#ffffff"
+            android:background="#EAE5E5"
             android:orientation="vertical"
             android:padding="18dp">
 
