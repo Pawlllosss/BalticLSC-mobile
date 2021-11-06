@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import kotlin.coroutines.CoroutineContext
@@ -59,24 +60,30 @@ class LoginView : AppCompatActivity(), CoroutineScope {
         val email = findViewById<EditText>(R.id.edit_text_email).text.toString().trim()
         val password = findViewById<EditText>(R.id.edit_text_password).text.toString().trim()
 
-        // TODO: experiment with lifecycleScope
         launch(Dispatchers.Main) {
             try {
                 lazyPromise {
                     withContext(Dispatchers.IO) {
                         try {
                             return@withContext loginApi.login(email, password).data
-                        } catch (e: Exception) {// TODO: handle 401 error
+                        } catch (e: Exception) {
                             e.printStackTrace()
-                            // TODO: fix toast there or use either?
-//                          Toast.makeText(activity, "Error when fetching api", Toast.LENGTH_LONG).show()
                             return@withContext null
                         }
                     }
                 }.value.await()?.let { userState.saveAccessToken(it.token) }
+                    ?: displayUnableToSignIn()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun displayUnableToSignIn() {
+        Toast.makeText(
+            applicationContext,
+            "Unable to sign in",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }
