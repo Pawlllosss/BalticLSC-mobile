@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.view
+package pl.oczadly.baltic.lsc.android.view.app
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,17 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import pl.oczadly.baltic.lsc.android.AppAdapter
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.app.AppApi
-import pl.oczadly.baltic.lsc.app.model.App
 import pl.oczadly.baltic.lsc.lazyPromise
 
 class AppStoreView() : Fragment(), CoroutineScope {
@@ -53,9 +52,17 @@ class AppStoreView() : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
             val apps = apps.await()
-            val recyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
+            val recyclerView = view.findViewById<RecyclerView>(R.id.app_store_recycler_view)
             recyclerView.adapter =
-                AppAdapter(apps.map { App(it.unit.name, it.unit.icon) })
+                AppAdapter(apps.map {
+                    AppEntity(
+                        UUID.fromString(it.unit.uid),
+                        it.unit.name,
+                        it.unit.icon,
+                        it.date,
+                        it.unit.shortDescription
+                    )
+                })
 
             // Use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView

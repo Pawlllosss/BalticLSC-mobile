@@ -11,6 +11,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.11.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
 }
 
 android {

@@ -7,7 +7,7 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import pl.oczadly.baltic.lsc.UserState
-import pl.oczadly.baltic.lsc.app.model.AppShelf
+import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
 import pl.oczadly.baltic.lsc.model.Response
 
 
@@ -30,7 +30,7 @@ class AppApi(private val userState: UserState) {
         }
     }
 
-    suspend fun fetchApplicationShelf(): Response<AppShelf> {
+    suspend fun fetchApplicationShelf(): Response<AppShelfItem> {
         return client.get("https://dev.balticlsc.iem.pw.edu.pl/app/shelf/") {
             headers {
                 append("Accept", "application/json")
