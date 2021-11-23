@@ -1,5 +1,8 @@
 package pl.oczadly.baltic.lsc.computation.dto
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 enum class ComputationStatus(val status: Int) {
     IN_PROGRESS(1),
     COMPLETED(2),
