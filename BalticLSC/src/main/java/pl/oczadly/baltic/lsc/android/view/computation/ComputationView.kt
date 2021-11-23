@@ -35,9 +35,17 @@ class ComputationView : Fragment() {
                                 LocalDateTime.now(),
                                 ComputationStatus.COMPLETED,
                                 3
+                            ),
+                            ComputationTaskEntity(
+                                "T02",
+                                "v02",
+                                LocalDateTime.now().minusDays(6),
+                                LocalDateTime.now(),
+                                ComputationStatus.IN_PROGRESS,
+                                2
                             )
                         )
-                    )
+                    ), ComputationTaskGroup("Another App", listOf())
                 ), context!!
             )
     }

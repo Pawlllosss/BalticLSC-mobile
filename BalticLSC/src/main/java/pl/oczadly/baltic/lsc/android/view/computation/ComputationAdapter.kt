@@ -10,7 +10,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.oczadly.baltic.lsc.android.R
 
-class ComputationAdapter(private val taskGroups: List<ComputationTaskGroup>, private val context: Context) :
+class ComputationAdapter(
+    private val taskGroups: List<ComputationTaskGroup>,
+    private val context: Context
+) :
     RecyclerView.Adapter<ComputationAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -28,8 +31,19 @@ class ComputationAdapter(private val taskGroups: List<ComputationTaskGroup>, pri
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val taskGroup = taskGroups[position]
         holder.appNameTextView.text = taskGroup.appName
-        val task = taskGroup.tasks[0]
 
+        val rows = taskGroup.tasks.map {
+            createTableRowForTask(it)
+        }
+
+        rows.forEach {
+            holder.tableLayout.addView(it)
+        }
+    }
+
+    override fun getItemCount() = taskGroups.size
+
+    private fun createTableRowForTask(task: ComputationTaskEntity): TableRow {
         val tableRow = TableRow(context)
         val taskNameTextView = TextView(context)
         taskNameTextView.text = task.name
@@ -48,8 +62,6 @@ class ComputationAdapter(private val taskGroups: List<ComputationTaskGroup>, pri
         tableRow.addView(statusTextView)
         tableRow.addView(priorityTextView)
 
-        holder.tableLayout.addView(tableRow)
+        return tableRow
     }
-
-    override fun getItemCount() = taskGroups.size
 }
