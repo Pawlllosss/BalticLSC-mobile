@@ -31,7 +31,7 @@ class AppApi(private val userState: UserState) {
     }
 
     suspend fun fetchApplicationShelf(): Response<AppShelfItem> {
-        return client.get("https://dev.balticlsc.iem.pw.edu.pl/app/shelf/") {
+        return client.get("https://balticlsc.iem.pw.edu.pl/backend/app/shelf/") {
             headers {
                 append("Accept", "application/json")
                 append("Authorization", "Bearer ${userState.accessToken}")

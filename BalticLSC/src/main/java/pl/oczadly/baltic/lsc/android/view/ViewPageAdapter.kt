@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import pl.oczadly.baltic.lsc.android.view.app.AppStoreView
+import pl.oczadly.baltic.lsc.android.view.computation.ComputationView
 
 class ViewPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
@@ -11,6 +12,9 @@ class ViewPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
         return when (position) {
             0 -> {
                 AppStoreView()
+            }
+            1 -> {
+                ComputationView()
             }
             else -> {
                 return DefaultView()

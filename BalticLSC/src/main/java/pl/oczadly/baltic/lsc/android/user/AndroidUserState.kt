@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android
+package pl.oczadly.baltic.lsc.android.user
 
 import android.content.Context
 import androidx.datastore.core.DataStore

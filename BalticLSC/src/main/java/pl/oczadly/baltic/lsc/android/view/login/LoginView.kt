@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.view
+package pl.oczadly.baltic.lsc.android.view.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,9 +13,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import pl.oczadly.baltic.lsc.android.AndroidUserState
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.user.AndroidUserState
 import pl.oczadly.baltic.lsc.lazyPromise
 import pl.oczadly.baltic.lsc.login.LoginApi
 import pl.oczadly.baltic.lsc.util.JWTVerifier

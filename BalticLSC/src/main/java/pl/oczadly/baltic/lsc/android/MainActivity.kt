@@ -14,8 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.UserState
-import pl.oczadly.baltic.lsc.android.view.LoginView
+import pl.oczadly.baltic.lsc.android.user.AndroidUserState
 import pl.oczadly.baltic.lsc.android.view.ViewPageAdapter
+import pl.oczadly.baltic.lsc.android.view.login.LoginView
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
 
