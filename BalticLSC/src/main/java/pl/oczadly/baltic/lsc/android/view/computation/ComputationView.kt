@@ -36,6 +36,18 @@ class ComputationView : Fragment(), CoroutineScope {
         }
     }
 
+    private val appApi = AppApi(MainActivity.state)
+    private val apps by lazyPromise {
+        withContext(Dispatchers.IO) {
+            try {
+                return@withContext appApi.fetchApplicationShelf().data
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext listOf()
+            }
+        }
+    }
+
     override val coroutineContext: CoroutineContext
         get() = job
 
@@ -49,20 +61,27 @@ class ComputationView : Fragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
+            val applications = apps.await()
+            val applicationByAppVersionUid = applications.map{ it.uid to it}.toMap()
 
             val computationTasks = tasks.await()
-            val computationTaskByReleaseUid = computationTasks.groupBy { it.releaseUid }
-            val computationTaskGroups = computationTaskByReleaseUid.map {
+            val computationTasksAndApps =
+                computationTasks.filter { applicationByAppVersionUid.containsKey(it.releaseUid) }
+                    .map { it to applicationByAppVersionUid[it.releaseUid]!! }
+                    .toMap()
+            val tasksByAppName = computationTasksAndApps.entries
+                .groupBy({ it.value.unit.name }, { it })
+            val computationTaskGroups = tasksByAppName.map {
                 ComputationTaskGroup(
                     it.key,
                     it.value.map {
                         ComputationTaskEntity(
-                            it.parameters.taskName,
+                            it.key.parameters.taskName,
                             "0.1",
                             LocalDateTime.now(),
                             LocalDateTime.now(),
                             ComputationStatus.IN_PROGRESS,
-                            it.parameters.priority
+                            it.key.parameters.priority
                         )
                     })
             }
