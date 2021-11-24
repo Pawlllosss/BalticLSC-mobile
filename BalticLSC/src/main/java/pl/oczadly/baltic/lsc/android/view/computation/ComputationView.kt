@@ -16,8 +16,10 @@ import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.app.AppApi
+import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
 import pl.oczadly.baltic.lsc.computation.dto.ComputationApi
 import pl.oczadly.baltic.lsc.computation.dto.ComputationStatus
+import pl.oczadly.baltic.lsc.computation.dto.Task
 import pl.oczadly.baltic.lsc.lazyPromise
 
 class ComputationView : Fragment(), CoroutineScope {
@@ -62,29 +64,10 @@ class ComputationView : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
             val applications = apps.await()
-            val applicationByAppVersionUid = applications.map{ it.uid to it}.toMap()
-
             val computationTasks = tasks.await()
-            val computationTasksAndApps =
-                computationTasks.filter { applicationByAppVersionUid.containsKey(it.releaseUid) }
-                    .map { it to applicationByAppVersionUid[it.releaseUid]!! }
-                    .toMap()
-            val tasksByAppName = computationTasksAndApps.entries
-                .groupBy({ it.value.unit.name }, { it })
-            val computationTaskGroups = tasksByAppName.map {
-                ComputationTaskGroup(
-                    it.key,
-                    it.value.map {
-                        ComputationTaskEntity(
-                            it.key.parameters.taskName,
-                            "0.1",
-                            LocalDateTime.now(),
-                            LocalDateTime.now(),
-                            ComputationStatus.IN_PROGRESS,
-                            it.key.parameters.priority
-                        )
-                    })
-            }
+
+            val tasksAndAppByAppName = groupTasksAndAppByAppName(applications, computationTasks)
+            val computationTaskGroups = createComputationTaskGroups(tasksAndAppByAppName)
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.computation_recycler_view)
             recyclerView.adapter =
@@ -93,4 +76,37 @@ class ComputationView : Fragment(), CoroutineScope {
                 )
         }
     }
+
+    private fun groupTasksAndAppByAppName(
+        applications: List<AppShelfItem>,
+        computationTasks: List<Task>
+    ): Map<String, List<Map.Entry<Task, AppShelfItem>>> {
+        val applicationByAppVersionUid = applications.map { it.uid to it }.toMap()
+        val computationTasksAndApps =
+            computationTasks.filter { applicationByAppVersionUid.containsKey(it.releaseUid) }
+                .map { it to applicationByAppVersionUid[it.releaseUid]!! }
+                .toMap()
+        return computationTasksAndApps.entries
+            .groupBy({ it.value.unit.name }, { it })
+    }
+
+    private fun createComputationTaskGroups(tasksAndAppByAppName: Map<String, List<Map.Entry<Task, AppShelfItem>>>) =
+        tasksAndAppByAppName.map {
+            ComputationTaskGroup(
+                it.key,
+                createComputationTasks(it)
+            )
+        }
+
+    private fun createComputationTasks(it: Map.Entry<String, List<Map.Entry<Task, AppShelfItem>>>) =
+        it.value.map {
+            ComputationTaskEntity(
+                it.key.parameters.taskName,
+                it.value.version,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                ComputationStatus.IN_PROGRESS,
+                it.key.parameters.priority
+            )
+        }
 }
