@@ -1,15 +1,18 @@
 package pl.oczadly.baltic.lsc.computation.dto
 
 import kotlinx.serialization.Serializable
+import pl.oczadly.baltic.lsc.computation.serializer.ComputationStatusSerializer
 
-@Serializable
-enum class ComputationStatus(val status: Int) {
-    IN_PROGRESS(1),
-    COMPLETED(2),
-    FAILED(3),
-    UNKNOWN_3(4),
-    UNKNOWN_4(5),
-    UNKNOWN_5(6),
-    UNKNOWN_6(7),
-    UNKNOWN_7(8)
+@Serializable(with = ComputationStatusSerializer::class)
+enum class ComputationStatus(val status: Int, val description: String) {
+    IDLE(0, "Idle"),
+    IN_PROGRESS(1, "In Progress"),
+    COMPLETED(2, "Completed"),
+    FAILED(3, "Failed"),
+    UNKNOWN_2(4, "Unknown"),
+    UNKNOWN_3(5, "Unknown"),
+    UNKNOWN_4(6, "Unknown"),
+    UNKNOWN_5(7, "Unknown"),
+    UNKNOWN_6(8, "Unknown"),
+    UNDEFINED(-1000, "")
 }

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import java.time.LocalDateTime
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,10 +14,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEntity
+import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
 import pl.oczadly.baltic.lsc.computation.dto.ComputationApi
-import pl.oczadly.baltic.lsc.computation.dto.ComputationStatus
 import pl.oczadly.baltic.lsc.computation.dto.Task
 import pl.oczadly.baltic.lsc.lazyPromise
 
@@ -100,13 +100,15 @@ class ComputationView : Fragment(), CoroutineScope {
 
     private fun createComputationTasks(it: Map.Entry<String, List<Map.Entry<Task, AppShelfItem>>>) =
         it.value.map {
+            val task = it.key
+            val app = it.value
             ComputationTaskEntity(
-                it.key.parameters.taskName,
-                it.value.version,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                ComputationStatus.IN_PROGRESS,
-                it.key.parameters.priority
+                task.parameters.taskName,
+                app.version,
+                task.start,
+                task.finish,
+                task.status,
+                task.parameters.priority
             )
         }
 }

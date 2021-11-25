@@ -1,13 +1,13 @@
-package pl.oczadly.baltic.lsc.android.view.computation
+package pl.oczadly.baltic.lsc.android.view.computation.entity
 
-import java.time.LocalDateTime
+import kotlinx.datetime.Instant
 import pl.oczadly.baltic.lsc.computation.dto.ComputationStatus
 
 data class ComputationTaskEntity(
     val name: String,
     val version: String,
-    val startTime: LocalDateTime,
-    val endTime: LocalDateTime,
+    val startTime: Instant,
+    val endTime: Instant?,
     val status: ComputationStatus,
     val priority: Int
 )

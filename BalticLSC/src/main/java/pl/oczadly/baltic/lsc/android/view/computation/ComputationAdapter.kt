@@ -9,6 +9,8 @@ import android.widget.TableRow
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEntity
+import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
 
 class ComputationAdapter(
     private val taskGroups: List<ComputationTaskGroup>,
@@ -52,7 +54,7 @@ class ComputationAdapter(
         val actionsTextView = TextView(context)
         actionsTextView.text = ""
         val statusTextView = TextView(context)
-        statusTextView.text = task.status.name
+        statusTextView.text = task.status.description
         val priorityTextView = TextView(context)
         priorityTextView.text = task.priority.toString()
 

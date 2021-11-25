@@ -1,15 +1,17 @@
 package pl.oczadly.baltic.lsc.computation.dto
 
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
+import pl.oczadly.baltic.lsc.computation.serializer.FinishTimeSerializer
 
 @Serializable
 data class Task(
     val uid: String,
     val releaseUid: String,// it's based on the order of uid return from the Shelf (within object, not unit!)
-    val status: Int, // TODO: serialize to enum based on int
-//    val start: LocalDateTime, // TODO: format date
-//    val finish: LocalDateTime,
+    val status: ComputationStatus,
+    val start: Instant,
+    @Serializable(with = FinishTimeSerializer::class)
+    val finish: Instant?,
     val consumedCredits: Double,
     val parameters: TaskParameters
 )
