@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.computation.adapter.ComputationTaskGroupAdapter
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEntity
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
 import pl.oczadly.baltic.lsc.app.AppApi
@@ -70,10 +71,7 @@ class ComputationView : Fragment(), CoroutineScope {
             val computationTaskGroups = createComputationTaskGroups(tasksAndAppByAppName)
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.computation_recycler_view)
-            recyclerView.adapter =
-                ComputationAdapter(
-                    computationTaskGroups, context!!
-                )
+            recyclerView.adapter = ComputationTaskGroupAdapter(computationTaskGroups)
         }
     }
 
