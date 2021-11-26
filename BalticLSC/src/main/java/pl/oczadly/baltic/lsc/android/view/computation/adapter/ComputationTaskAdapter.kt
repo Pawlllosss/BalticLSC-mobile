@@ -6,6 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import kotlinx.datetime.Instant
+import kotlinx.datetime.toJavaInstant
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEntity
 
@@ -31,8 +35,8 @@ class ComputationTaskAdapter(private val context: Context) :
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val task = tasks[position]
         holder.taskNameTextView.text = task.name
-        holder.startDateTextView.text = task.startTime.toString()
-        holder.endDateTextView.text = task.endTime.toString()
+        holder.startDateTextView.text = formatDate(task.startTime)
+        holder.endDateTextView.text = task.endTime?.let { formatDate(it) } ?: "-"
     }
 
     override fun getItemCount() = tasks.size
@@ -43,4 +47,8 @@ class ComputationTaskAdapter(private val context: Context) :
             notifyDataSetChanged()
         }
     }
+
+    private fun formatDate(date: Instant): String =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault())
+            .format(date.toJavaInstant())
 }
