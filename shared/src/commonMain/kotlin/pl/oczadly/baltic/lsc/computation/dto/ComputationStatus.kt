@@ -6,7 +6,7 @@ import pl.oczadly.baltic.lsc.computation.serializer.ComputationStatusSerializer
 @Serializable(with = ComputationStatusSerializer::class)
 enum class ComputationStatus(val status: Int, val description: String) {
     IDLE(0, "Idle"),
-    IN_PROGRESS(1, "In Progress"),
+    WORKING(1, "Working"),
     COMPLETED(2, "Completed"),
     FAILED(3, "Failed"),
     UNKNOWN_2(4, "Unknown"),
