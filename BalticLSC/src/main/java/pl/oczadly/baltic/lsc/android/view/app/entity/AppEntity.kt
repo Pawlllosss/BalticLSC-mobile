@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.view.app
+package pl.oczadly.baltic.lsc.android.view.app.entity
 
 import java.util.*
 import kotlinx.datetime.LocalDateTime
