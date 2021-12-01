@@ -19,7 +19,7 @@ import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEnti
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
-import pl.oczadly.baltic.lsc.computation.dto.ComputationApi
+import pl.oczadly.baltic.lsc.computation.ComputationApi
 import pl.oczadly.baltic.lsc.computation.dto.Task
 import pl.oczadly.baltic.lsc.lazyPromise
 
