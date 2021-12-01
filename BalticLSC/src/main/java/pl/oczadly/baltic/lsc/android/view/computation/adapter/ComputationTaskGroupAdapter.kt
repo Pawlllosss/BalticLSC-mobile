@@ -44,6 +44,7 @@ class ComputationTaskGroupAdapter(private val taskGroups: List<ComputationTaskGr
         holder.computationTaskAddButton.findViewById<FloatingActionButton>(R.id.computation_task_add_button)
             .setOnClickListener {
                 val intent = Intent(holder.context, ComputationTaskAdd::class.java)
+                // TODO: need to pass data through Intent
                 holder.context.startActivity(intent)
             }
 
