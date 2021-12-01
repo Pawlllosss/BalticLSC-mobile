@@ -6,8 +6,11 @@ import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
+import io.ktor.client.request.post
+import pl.oczadly.baltic.lsc.QueryParams
 import pl.oczadly.baltic.lsc.UserState
 import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
+import pl.oczadly.baltic.lsc.app.dto.list.AppListItem
 import pl.oczadly.baltic.lsc.model.Response
 
 
@@ -36,6 +39,17 @@ class AppApi(private val userState: UserState) {
                 append("Accept", "application/json")
                 append("Authorization", "Bearer ${userState.accessToken}")
             }
+        }
+    }
+
+    suspend fun fetchApplicationList(): Response<AppListItem> {
+        return client.post("https://balticlsc.iem.pw.edu.pl/backend/app/list/") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+                append("Content-Type", "application/json")
+            }
+            body = QueryParams("")
         }
     }
 }

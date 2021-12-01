@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppEntity
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.lazyPromise
 

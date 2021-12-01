@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import java.time.format.DateTimeFormatter
 import kotlinx.datetime.toJavaLocalDateTime
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppEntity
 
 class AppAdapter(private val apps: List<AppEntity>) :
     RecyclerView.Adapter<AppAdapter.ItemViewHolder>() {

@@ -19,6 +19,7 @@ import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEnti
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
+import pl.oczadly.baltic.lsc.app.dto.list.AppListItem
 import pl.oczadly.baltic.lsc.computation.ComputationApi
 import pl.oczadly.baltic.lsc.computation.dto.Task
 import pl.oczadly.baltic.lsc.lazyPromise
@@ -43,7 +44,7 @@ class ComputationView : Fragment(), CoroutineScope {
     private val apps by lazyPromise {
         withContext(Dispatchers.IO) {
             try {
-                return@withContext appApi.fetchApplicationShelf().data
+                return@withContext appApi.fetchApplicationList().data
             } catch (e: Exception) {
                 e.printStackTrace()
                 return@withContext listOf()
@@ -76,16 +77,16 @@ class ComputationView : Fragment(), CoroutineScope {
     }
 
     private fun groupTasksAndAppByAppName(
-        applications: List<AppShelfItem>,
+        applications: List<AppListItem>,
         computationTasks: List<Task>
-    ): Map<String, List<Map.Entry<Task, AppShelfItem>>> {
-        val applicationByAppVersionUid = applications.map { it.uid to it }.toMap()
-        val computationTasksAndApps =
+    ): Map<String, List<Map.Entry<Task, AppListItem>>> {
+        val applicationByAppVersionUid: Map<String, AppListItem> = applications.flatMap { app -> app.releases.map { it.uid to app } }.toMap()
+        val computationTasksAndApps: Map<Task, AppListItem> =
             computationTasks.filter { applicationByAppVersionUid.containsKey(it.releaseUid) }
                 .map { it to applicationByAppVersionUid[it.releaseUid]!! }
                 .toMap()
         return computationTasksAndApps.entries
-            .groupBy({ it.value.unit.name }, { it })
+            .groupBy({ it.value.name }, { it })
     }
 
     private fun createComputationTaskGroups(tasksAndAppByAppName: Map<String, List<Map.Entry<Task, AppShelfItem>>>) =
