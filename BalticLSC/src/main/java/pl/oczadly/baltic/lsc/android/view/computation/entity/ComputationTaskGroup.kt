@@ -1,3 +1,5 @@
 package pl.oczadly.baltic.lsc.android.view.computation.entity
 
-data class ComputationTaskGroup(val appName: String, val tasks: List<ComputationTaskEntity>)
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
+
+data class ComputationTaskGroup(val application: AppListItemEntity, val tasks: List<ComputationTaskEntity>)

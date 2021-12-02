@@ -39,7 +39,7 @@ class ComputationTaskGroupAdapter(private val taskGroups: List<ComputationTaskGr
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val taskGroup = taskGroups[position]
-        holder.appNameTextView.text = taskGroup.appName
+        holder.appNameTextView.text = taskGroup.application.name
 
         holder.computationTaskAddButton.findViewById<FloatingActionButton>(R.id.computation_task_add_button)
             .setOnClickListener {
