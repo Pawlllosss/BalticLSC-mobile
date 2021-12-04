@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.view.computation
+package pl.oczadly.baltic.lsc.android.view.computation.activity
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -30,7 +30,6 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = job
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val appIntent = intent.getSerializableExtra("appListItemEntity") as? AppListItemEntity
@@ -47,13 +46,13 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
         versionSpinner.adapter = adapter
 
         // TODO: https://stackoverflow.com/questions/17713610/how-to-restart-previous-activity-in-android
-        findViewById<Button>(R.id.computation_task_create_button)
+        findViewById<Button>(R.id.computation_task_add_create_button)
             .setOnClickListener {
                 sendCreateTaskRequestAndFinish(versionSpinner)
                 finish()
             }
 
-        findViewById<Button>(R.id.computation_task_cancel_button)
+        findViewById<Button>(R.id.computation_task_add_cancel_button)
             .setOnClickListener {
                 finish()
             }

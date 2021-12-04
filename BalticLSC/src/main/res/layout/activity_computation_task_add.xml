@@ -78,7 +78,7 @@
         android:padding="5sp">
 
         <Button
-            android:id="@+id/computation_task_cancel_button"
+            android:id="@+id/computation_task_add_cancel_button"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="Cancel"
@@ -86,7 +86,7 @@
 
 
         <Button
-            android:id="@+id/computation_task_create_button"
+            android:id="@+id/computation_task_add_create_button"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"

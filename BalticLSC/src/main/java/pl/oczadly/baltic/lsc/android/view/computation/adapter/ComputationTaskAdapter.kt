@@ -55,7 +55,7 @@ class ComputationTaskAdapter(
 
         val actions = computationActionsConverter.getActionsBasedOnStatus(taskStatus)
         val actionsButtons =
-            computationActionsButtonCreator.createButtonsForActions(actions, context)
+            computationActionsButtonCreator.createButtonsForActions(actions, task, context)
         actionsButtons.forEach(holder.buttonsLinearLayout::addView)
     }
 

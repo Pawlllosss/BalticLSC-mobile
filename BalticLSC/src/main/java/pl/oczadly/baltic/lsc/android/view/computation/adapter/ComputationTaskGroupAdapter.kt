@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.oczadly.baltic.lsc.android.R
-import pl.oczadly.baltic.lsc.android.view.computation.ComputationTaskAdd
+import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationTaskAdd
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
 
 class ComputationTaskGroupAdapter(private val taskGroups: List<ComputationTaskGroup>) :
@@ -44,7 +44,6 @@ class ComputationTaskGroupAdapter(private val taskGroups: List<ComputationTaskGr
         holder.computationTaskAddButton.findViewById<FloatingActionButton>(R.id.computation_task_add_button)
             .setOnClickListener {
                 val intent = Intent(holder.context, ComputationTaskAdd::class.java)
-                // TODO: need to pass data through Intent https://stackoverflow.com/questions/47593205/how-to-pass-custom-object-via-intent-in-kotlin
                 intent.putExtra("appListItemEntity", taskGroup.application)
                 holder.context.startActivity(intent)
             }

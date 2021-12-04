@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.view.computation
+package pl.oczadly.baltic.lsc.android.view.computation.activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -108,6 +108,7 @@ class ComputationView : Fragment(), CoroutineScope {
     ) =
         tasks.map {
             ComputationTaskEntity(
+                it.uid,
                 it.parameters.taskName,
                 appReleaseByUid[it.releaseUid]?.version ?: "",
                 it.start,
