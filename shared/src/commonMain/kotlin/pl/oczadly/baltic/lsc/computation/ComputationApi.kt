@@ -47,7 +47,6 @@ class ComputationApi(private val userState: UserState) {
     }
 
     suspend fun initiateComputationTask(task: TaskCreate, releaseUid: String): SingleResponse<String> {
-//        https://balticlsc.iem.pw.edu.pl/backend/task/initiate?releaseUid=MarekImageProcessor2_rel_0
         return client.put("https://balticlsc.iem.pw.edu.pl/backend/task/initiate") {
             headers {
                 append("Accept", "application/json")
@@ -55,7 +54,7 @@ class ComputationApi(private val userState: UserState) {
                 append("Content-Type", "application/json")
             }
             parameter("releaseUid", releaseUid)
-            body = QueryParams("")
+            body = task
         }
     }
 }
