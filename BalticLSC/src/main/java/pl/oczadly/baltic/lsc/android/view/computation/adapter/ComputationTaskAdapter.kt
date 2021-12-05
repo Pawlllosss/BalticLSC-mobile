@@ -12,11 +12,13 @@ import java.time.format.DateTimeFormatter
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEntity
 import pl.oczadly.baltic.lsc.computation.action.ComputationActionConverter
 
 class ComputationTaskAdapter(
     private val context: Context,
+    private val appShelfEntityByReleaseUid: Map<String, AppShelfEntity>,
     private val computationActionsConverter: ComputationActionConverter = ComputationActionConverter(),
     private val computationActionsButtonCreator: ComputationActionsButtonCreator = ComputationActionsButtonCreator()
 ) :
@@ -55,7 +57,7 @@ class ComputationTaskAdapter(
 
         val actions = computationActionsConverter.getActionsBasedOnStatus(taskStatus)
         val actionsButtons =
-            computationActionsButtonCreator.createButtonsForActions(actions, task, context)
+            computationActionsButtonCreator.createButtonsForActions(actions, task, appShelfEntityByReleaseUid[task.releaseUid], context)
         actionsButtons.forEach(holder.buttonsLinearLayout::addView)
     }
 

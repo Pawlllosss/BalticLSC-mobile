@@ -7,9 +7,10 @@ import pl.oczadly.baltic.lsc.computation.dto.ComputationStatus
 data class ComputationTaskEntity(
     val uid: String,
     val name: String,
+    val releaseUid: String,
     val version: String,
     val startTime: Instant,
     val endTime: Instant?,
     val status: ComputationStatus,
     val priority: Int
-)
+): Serializable

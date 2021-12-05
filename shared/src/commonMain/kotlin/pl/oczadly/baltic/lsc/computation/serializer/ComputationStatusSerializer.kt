@@ -13,7 +13,7 @@ object ComputationStatusSerializer : KSerializer<ComputationStatus> {
         PrimitiveSerialDescriptor("ComputationStatus", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: ComputationStatus) =
-        encoder.encodeString(value.name)
+        encoder.encodeInt(value.status)
 
     override fun deserialize(decoder: Decoder): ComputationStatus {
         val status = decoder.decodeInt()

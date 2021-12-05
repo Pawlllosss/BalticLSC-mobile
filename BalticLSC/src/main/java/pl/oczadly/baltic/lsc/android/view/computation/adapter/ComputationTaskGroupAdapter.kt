@@ -9,13 +9,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationTaskAdd
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
 
-class ComputationTaskGroupAdapter(private val taskGroups: List<ComputationTaskGroup>) :
+class ComputationTaskGroupAdapter(
+    private val taskGroups: List<ComputationTaskGroup>,
+    private val appShelfEntityByReleaseUid: Map<String, AppShelfEntity>
+) :
     RecyclerView.Adapter<ComputationTaskGroupAdapter.ItemViewHolder>() {
 
-    class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ItemViewHolder(view: View, appShelfEntityByReleaseUid: Map<String, AppShelfEntity>) : RecyclerView.ViewHolder(view) {
         val appNameTextView: TextView = view.findViewById(R.id.computation_task_group_app_name)
         val computationTaskAddButton: FloatingActionButton =
             view.findViewById(R.id.computation_task_add_button)
@@ -25,7 +29,7 @@ class ComputationTaskGroupAdapter(private val taskGroups: List<ComputationTaskGr
         val context = itemView.context
 
         init {
-            computationTaskAdapter = ComputationTaskAdapter(context)
+            computationTaskAdapter = ComputationTaskAdapter(context, appShelfEntityByReleaseUid)
             computationTaskRecyclerView.adapter = computationTaskAdapter
         }
     }
@@ -34,7 +38,7 @@ class ComputationTaskGroupAdapter(private val taskGroups: List<ComputationTaskGr
         val computationGroupsListView = LayoutInflater.from(parent.context)
             .inflate(R.layout.computation_task_group_list_item, parent, false)
 
-        return ItemViewHolder(computationGroupsListView)
+        return ItemViewHolder(computationGroupsListView, appShelfEntityByReleaseUid)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {

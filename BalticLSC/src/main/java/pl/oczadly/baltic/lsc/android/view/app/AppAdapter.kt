@@ -10,9 +10,9 @@ import com.bumptech.glide.Glide
 import java.time.format.DateTimeFormatter
 import kotlinx.datetime.toJavaLocalDateTime
 import pl.oczadly.baltic.lsc.android.R
-import pl.oczadly.baltic.lsc.android.view.app.entity.AppEntity
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 
-class AppAdapter(private val apps: List<AppEntity>) :
+class AppAdapter(private val appShelves: List<AppShelfEntity>) :
     RecyclerView.Adapter<AppAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -30,7 +30,7 @@ class AppAdapter(private val apps: List<AppEntity>) :
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val app = apps[position]
+        val app = appShelves[position]
         holder.appNameTextView.text = app.name
         holder.updateDateTextView.text = createUpdatedOnText(app)
         app.description?.let { holder.descriptionTextView.text = it }
@@ -41,11 +41,11 @@ class AppAdapter(private val apps: List<AppEntity>) :
         }
     }
 
-    private fun createUpdatedOnText(app: AppEntity): String {
+    private fun createUpdatedOnText(appShelf: AppShelfEntity): String {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        val formattedDate: String = app.updateDate.toJavaLocalDateTime().format(formatter)
+        val formattedDate: String = appShelf.updateDate.toJavaLocalDateTime().format(formatter)
         return "Updated on $formattedDate"
     }
 
-    override fun getItemCount() = apps.size
+    override fun getItemCount() = appShelves.size
 }
