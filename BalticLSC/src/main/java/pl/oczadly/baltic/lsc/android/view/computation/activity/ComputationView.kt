@@ -15,10 +15,13 @@ import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
+import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.computation.adapter.ComputationTaskGroupAdapter
-import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEntity
+import pl.oczadly.baltic.lsc.android.view.computation.converter.ComputationTaskEntityConverter
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
 import pl.oczadly.baltic.lsc.app.AppApi
+import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
 import pl.oczadly.baltic.lsc.app.dto.list.AppListItem
 import pl.oczadly.baltic.lsc.app.dto.list.AppRelease
 import pl.oczadly.baltic.lsc.computation.ComputationApi
@@ -42,7 +45,7 @@ class ComputationView : Fragment(), CoroutineScope {
     }
 
     private val appApi = AppApi(MainActivity.state)
-    private val apps by lazyPromise {
+    private val appList by lazyPromise {
         withContext(Dispatchers.IO) {
             try {
                 return@withContext appApi.fetchApplicationList().data
@@ -52,7 +55,19 @@ class ComputationView : Fragment(), CoroutineScope {
             }
         }
     }
+    private val appShelf by lazyPromise {
+        withContext(Dispatchers.IO) {
+            try {
+                return@withContext appApi.fetchApplicationShelf().data
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext listOf()
+            }
+        }
+    }
     private val appListItemEntityConverter = AppListItemEntityConverter()
+    private val appShelfEntityConverter = AppShelfEntityConverter()
+    private val computationTaskEntityConverter = ComputationTaskEntityConverter()
 
     override val coroutineContext: CoroutineContext
         get() = job
@@ -67,17 +82,26 @@ class ComputationView : Fragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
-            val applications = apps.await()
+            val applicationsList = appList.await()
+            val applicationsShelf = appShelf.await()
             val computationTasks = tasks.await()
+            // TODO: should support only apps present on shelf
 
+            val appShelfEntityByReleaseUid: Map<String, AppShelfEntity> =
+                createReleaseUidByAppShelfEntity(applicationsShelf)
             val tasksByApp: Map<AppListItem, List<Task>> =
-                groupTasksByApp(applications, computationTasks)
+                groupTasksByApp(applicationsList, computationTasks)
             val computationTaskGroups = createComputationTaskGroups(tasksByApp)
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.computation_recycler_view)
-            recyclerView.adapter = ComputationTaskGroupAdapter(computationTaskGroups)
+            recyclerView.adapter =
+                ComputationTaskGroupAdapter(computationTaskGroups, appShelfEntityByReleaseUid)
         }
     }
+
+    private fun createReleaseUidByAppShelfEntity(applicationsShelf: List<AppShelfItem>) =
+        applicationsShelf.map { it.uid to appShelfEntityConverter.convertFromAppShelfItemDTO(it) }
+            .toMap()
 
     private fun groupTasksByApp(
         applications: List<AppListItem>,
@@ -105,16 +129,5 @@ class ComputationView : Fragment(), CoroutineScope {
     private fun createComputationTasks(
         tasks: List<Task>,
         appReleaseByUid: Map<String, AppRelease>
-    ) =
-        tasks.map {
-            ComputationTaskEntity(
-                it.uid,
-                it.parameters.taskName,
-                appReleaseByUid[it.releaseUid]?.version ?: "",
-                it.start,
-                it.finish,
-                it.status,
-                it.parameters.priority
-            )
-        }
+    ) = tasks.map { computationTaskEntityConverter.convertFromTaskDTO(it, appReleaseByUid) }
 }

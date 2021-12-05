@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
-import pl.oczadly.baltic.lsc.android.view.app.entity.AppEntity
+import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.lazyPromise
 
@@ -39,6 +39,8 @@ class AppStoreView() : Fragment(), CoroutineScope {
         }
     }
 
+    private val appShelfEntityConverter = AppShelfEntityConverter()
+
     override val coroutineContext: CoroutineContext
         get() = job
 
@@ -55,15 +57,7 @@ class AppStoreView() : Fragment(), CoroutineScope {
             val apps = apps.await()
             val recyclerView = view.findViewById<RecyclerView>(R.id.app_store_recycler_view)
             recyclerView.adapter =
-                AppAdapter(apps.map {
-                    AppEntity(
-                        UUID.fromString(it.unit.uid),
-                        it.unit.name,
-                        it.unit.icon,
-                        it.date,
-                        it.unit.shortDescription
-                    )
-                })
+                AppAdapter(apps.map(appShelfEntityConverter::convertFromAppShelfItemDTO))
 
             // Use this setting to improve performance if you know that changes
             // in content do not change the layout size of the RecyclerView
