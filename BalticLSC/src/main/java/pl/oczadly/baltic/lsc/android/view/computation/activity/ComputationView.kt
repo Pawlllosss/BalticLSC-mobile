@@ -26,6 +26,7 @@ import pl.oczadly.baltic.lsc.app.dto.list.AppListItem
 import pl.oczadly.baltic.lsc.app.dto.list.AppRelease
 import pl.oczadly.baltic.lsc.computation.ComputationApi
 import pl.oczadly.baltic.lsc.computation.dto.Task
+import pl.oczadly.baltic.lsc.dataset.DatasetApi
 import pl.oczadly.baltic.lsc.lazyPromise
 
 class ComputationView : Fragment(), CoroutineScope {
@@ -65,6 +66,19 @@ class ComputationView : Fragment(), CoroutineScope {
             }
         }
     }
+
+    private val datasetApi = DatasetApi(MainActivity.state)
+    private val datasetShelf by lazyPromise {
+        withContext(Dispatchers.IO) {
+            try {
+                return@withContext datasetApi.fetchDatasetShelf().data
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext listOf()
+            }
+        }
+    }
+
     private val appListItemEntityConverter = AppListItemEntityConverter()
     private val appShelfEntityConverter = AppShelfEntityConverter()
     private val computationTaskEntityConverter = ComputationTaskEntityConverter()
@@ -86,12 +100,14 @@ class ComputationView : Fragment(), CoroutineScope {
             val applicationsShelf = appShelf.await()
             val computationTasks = tasks.await()
             // TODO: should support only apps present on shelf
+            val datasetsShelf = datasetShelf.await()
 
             val appShelfEntityByReleaseUid: Map<String, AppShelfEntity> =
                 createReleaseUidByAppShelfEntity(applicationsShelf)
             val tasksByApp: Map<AppListItem, List<Task>> =
                 groupTasksByApp(applicationsList, computationTasks)
             val computationTaskGroups = createComputationTaskGroups(tasksByApp)
+            // TODO: create datasetShelfItem groupped by datatype uuid
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.computation_recycler_view)
             recyclerView.adapter =
