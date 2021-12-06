@@ -12,14 +12,20 @@ import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationTaskAdd
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
 
 class ComputationTaskGroupAdapter(
     private val taskGroups: List<ComputationTaskGroup>,
-    private val appShelfEntityByReleaseUid: Map<String, AppShelfEntity>
+    private val appShelfEntityByReleaseUid: Map<String, AppShelfEntity>,
+    private val datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>>
 ) :
     RecyclerView.Adapter<ComputationTaskGroupAdapter.ItemViewHolder>() {
 
-    class ItemViewHolder(view: View, appShelfEntityByReleaseUid: Map<String, AppShelfEntity>) : RecyclerView.ViewHolder(view) {
+    class ItemViewHolder(
+        view: View,
+        appShelfEntityByReleaseUid: Map<String, AppShelfEntity>,
+        datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>>
+    ) : RecyclerView.ViewHolder(view) {
         val appNameTextView: TextView = view.findViewById(R.id.computation_task_group_app_name)
         val computationTaskAddButton: FloatingActionButton =
             view.findViewById(R.id.computation_task_add_button)
@@ -29,7 +35,11 @@ class ComputationTaskGroupAdapter(
         val context = itemView.context
 
         init {
-            computationTaskAdapter = ComputationTaskAdapter(context, appShelfEntityByReleaseUid)
+            computationTaskAdapter = ComputationTaskAdapter(
+                context,
+                appShelfEntityByReleaseUid,
+                datasetShelfEntitiesByDataTypeUid
+            )
             computationTaskRecyclerView.adapter = computationTaskAdapter
         }
     }
@@ -38,7 +48,11 @@ class ComputationTaskGroupAdapter(
         val computationGroupsListView = LayoutInflater.from(parent.context)
             .inflate(R.layout.computation_task_group_list_item, parent, false)
 
-        return ItemViewHolder(computationGroupsListView, appShelfEntityByReleaseUid)
+        return ItemViewHolder(
+            computationGroupsListView,
+            appShelfEntityByReleaseUid,
+            datasetShelfEntitiesByDataTypeUid
+        )
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
