@@ -20,6 +20,8 @@ import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.computation.adapter.ComputationTaskGroupAdapter
 import pl.oczadly.baltic.lsc.android.view.computation.converter.ComputationTaskEntityConverter
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
+import pl.oczadly.baltic.lsc.android.view.dataset.converter.DatasetShelfEntityConverter
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
 import pl.oczadly.baltic.lsc.app.dto.list.AppListItem
@@ -82,6 +84,7 @@ class ComputationView : Fragment(), CoroutineScope {
     private val appListItemEntityConverter = AppListItemEntityConverter()
     private val appShelfEntityConverter = AppShelfEntityConverter()
     private val computationTaskEntityConverter = ComputationTaskEntityConverter()
+    private val datasetShelfEntityConverter = DatasetShelfEntityConverter()
 
     override val coroutineContext: CoroutineContext
         get() = job
@@ -107,11 +110,17 @@ class ComputationView : Fragment(), CoroutineScope {
             val tasksByApp: Map<AppListItem, List<Task>> =
                 groupTasksByApp(applicationsList, computationTasks)
             val computationTaskGroups = createComputationTaskGroups(tasksByApp)
-            // TODO: create datasetShelfItem groupped by datatype uuid
+            val datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>> =
+                datasetsShelf.groupBy({ it.dataTypeUid },
+                    { datasetShelfEntityConverter.convertFromDatasetShelfItemDTO(it) })
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.computation_recycler_view)
             recyclerView.adapter =
-                ComputationTaskGroupAdapter(computationTaskGroups, appShelfEntityByReleaseUid)
+                ComputationTaskGroupAdapter(
+                    computationTaskGroups,
+                    appShelfEntityByReleaseUid,
+                    datasetShelfEntitiesByDataTypeUid
+                )
         }
     }
 
