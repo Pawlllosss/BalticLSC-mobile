@@ -13,6 +13,7 @@ import kotlinx.coroutines.Job
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.entity.DatasetPinEntity
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
 import pl.oczadly.baltic.lsc.app.dto.dataset.DatasetBinding
 import pl.oczadly.baltic.lsc.computation.ComputationApi
 
@@ -30,7 +31,9 @@ class ComputationTaskStart : AppCompatActivity(), CoroutineScope {
         val taskName = intent.getStringExtra("computationTaskName")
         val datasetPins =
             intent.getSerializableExtra("datasetPins") as? ArrayList<DatasetPinEntity>
-        if (taskName == null || datasetPins == null) {
+        val datasetShelfEntitiesByDataTypeUid =
+            intent.getSerializableExtra("datasetShelfEntitiesByDataTypeUid") as? HashMap<String, List<DatasetShelfEntity>>
+        if (taskName == null || datasetPins == null || datasetShelfEntitiesByDataTypeUid == null) {
             finish()
         } else {
             setContentView(R.layout.activity_computation_task_start)
@@ -41,11 +44,19 @@ class ComputationTaskStart : AppCompatActivity(), CoroutineScope {
             val requiredLinearLayout =
                 findViewById<LinearLayout>(R.id.computation_task_start_required_linear_layout)
             val requiredDatasets = datasetPins.filter { it.binding == DatasetBinding.REQUIRED }
-            addDatasetSpinnersToLayout(requiredDatasets, requiredLinearLayout)
+            addDatasetSpinnersToLayout(
+                requiredDatasets,
+                requiredLinearLayout,
+                datasetShelfEntitiesByDataTypeUid
+            )
             val providedLinearLayout =
                 findViewById<LinearLayout>(R.id.computation_task_start_provided_linear_layout)
             val providedDatasets = datasetPins.filter { it.binding == DatasetBinding.PROVIDED }
-            addDatasetSpinnersToLayout(providedDatasets, providedLinearLayout)
+            addDatasetSpinnersToLayout(
+                providedDatasets,
+                providedLinearLayout,
+                datasetShelfEntitiesByDataTypeUid
+            )
 
             findViewById<Button>(R.id.computation_task_start_create_button)
                 .setOnClickListener {
@@ -62,17 +73,17 @@ class ComputationTaskStart : AppCompatActivity(), CoroutineScope {
 
     private fun addDatasetSpinnersToLayout(
         datasets: List<DatasetPinEntity>,
-        layout: LinearLayout
+        layout: LinearLayout,
+        datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>>
     ) {
         datasets.forEach {
             val textView = TextView(applicationContext)
             textView.text = it.name
             val spinner = Spinner(applicationContext)
-            // TODO: fetch data suitable for dataTypeUid
             spinner.adapter = ArrayAdapter(
                 this,
                 android.R.layout.simple_spinner_dropdown_item,
-                listOf(it.dataTypeUid)
+                datasetShelfEntitiesByDataTypeUid[it.dataTypeUid] ?: emptyList()
             )
 
             layout.addView(textView)

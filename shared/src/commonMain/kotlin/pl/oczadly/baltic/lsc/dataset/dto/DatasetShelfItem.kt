@@ -16,5 +16,5 @@ data class DatasetShelfItem(
     val accessTypeUid: String,
     val accessTypeName: String,
     val accessTypeVersion: String,
-    val values: DatasetShelfItemValues
+    val values: String // no comment, values: "{\n  \"ResourcePath\" : \"/files/edger/source1\"\n}"
 )
