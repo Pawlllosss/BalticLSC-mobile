@@ -11,7 +11,6 @@ import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEnti
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
 import pl.oczadly.baltic.lsc.computation.action.ComputationAction
 
-
 class ComputationActionsButtonCreator {
 
     fun createButtonsForActions(
@@ -29,7 +28,7 @@ class ComputationActionsButtonCreator {
                 ComputationAction.START -> button.setOnClickListener {
                     val intent = Intent(context, ComputationTaskStart::class.java)
                     intent.putExtra("computationTaskName", task.name)
-                    // TODO: send datasets
+                    intent.putExtra("datasetShelfEntitiesByDataTypeUid", HashMap<String, List<DatasetShelfEntity>>(datasetShelfEntitiesByDataTypeUid))
                     appShelfEntity?.let {
                         intent.putExtra("datasetPins", ArrayList(it.pins))
                     }
