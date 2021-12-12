@@ -17,6 +17,9 @@
             android:name=".view.computation.activity.ComputationTaskAdd"
             android:exported="true" />
         <activity
+            android:name=".view.computation.activity.ComputationTaskArchive"
+            android:exported="true" />
+        <activity
             android:name=".view.computation.activity.ComputationTaskStart"
             android:exported="true" />
         <activity

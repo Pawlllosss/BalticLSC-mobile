@@ -65,7 +65,7 @@ class ComputationTaskStart : AppCompatActivity(), CoroutineScope {
                 datasetShelfEntitiesByDataTypeUid
             )
 
-            findViewById<Button>(R.id.computation_task_start_create_button)
+            findViewById<Button>(R.id.computation_task_start_start_button)
                 .setOnClickListener {
                     val datasetUidByPinUid =
                         getDatasetUidByPinUid(requiredDataSetSpinners, providedDataSetSpinners)

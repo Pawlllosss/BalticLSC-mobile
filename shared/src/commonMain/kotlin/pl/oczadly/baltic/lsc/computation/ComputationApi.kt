@@ -63,17 +63,6 @@ class ComputationApi(private val userState: UserState) {
         }
     }
 
-    suspend fun abortComputationTask(taskUid: String): NoDataResponse {
-        return client.delete("https://balticlsc.iem.pw.edu.pl/backend/task/abort") {
-            headers {
-                append("Accept", "application/json")
-                append("Authorization", "Bearer ${userState.accessToken}")
-            }
-            parameter("taskUid", taskUid)
-        }
-
-    }
-
     suspend fun injectDataToComputationTask(
         taskUid: String,
         pinUid: String,
@@ -89,5 +78,25 @@ class ComputationApi(private val userState: UserState) {
             parameter("dataSetUid", dataSetUid)
         }
 
+    }
+
+    suspend fun abortComputationTask(taskUid: String): NoDataResponse {
+        return client.delete("https://balticlsc.iem.pw.edu.pl/backend/task/abort") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+            parameter("taskUid", taskUid)
+        }
+    }
+
+    suspend fun archiveComputationTask(taskUid: String): NoDataResponse {
+        return client.delete("https://balticlsc.iem.pw.edu.pl/backend/task") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+            parameter("taskUid", taskUid)
+        }
     }
 }
