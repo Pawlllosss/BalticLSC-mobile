@@ -28,6 +28,7 @@ class ComputationActionsButtonCreator {
                 ComputationAction.START -> button.setOnClickListener {
                     val intent = Intent(context, ComputationTaskStart::class.java)
                     intent.putExtra("computationTaskName", task.name)
+                    intent.putExtra("computationTaskUid", task.uid)
                     intent.putExtra("datasetShelfEntitiesByDataTypeUid", HashMap<String, List<DatasetShelfEntity>>(datasetShelfEntitiesByDataTypeUid))
                     appShelfEntity?.let {
                         intent.putExtra("datasetPins", ArrayList(it.pins))

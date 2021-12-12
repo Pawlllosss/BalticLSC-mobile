@@ -10,7 +10,7 @@ enum class ComputationStatus(val status: Int, val description: String) {
     COMPLETED(2, "Completed"),
     FAILED(3, "Failed"),
     UNKNOWN_2(4, "Unknown"),
-    UNKNOWN_3(5, "Unknown"),
+    ABORTED(5, "Aborted"),
     UNKNOWN_4(6, "Unknown"),
     UNKNOWN_5(7, "Unknown"),
     UNKNOWN_6(8, "Unknown"),
