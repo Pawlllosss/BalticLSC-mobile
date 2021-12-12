@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,38 +37,7 @@ class ComputationView : Fragment(), CoroutineScope {
     private val job = Job()
 
     private val computationApi = ComputationApi(MainActivity.state)
-    private val tasks by lazyPromise {
-        withContext(Dispatchers.IO) {
-            try {
-                return@withContext computationApi.fetchComputationTasks().data
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@withContext listOf()
-            }
-        }
-    }
-
     private val appApi = AppApi(MainActivity.state)
-    private val appList by lazyPromise {
-        withContext(Dispatchers.IO) {
-            try {
-                return@withContext appApi.fetchApplicationList().data
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@withContext listOf()
-            }
-        }
-    }
-    private val appShelf by lazyPromise {
-        withContext(Dispatchers.IO) {
-            try {
-                return@withContext appApi.fetchApplicationShelf().data
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@withContext listOf()
-            }
-        }
-    }
 
     private val datasetApi = DatasetApi(MainActivity.state)
     private val datasetShelf by lazyPromise {
@@ -99,34 +69,97 @@ class ComputationView : Fragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
-            val applicationsList = appList.await()
-            val applicationsShelf = appShelf.await()
-            val computationTasks = tasks.await()
+            val applicationsList = createFetchAppListPromise().value.await()
+            val applicationsShelf = createFetchAppShelfPromise().value.await()
+            val computationTasks = createFetchComputationTasksPromise().value.await()
             // TODO: should support only apps present on shelf
             val datasetsShelf = datasetShelf.await()
 
-            val appShelfEntityByReleaseUid: Map<String, AppShelfEntity> =
+            val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity> =
                 createReleaseUidByAppShelfEntity(applicationsShelf)
             val tasksByApp: Map<AppListItem, List<Task>> =
                 groupTasksByApp(applicationsList, computationTasks)
             val computationTaskGroups = createComputationTaskGroups(tasksByApp)
-            val datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>> =
+            val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetShelfEntity>> =
                 datasetsShelf.groupBy({ it.dataTypeUid },
                     { datasetShelfEntityConverter.convertFromDatasetShelfItemDTO(it) })
+                    .toMutableMap()
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.computation_recycler_view)
+            val computationTaskGroupAdapter = ComputationTaskGroupAdapter(
+                computationTaskGroups,
+                appShelfEntityByReleaseUid,
+                datasetShelfEntitiesByDataTypeUid
+            )
             recyclerView.adapter =
-                ComputationTaskGroupAdapter(
-                    computationTaskGroups,
-                    appShelfEntityByReleaseUid,
-                    datasetShelfEntitiesByDataTypeUid
-                )
+                computationTaskGroupAdapter
+            val swipeRefreshLayout =
+                view.findViewById<SwipeRefreshLayout>(R.id.computation_swipe_refresh_layout)
+            swipeRefreshLayout.setOnRefreshListener {
+                launch(job) {
+                    val applicationsList = createFetchAppListPromise().value.await()
+                    val applicationsShelf = createFetchAppShelfPromise().value.await()
+                    val computationTasks = createFetchComputationTasksPromise().value.await()
+
+                    // TODO: refactor it, so the code is not duplicated
+                    val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity> =
+                        createReleaseUidByAppShelfEntity(applicationsShelf)
+                    val tasksByApp: Map<AppListItem, List<Task>> =
+                        groupTasksByApp(applicationsList, computationTasks)
+                    val computationTaskGroups = createComputationTaskGroups(tasksByApp)
+                    val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetShelfEntity>> =
+                        datasetsShelf.groupBy({ it.dataTypeUid },
+                            { datasetShelfEntityConverter.convertFromDatasetShelfItemDTO(it) })
+                            .toMutableMap()
+
+                    computationTaskGroupAdapter.updateData(
+                        computationTaskGroups,
+                        appShelfEntityByReleaseUid,
+                        datasetShelfEntitiesByDataTypeUid
+                    )
+                    swipeRefreshLayout.isRefreshing = false
+                }
+            }
+        }
+    }
+
+    private fun createFetchComputationTasksPromise() = lazyPromise {
+        withContext(Dispatchers.IO) {
+            try {
+                return@withContext computationApi.fetchComputationTasks().data
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext listOf()
+            }
+        }
+    }
+
+    private fun createFetchAppListPromise() = lazyPromise {
+        withContext(Dispatchers.IO) {
+            try {
+                return@withContext appApi.fetchApplicationList().data
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext listOf()
+            }
+        }
+    }
+
+    private fun createFetchAppShelfPromise() = lazyPromise {
+        withContext(Dispatchers.IO) {
+            try {
+                return@withContext appApi.fetchApplicationShelf().data
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return@withContext listOf()
+            }
         }
     }
 
     private fun createReleaseUidByAppShelfEntity(applicationsShelf: List<AppShelfItem>) =
         applicationsShelf.map { it.uid to appShelfEntityConverter.convertFromAppShelfItemDTO(it) }
             .toMap()
+            .toMutableMap()
 
     private fun groupTasksByApp(
         applications: List<AppListItem>,
@@ -149,7 +182,7 @@ class ComputationView : Fragment(), CoroutineScope {
                 appListItemEntityConverter.convertFromAppListItemDTO(taskByApp.key),
                 createComputationTasks(taskByApp.value, appReleaseByUid)
             )
-        }
+        }.toMutableList()
 
     private fun createComputationTasks(
         tasks: List<Task>,
