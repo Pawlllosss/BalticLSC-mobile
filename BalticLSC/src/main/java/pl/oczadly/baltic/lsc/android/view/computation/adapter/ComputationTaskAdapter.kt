@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toJavaInstant
 import pl.oczadly.baltic.lsc.android.R
@@ -14,8 +16,7 @@ import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
 import pl.oczadly.baltic.lsc.computation.action.ComputationActionConverter
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import pl.oczadly.baltic.lsc.computation.dto.ComputationStatus
 
 class ComputationTaskAdapter(
     private val context: Context,
@@ -27,6 +28,7 @@ class ComputationTaskAdapter(
     RecyclerView.Adapter<ComputationTaskAdapter.ItemViewHolder>() {
 
     private var tasks: List<ComputationTaskEntity> = ArrayList()
+    private var updateTasksCounter = 0
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val taskNameTextView: TextView = view.findViewById(R.id.computation_task_name_text_view)
@@ -57,6 +59,7 @@ class ComputationTaskAdapter(
         val taskStatus = task.status
         holder.statusTextView.text = taskStatus.description
 
+        holder.buttonsLinearLayout.removeAllViews()
         val actions = computationActionsConverter.getActionsBasedOnStatus(taskStatus)
         val actionsButtons =
             computationActionsButtonCreator.createButtonsForActions(
