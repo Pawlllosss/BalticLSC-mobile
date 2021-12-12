@@ -15,9 +15,9 @@ import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGrou
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
 
 class ComputationTaskGroupAdapter(
-    private val taskGroups: List<ComputationTaskGroup>,
-    private val appShelfEntityByReleaseUid: Map<String, AppShelfEntity>,
-    private val datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>>
+    private val taskGroups: MutableList<ComputationTaskGroup>,
+    private val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity>,
+    private val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetShelfEntity>>
 ) :
     RecyclerView.Adapter<ComputationTaskGroupAdapter.ItemViewHolder>() {
 
@@ -72,4 +72,18 @@ class ComputationTaskGroupAdapter(
     }
 
     override fun getItemCount() = taskGroups.size
+
+    fun updateData(
+        taskGroups: List<ComputationTaskGroup>,
+        appShelfEntityByReleaseUid: Map<String, AppShelfEntity>,
+        datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>>
+    ) {
+        this.taskGroups.clear()
+        this.taskGroups.addAll(taskGroups)
+        this.appShelfEntityByReleaseUid.clear()
+        this.appShelfEntityByReleaseUid.putAll(appShelfEntityByReleaseUid)
+        this.datasetShelfEntitiesByDataTypeUid.clear()
+        this.datasetShelfEntitiesByDataTypeUid.putAll(datasetShelfEntitiesByDataTypeUid)
+        notifyDataSetChanged()
+    }
 }
