@@ -8,41 +8,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Insert dataset for:"
+        android:text="Are you sure you want to archive task?"
         android:textSize="24sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/computation_task_start_task_name_text_view"
+        android:id="@+id/computation_task_archive_task_name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Required:"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:id="@+id/computation_task_start_required_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5sp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Provided:"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:id="@+id/computation_task_start_provided_linear_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5sp" />
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -51,7 +25,7 @@
         android:padding="5sp">
 
         <Button
-            android:id="@+id/computation_task_start_cancel_button"
+            android:id="@+id/computation_task_archive_cancel_button"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="Cancel"
@@ -59,11 +33,11 @@
 
 
         <Button
-            android:id="@+id/computation_task_start_start_button"
+            android:id="@+id/computation_task_archive_archive_button"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:text="Start"
+            android:text="Archive"
             android:textAllCaps="false" />
     </LinearLayout>
 
