@@ -28,7 +28,6 @@ class ComputationTaskAdapter(
     RecyclerView.Adapter<ComputationTaskAdapter.ItemViewHolder>() {
 
     private var tasks: List<ComputationTaskEntity> = ArrayList()
-    private var updateTasksCounter = 0
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val taskNameTextView: TextView = view.findViewById(R.id.computation_task_name_text_view)
