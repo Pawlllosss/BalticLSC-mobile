@@ -7,12 +7,8 @@ class ComputationService(private val computationApi: ComputationApi) {
     suspend fun startComputationTask(
         taskUid: String,
         datasetUidByPinUid: Map<String, String>
-    ): NoDataResponse {
-        datasetUidByPinUid.forEach {
+    ): List<NoDataResponse> =
+        datasetUidByPinUid.map {
             computationApi.injectDataToComputationTask(taskUid, it.key, it.value)
-        }
-
-        // TODO: figure out a way to return a list of async responses
-        return NoDataResponse(true, "")
     }
 }
