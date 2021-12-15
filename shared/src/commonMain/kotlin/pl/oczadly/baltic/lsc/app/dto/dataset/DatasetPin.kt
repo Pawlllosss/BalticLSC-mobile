@@ -9,6 +9,6 @@ data class DatasetPin(
     val binding: DatasetBinding,
     val dataTypeUid: String,
     val dataTypeName: String,
-    val accessTypeUid: String,
-    val accessTypeName: String
+    val accessTypeUid: String?,
+    val accessTypeName: String?
 )

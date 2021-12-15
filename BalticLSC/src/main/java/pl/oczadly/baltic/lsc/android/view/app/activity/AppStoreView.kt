@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.view.app
+package pl.oczadly.baltic.lsc.android.view.app.activity
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,7 +14,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.app.adapter.AppAdapter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
+import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
 
