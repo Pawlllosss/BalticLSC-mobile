@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.view.app
+package pl.oczadly.baltic.lsc.android.view.app.service
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

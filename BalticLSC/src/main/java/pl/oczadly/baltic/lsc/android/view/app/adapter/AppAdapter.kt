@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.view.app
+package pl.oczadly.baltic.lsc.android.view.app.adapter
 
 import android.view.LayoutInflater
 import android.view.View

@@ -3,7 +3,7 @@ package pl.oczadly.baltic.lsc.android.view
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import pl.oczadly.baltic.lsc.android.view.app.AppStoreView
+import pl.oczadly.baltic.lsc.android.view.app.activity.AppStoreView
 import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationView
 
 class ViewPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {

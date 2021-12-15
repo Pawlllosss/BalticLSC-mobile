@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
-import pl.oczadly.baltic.lsc.android.view.app.AppService
+import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
@@ -24,6 +24,7 @@ import pl.oczadly.baltic.lsc.android.view.computation.converter.ComputationTaskE
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.DatasetShelfEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
+import pl.oczadly.baltic.lsc.android.view.dataset.service.DatasetService
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
 import pl.oczadly.baltic.lsc.app.dto.list.AppListItem
@@ -41,17 +42,7 @@ class ComputationView : Fragment(), CoroutineScope {
     private val computationApi = ComputationApi(MainActivity.state)
     private val appService = AppService(AppApi(MainActivity.state))
 
-    private val datasetApi = DatasetApi(MainActivity.state)
-    private val datasetShelf by lazyPromise {
-        withContext(Dispatchers.IO) {
-            try {
-                return@withContext datasetApi.fetchDatasetShelf().data
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@withContext listOf()
-            }
-        }
-    }
+    private val datasetService = DatasetService(DatasetApi(MainActivity.state))
 
     private val appListItemEntityConverter = AppListItemEntityConverter()
     private val appShelfEntityConverter = AppShelfEntityConverter()
@@ -75,7 +66,7 @@ class ComputationView : Fragment(), CoroutineScope {
             val applicationsShelf = appService.createFetchAppShelfPromise().value.await()
             val computationTasks = createFetchComputationTasksPromise().value.await()
             // TODO: should support only apps present on shelf
-            val datasetsShelf = datasetShelf.await()
+            val datasetsShelf = datasetService.createFetchDatasetShelfPromise().value.await()
 
             val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity> =
                 createReleaseUidByAppShelfEntity(applicationsShelf)
@@ -101,6 +92,7 @@ class ComputationView : Fragment(), CoroutineScope {
                     val applicationsList = appService.createFetchAppListPromise().value.await()
                     val applicationsShelf = appService.createFetchAppShelfPromise().value.await()
                     val computationTasks = createFetchComputationTasksPromise().value.await()
+                    val datasetsShelf = datasetService.createFetchDatasetShelfPromise().value.await()
 
                     val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity> =
                         createReleaseUidByAppShelfEntity(applicationsShelf)

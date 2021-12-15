@@ -6,7 +6,7 @@
     android:padding="5sp">
 
     <TextView
-        android:id="@+id/computation_task_name_text_view"
+        android:id="@+id/dataset_name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -22,11 +22,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Start:"
+            android:text="Multiplicity:"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/computation_task_start_date_text_view"
+            android:id="@+id/dataset_multiplicity_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp" />
@@ -35,11 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="End:"
+            android:text="Data type:"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/computation_task_end_date_text_view"
+            android:id="@+id/dataset_data_type_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp" />
@@ -55,11 +55,25 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Version:"
+            android:text="Access type:"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/computation_task_version_text_view"
+            android:id="@+id/dataset_access_type_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp" />
+
+        <TextView
+            android:id="@+id/dataset_data_structure_label_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Data structure:"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dataset_data_structure_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp" />
@@ -71,29 +85,45 @@
         android:layout_marginStart="6dp"
         android:orientation="horizontal">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status:"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/computation_task_status_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Access values:"
+                android:textStyle="bold" />
 
-        <TextView
+            <TextView
+                android:id="@+id/dataset_access_values_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
-            android:text="Priority:"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/computation_task_priority_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Path values:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dataset_path_values_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>
