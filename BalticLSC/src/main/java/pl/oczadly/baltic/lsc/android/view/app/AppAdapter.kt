@@ -12,7 +12,7 @@ import kotlinx.datetime.toJavaLocalDateTime
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 
-class AppAdapter(private val appShelves: List<AppShelfEntity>) :
+class AppAdapter(private val appShelves: MutableList<AppShelfEntity>) :
     RecyclerView.Adapter<AppAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -48,4 +48,10 @@ class AppAdapter(private val appShelves: List<AppShelfEntity>) :
     }
 
     override fun getItemCount() = appShelves.size
+
+    fun updateData(appShelves: List<AppShelfEntity>) {
+        this.appShelves.clear()
+        this.appShelves.addAll(appShelves)
+        notifyDataSetChanged()
+    }
 }

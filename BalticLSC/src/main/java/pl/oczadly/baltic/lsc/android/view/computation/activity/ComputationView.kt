@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.app.AppService
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
@@ -30,6 +31,7 @@ import pl.oczadly.baltic.lsc.app.dto.list.AppRelease
 import pl.oczadly.baltic.lsc.computation.ComputationApi
 import pl.oczadly.baltic.lsc.computation.dto.Task
 import pl.oczadly.baltic.lsc.dataset.DatasetApi
+import pl.oczadly.baltic.lsc.dataset.dto.DatasetShelfItem
 import pl.oczadly.baltic.lsc.lazyPromise
 
 class ComputationView : Fragment(), CoroutineScope {
@@ -37,7 +39,7 @@ class ComputationView : Fragment(), CoroutineScope {
     private val job = Job()
 
     private val computationApi = ComputationApi(MainActivity.state)
-    private val appApi = AppApi(MainActivity.state)
+    private val appService = AppService(AppApi(MainActivity.state))
 
     private val datasetApi = DatasetApi(MainActivity.state)
     private val datasetShelf by lazyPromise {
@@ -69,8 +71,8 @@ class ComputationView : Fragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
-            val applicationsList = createFetchAppListPromise().value.await()
-            val applicationsShelf = createFetchAppShelfPromise().value.await()
+            val applicationsList = appService.createFetchAppListPromise().value.await()
+            val applicationsShelf = appService.createFetchAppShelfPromise().value.await()
             val computationTasks = createFetchComputationTasksPromise().value.await()
             // TODO: should support only apps present on shelf
             val datasetsShelf = datasetShelf.await()
@@ -81,9 +83,7 @@ class ComputationView : Fragment(), CoroutineScope {
                 groupTasksByApp(applicationsList, computationTasks)
             val computationTaskGroups = createComputationTaskGroups(tasksByApp)
             val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetShelfEntity>> =
-                datasetsShelf.groupBy({ it.dataTypeUid },
-                    { datasetShelfEntityConverter.convertFromDatasetShelfItemDTO(it) })
-                    .toMutableMap()
+                createDatasetShelfEntitiesByDataTypeUid(datasetsShelf)
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.computation_recycler_view)
             val computationTaskGroupAdapter = ComputationTaskGroupAdapter(
@@ -93,24 +93,22 @@ class ComputationView : Fragment(), CoroutineScope {
             )
             recyclerView.adapter =
                 computationTaskGroupAdapter
+
             val swipeRefreshLayout =
                 view.findViewById<SwipeRefreshLayout>(R.id.computation_swipe_refresh_layout)
             swipeRefreshLayout.setOnRefreshListener {
                 launch(job) {
-                    val applicationsList = createFetchAppListPromise().value.await()
-                    val applicationsShelf = createFetchAppShelfPromise().value.await()
+                    val applicationsList = appService.createFetchAppListPromise().value.await()
+                    val applicationsShelf = appService.createFetchAppShelfPromise().value.await()
                     val computationTasks = createFetchComputationTasksPromise().value.await()
 
-                    // TODO: refactor it, so the code is not duplicated
                     val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity> =
                         createReleaseUidByAppShelfEntity(applicationsShelf)
                     val tasksByApp: Map<AppListItem, List<Task>> =
                         groupTasksByApp(applicationsList, computationTasks)
                     val computationTaskGroups = createComputationTaskGroups(tasksByApp)
                     val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetShelfEntity>> =
-                        datasetsShelf.groupBy({ it.dataTypeUid },
-                            { datasetShelfEntityConverter.convertFromDatasetShelfItemDTO(it) })
-                            .toMutableMap()
+                        createDatasetShelfEntitiesByDataTypeUid(datasetsShelf)
 
                     computationTaskGroupAdapter.updateData(
                         computationTaskGroups,
@@ -119,6 +117,7 @@ class ComputationView : Fragment(), CoroutineScope {
                     )
                     swipeRefreshLayout.isRefreshing = false
                 }
+
             }
         }
     }
@@ -127,28 +126,6 @@ class ComputationView : Fragment(), CoroutineScope {
         withContext(Dispatchers.IO) {
             try {
                 return@withContext computationApi.fetchComputationTasks().data
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@withContext listOf()
-            }
-        }
-    }
-
-    private fun createFetchAppListPromise() = lazyPromise {
-        withContext(Dispatchers.IO) {
-            try {
-                return@withContext appApi.fetchApplicationList().data
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@withContext listOf()
-            }
-        }
-    }
-
-    private fun createFetchAppShelfPromise() = lazyPromise {
-        withContext(Dispatchers.IO) {
-            try {
-                return@withContext appApi.fetchApplicationShelf().data
             } catch (e: Exception) {
                 e.printStackTrace()
                 return@withContext listOf()
@@ -188,4 +165,9 @@ class ComputationView : Fragment(), CoroutineScope {
         tasks: List<Task>,
         appReleaseByUid: Map<String, AppRelease>
     ) = tasks.map { computationTaskEntityConverter.convertFromTaskDTO(it, appReleaseByUid) }
+
+    private fun createDatasetShelfEntitiesByDataTypeUid(datasetsShelf: List<DatasetShelfItem>) =
+        datasetsShelf.groupBy({ it.dataTypeUid },
+            { datasetShelfEntityConverter.convertFromDatasetShelfItemDTO(it) })
+            .toMutableMap()
 }
