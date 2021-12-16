@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.dataset.adapter.DatasetAdapter
+import pl.oczadly.baltic.lsc.android.view.dataset.converter.DatasetEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.DatasetShelfEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.service.DatasetService
 import pl.oczadly.baltic.lsc.dataset.DatasetApi
@@ -26,6 +27,7 @@ class DatasetView : Fragment(), CoroutineScope {
     private val datasetService = DatasetService(DatasetApi(MainActivity.state))
 
     private val datasetShelfEntityConverter = DatasetShelfEntityConverter()
+    private val datasetEntityConverter = DatasetEntityConverter()
 
     override val coroutineContext: CoroutineContext
         get() = job
@@ -43,10 +45,12 @@ class DatasetView : Fragment(), CoroutineScope {
             val datasetsShelf = datasetService.createFetchDatasetShelfPromise().value.await()
             val datasetsShelfEntities =
                 datasetsShelf.map(datasetShelfEntityConverter::convertFromDatasetShelfItemDTO)
-                    .toMutableList()
 
+            val datasetEntities =
+                datasetsShelfEntities.map { datasetEntityConverter.convertToDatasetEntity(it) }
+                    .toMutableList()
+            val datasetAdapter = DatasetAdapter(datasetEntities)
             val recyclerView = view.findViewById<RecyclerView>(R.id.dataset_recycler_view)
-            val datasetAdapter = DatasetAdapter(datasetsShelfEntities)
             recyclerView.adapter = datasetAdapter
 
             val swipeRefreshLayout =
@@ -59,7 +63,10 @@ class DatasetView : Fragment(), CoroutineScope {
                         datasetsShelf.map(datasetShelfEntityConverter::convertFromDatasetShelfItemDTO)
                             .toMutableList()
 
-                    datasetAdapter.updateData(datasetsShelfEntities)
+                    val datasetEntities =
+                        datasetsShelfEntities.map { datasetEntityConverter.convertToDatasetEntity(it) }
+                            .toMutableList()
+                    datasetAdapter.updateData(datasetEntities)
                     swipeRefreshLayout.isRefreshing = false
                 }
 
