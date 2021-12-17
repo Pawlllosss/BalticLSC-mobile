@@ -7,6 +7,9 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import pl.oczadly.baltic.lsc.UserState
+import pl.oczadly.baltic.lsc.dataset.dto.AccessType
+import pl.oczadly.baltic.lsc.dataset.dto.DataStructure
+import pl.oczadly.baltic.lsc.dataset.dto.DataType
 import pl.oczadly.baltic.lsc.dataset.dto.DatasetShelfItem
 import pl.oczadly.baltic.lsc.model.Response
 
@@ -30,8 +33,35 @@ class DatasetApi(private val userState: UserState) {
         }
     }
 
+    suspend fun fetchDataTypes(): Response<DataType> {
+        return client.get("https://balticlsc.iem.pw.edu.pl/backend/task/dataTypes/") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+        }
+    }
+
+    suspend fun fetchDataStructures(): Response<DataStructure> {
+        return client.get("https://balticlsc.iem.pw.edu.pl/backend/task/dataStructures/") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+        }
+    }
+
     suspend fun fetchDatasetShelf(): Response<DatasetShelfItem> {
-        return client.get("https://balticlsc.iem.pw.edu.pl/backend/task/datashelf/") {
+        return client.get("https://balticlsc.iem.pw.edu.pl/backend/task/dataShelf/") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+        }
+    }
+
+    suspend fun fetchAccessTypes(): Response<AccessType> {
+        return client.get("https://balticlsc.iem.pw.edu.pl/backend/task/accessTypes/") {
             headers {
                 append("Accept", "application/json")
                 append("Authorization", "Bearer ${userState.accessToken}")

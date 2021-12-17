@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import pl.oczadly.baltic.lsc.android.view.app.activity.AppStoreView
 import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationView
+import pl.oczadly.baltic.lsc.android.view.dataset.activity.DatasetView
 
 class ViewPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
@@ -16,6 +17,9 @@ class ViewPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
             1 -> {
                 ComputationView()
             }
+            2 -> {
+                DatasetView()
+            }
             else -> {
                 return DefaultView()
             }
@@ -23,15 +27,14 @@ class ViewPageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     }
 
     override fun getCount(): Int {
-        return 4
+        return 3
     }
 
     override fun getPageTitle(position: Int): CharSequence {
         return when (position) {
             0 -> "Apps"
-            1 -> "Computation"
+            1 -> "Compute"
             2 -> "Data"
-            3 -> "Development shelf"
             else -> {
                 return "Other"
             }

@@ -22,8 +22,8 @@ import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.computation.adapter.ComputationTaskGroupAdapter
 import pl.oczadly.baltic.lsc.android.view.computation.converter.ComputationTaskEntityConverter
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
-import pl.oczadly.baltic.lsc.android.view.dataset.converter.DatasetShelfEntityConverter
-import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
+import pl.oczadly.baltic.lsc.android.view.dataset.converter.DatasetEntityConverter
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.service.DatasetService
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
@@ -32,7 +32,6 @@ import pl.oczadly.baltic.lsc.app.dto.list.AppRelease
 import pl.oczadly.baltic.lsc.computation.ComputationApi
 import pl.oczadly.baltic.lsc.computation.dto.Task
 import pl.oczadly.baltic.lsc.dataset.DatasetApi
-import pl.oczadly.baltic.lsc.dataset.dto.DatasetShelfItem
 import pl.oczadly.baltic.lsc.lazyPromise
 
 class ComputationView : Fragment(), CoroutineScope {
@@ -42,12 +41,11 @@ class ComputationView : Fragment(), CoroutineScope {
     private val computationApi = ComputationApi(MainActivity.state)
     private val appService = AppService(AppApi(MainActivity.state))
 
-    private val datasetService = DatasetService(DatasetApi(MainActivity.state))
+    private val datasetService = DatasetService(DatasetApi(MainActivity.state), DatasetEntityConverter())
 
     private val appListItemEntityConverter = AppListItemEntityConverter()
     private val appShelfEntityConverter = AppShelfEntityConverter()
     private val computationTaskEntityConverter = ComputationTaskEntityConverter()
-    private val datasetShelfEntityConverter = DatasetShelfEntityConverter()
 
     override val coroutineContext: CoroutineContext
         get() = job
@@ -60,21 +58,21 @@ class ComputationView : Fragment(), CoroutineScope {
         return inflater.inflate(R.layout.computation_view, container, false)
     }
 
+    // TODO: handle case when there're no tasks
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
             val applicationsList = appService.createFetchAppListPromise().value.await()
             val applicationsShelf = appService.createFetchAppShelfPromise().value.await()
             val computationTasks = createFetchComputationTasksPromise().value.await()
-            // TODO: should support only apps present on shelf
-            val datasetsShelf = datasetService.createFetchDatasetShelfPromise().value.await()
+            val datasetEntities = datasetService.getDatasetEntities()
 
             val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity> =
                 createReleaseUidByAppShelfEntity(applicationsShelf)
             val tasksByApp: Map<AppListItem, List<Task>> =
                 groupTasksByApp(applicationsList, computationTasks)
             val computationTaskGroups = createComputationTaskGroups(tasksByApp)
-            val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetShelfEntity>> =
-                createDatasetShelfEntitiesByDataTypeUid(datasetsShelf)
+            val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetEntity>> =
+                createDatasetEntitiesByDataTypeUid(datasetEntities)
 
             val recyclerView = view.findViewById<RecyclerView>(R.id.computation_recycler_view)
             val computationTaskGroupAdapter = ComputationTaskGroupAdapter(
@@ -92,15 +90,15 @@ class ComputationView : Fragment(), CoroutineScope {
                     val applicationsList = appService.createFetchAppListPromise().value.await()
                     val applicationsShelf = appService.createFetchAppShelfPromise().value.await()
                     val computationTasks = createFetchComputationTasksPromise().value.await()
-                    val datasetsShelf = datasetService.createFetchDatasetShelfPromise().value.await()
+                    val datasetsEntities = datasetService.getDatasetEntities()
 
                     val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity> =
                         createReleaseUidByAppShelfEntity(applicationsShelf)
                     val tasksByApp: Map<AppListItem, List<Task>> =
                         groupTasksByApp(applicationsList, computationTasks)
                     val computationTaskGroups = createComputationTaskGroups(tasksByApp)
-                    val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetShelfEntity>> =
-                        createDatasetShelfEntitiesByDataTypeUid(datasetsShelf)
+                    val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetEntity>> =
+                        createDatasetEntitiesByDataTypeUid(datasetsEntities)
 
                     computationTaskGroupAdapter.updateData(
                         computationTaskGroups,
@@ -158,8 +156,6 @@ class ComputationView : Fragment(), CoroutineScope {
         appReleaseByUid: Map<String, AppRelease>
     ) = tasks.map { computationTaskEntityConverter.convertFromTaskDTO(it, appReleaseByUid) }
 
-    private fun createDatasetShelfEntitiesByDataTypeUid(datasetsShelf: List<DatasetShelfItem>) =
-        datasetsShelf.groupBy({ it.dataTypeUid },
-            { datasetShelfEntityConverter.convertFromDatasetShelfItemDTO(it) })
-            .toMutableMap()
+    private fun createDatasetEntitiesByDataTypeUid(datasetEntities: List<DatasetEntity>) =
+        datasetEntities.groupBy{ it.dataType.uid }.toMutableMap()
 }

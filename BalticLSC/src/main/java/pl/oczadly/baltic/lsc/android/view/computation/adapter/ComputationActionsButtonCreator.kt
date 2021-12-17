@@ -9,7 +9,7 @@ import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationTaskAb
 import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationTaskArchive
 import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationTaskStart
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskEntity
-import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetEntity
 import pl.oczadly.baltic.lsc.computation.action.ComputationAction
 
 class ComputationActionsButtonCreator {
@@ -18,7 +18,7 @@ class ComputationActionsButtonCreator {
         actions: List<ComputationAction>,
         task: ComputationTaskEntity,
         appShelfEntity: AppShelfEntity?,
-        datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>>,
+        datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetEntity>>,
         context: Context
     ): List<Button> {
         return actions.map { computationAction ->
@@ -34,7 +34,7 @@ class ComputationActionsButtonCreator {
                         intent.putExtra("computationTaskUid", task.uid)
                         intent.putExtra(
                             "datasetShelfEntitiesByDataTypeUid",
-                            HashMap<String, List<DatasetShelfEntity>>(
+                            HashMap<String, List<DatasetEntity>>(
                                 datasetShelfEntitiesByDataTypeUid
                             )
                         )

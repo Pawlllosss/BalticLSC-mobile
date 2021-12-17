@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.entity.DatasetPinEntity
-import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetSpinnerEntity
 import pl.oczadly.baltic.lsc.app.dto.dataset.DatasetBinding
 import pl.oczadly.baltic.lsc.computation.ComputationApi
@@ -39,7 +39,7 @@ class ComputationTaskStart : AppCompatActivity(), CoroutineScope {
         val datasetPins =
             intent.getSerializableExtra("datasetPins") as? ArrayList<DatasetPinEntity>
         val datasetShelfEntitiesByDataTypeUid =
-            intent.getSerializableExtra("datasetShelfEntitiesByDataTypeUid") as? HashMap<String, List<DatasetShelfEntity>>
+            intent.getSerializableExtra("datasetShelfEntitiesByDataTypeUid") as? HashMap<String, List<DatasetEntity>>
         if (taskName == null || taskUid == null || datasetPins == null || datasetShelfEntitiesByDataTypeUid == null) {
             finish()
         } else {
@@ -82,7 +82,7 @@ class ComputationTaskStart : AppCompatActivity(), CoroutineScope {
     private fun addDatasetSpinnersToLayout(
         datasets: List<DatasetPinEntity>,
         layout: LinearLayout,
-        datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>>
+        datasetEntitiesByDataTypeUid: Map<String, List<DatasetEntity>>
     ): List<Spinner> = datasets.map { pin ->
         val textView = TextView(applicationContext)
         textView.text = pin.name
@@ -90,7 +90,7 @@ class ComputationTaskStart : AppCompatActivity(), CoroutineScope {
         spinner.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
-            datasetShelfEntitiesByDataTypeUid[pin.dataTypeUid]?.map {
+            datasetEntitiesByDataTypeUid[pin.dataTypeUid]?.map {
                 DatasetSpinnerEntity(
                     pin.uid,
                     it.uid,

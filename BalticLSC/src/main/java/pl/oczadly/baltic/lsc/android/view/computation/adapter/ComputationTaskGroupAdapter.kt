@@ -12,19 +12,19 @@ import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationTaskAdd
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
-import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetShelfEntity
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetEntity
 
 class ComputationTaskGroupAdapter(
     private val taskGroups: MutableList<ComputationTaskGroup>,
     private val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity>,
-    private val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetShelfEntity>>
+    private val datasetShelfEntitiesByDataTypeUid: MutableMap<String, List<DatasetEntity>>
 ) :
     RecyclerView.Adapter<ComputationTaskGroupAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(
         view: View,
         appShelfEntityByReleaseUid: Map<String, AppShelfEntity>,
-        datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>>
+        datasetEntitiesByDataTypeUid: Map<String, List<DatasetEntity>>
     ) : RecyclerView.ViewHolder(view) {
         val appNameTextView: TextView = view.findViewById(R.id.computation_task_group_app_name)
         val computationTaskAddButton: FloatingActionButton =
@@ -38,7 +38,7 @@ class ComputationTaskGroupAdapter(
             computationTaskAdapter = ComputationTaskAdapter(
                 context,
                 appShelfEntityByReleaseUid,
-                datasetShelfEntitiesByDataTypeUid
+                datasetEntitiesByDataTypeUid
             )
             computationTaskRecyclerView.adapter = computationTaskAdapter
         }
@@ -76,7 +76,7 @@ class ComputationTaskGroupAdapter(
     fun updateData(
         taskGroups: List<ComputationTaskGroup>,
         appShelfEntityByReleaseUid: Map<String, AppShelfEntity>,
-        datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetShelfEntity>>
+        datasetShelfEntitiesByDataTypeUid: Map<String, List<DatasetEntity>>
     ) {
         this.taskGroups.clear()
         this.taskGroups.addAll(taskGroups)

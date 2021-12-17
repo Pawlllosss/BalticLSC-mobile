@@ -1,5 +1,6 @@
 package pl.oczadly.baltic.lsc.android.view.dataset.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
@@ -27,14 +28,17 @@ class DatasetAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(parent)
+        val adapterLayout = LayoutInflater.from(parent.context)
+            .inflate(R.layout.dataset_list_item, parent, false)
+
+        return ItemViewHolder(adapterLayout)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val dataset = datasetEntities[position]
 
         holder.nameTextView.text = dataset.name
-        holder.multiplicityTextView.text = dataset.multiplicity.description
+        holder.multiplicityTextView.text = dataset.multiplicityByValue.second
         holder.dataTypeTextView.text = dataset.dataType.name
         holder.accessTypeTextView.text = dataset.accessTypeEntity.name
 
