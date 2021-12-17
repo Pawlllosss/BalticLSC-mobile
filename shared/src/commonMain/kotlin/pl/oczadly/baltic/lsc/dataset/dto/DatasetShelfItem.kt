@@ -9,12 +9,13 @@ data class DatasetShelfItem(
     val dataTypeUid: String,
     val dataTypeName: String,
     val dataTypeVersion: String,
-    val multiplicity: Int,
+    val multiplicity: DatasetMultiplicity,
     val dataStructureUid: String?,
     val dataStructureName: String?,
     val dataStructureVersion: String?,
     val accessTypeUid: String,
     val accessTypeName: String,
     val accessTypeVersion: String,
+    val accessValues: String,
     val values: String // no comment, values: "{\n  \"ResourcePath\" : \"/files/edger/source1\"\n}"
 )
