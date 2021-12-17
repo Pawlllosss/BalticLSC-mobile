@@ -38,7 +38,7 @@ class DatasetAdapter(
         val dataset = datasetEntities[position]
 
         holder.nameTextView.text = dataset.name
-        holder.multiplicityTextView.text = dataset.multiplicityByValue.second
+        holder.multiplicityTextView.text = dataset.datasetMultiplicity.description
         holder.dataTypeTextView.text = dataset.dataType.name
         holder.accessTypeTextView.text = dataset.accessTypeEntity.name
 
