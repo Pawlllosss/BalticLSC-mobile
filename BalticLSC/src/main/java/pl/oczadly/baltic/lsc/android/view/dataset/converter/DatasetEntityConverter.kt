@@ -12,7 +12,7 @@ class DatasetEntityConverter {
         return DatasetEntity(
             dataset.name,
             dataset.uid,
-            dataset.multiplicity.let { Pair(it.value, it.description) },
+            dataset.multiplicity,
             DataTypeEntity(dataset.dataTypeUid, dataset.dataTypeName, dataset.dataTypeVersion),
             createDataStructureEntityIfPresent(dataset),
             AccessTypeEntity(dataset.accessTypeUid, dataset.accessTypeName, dataset.accessTypeVersion),
