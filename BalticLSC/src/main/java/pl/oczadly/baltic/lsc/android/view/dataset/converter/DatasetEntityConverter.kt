@@ -8,12 +8,16 @@ import pl.oczadly.baltic.lsc.dataset.dto.DatasetShelfItem
 
 class DatasetEntityConverter {
 
-    fun convertToDatasetEntity(datasetShelfEntity: DatasetShelfEntity): DatasetEntity {
+    fun convertFromDatasetShelfItemDTO(dataset: DatasetShelfItem): DatasetEntity {
         return DatasetEntity(
-            datasetShelfItem.uid,
-            datasetShelfItem.name,
-            datasetShelfItem.dataTypeUid,
-            datasetShelfItem.dataTypeName
+            dataset.name,
+            dataset.uid,
+            dataset.multiplicity.let { Pair(it.value, it.description) },
+            DataTypeEntity(dataset.dataTypeUid, dataset.dataTypeName, dataset.dataTypeVersion),
+            createDataStructureEntityIfPresent(dataset),
+            AccessTypeEntity(dataset.accessTypeUid, dataset.accessTypeName, dataset.accessTypeVersion),
+            dataset.accessValues,
+            dataset.values
         )
     }
 
