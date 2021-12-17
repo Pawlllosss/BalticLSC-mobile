@@ -1,11 +1,12 @@
 package pl.oczadly.baltic.lsc.android.view.dataset.entity
 
+import pl.oczadly.baltic.lsc.dataset.dto.DatasetMultiplicity
 import java.io.Serializable
 
 data class DatasetEntity(
     val name: String,
     val uid: String,
-    val multiplicityByValue: Pair<Int, String>,
+    val datasetMultiplicity: DatasetMultiplicity,
     val dataType: DataTypeEntity,
     val dataStructure: DataStructureEntity?,
     val accessTypeEntity: AccessTypeEntity,
