@@ -13,9 +13,19 @@ class DatasetEntityConverter {
             dataset.name,
             dataset.uid,
             dataset.multiplicity,
-            DataTypeEntity(dataset.dataTypeUid, dataset.dataTypeName, dataset.dataTypeVersion),
+            DataTypeEntity(
+                false,
+                dataset.dataTypeUid,
+                dataset.dataTypeName,
+                dataset.dataTypeVersion
+            ),
             createDataStructureEntityIfPresent(dataset),
-            AccessTypeEntity(dataset.accessTypeUid, dataset.accessTypeName, dataset.accessTypeVersion),
+            AccessTypeEntity(
+                dataset.accessTypeUid,
+                dataset.accessTypeName,
+                dataset.accessTypeVersion,
+                emptyMap()
+            ),
             dataset.accessValues,
             dataset.values
         )
@@ -23,7 +33,13 @@ class DatasetEntityConverter {
 
     private fun createDataStructureEntityIfPresent(dataset: DatasetShelfItem): DataStructureEntity? {
         if (dataset.dataStructureName != null && dataset.dataStructureUid != null && dataset.dataStructureVersion != null) {
-            return DataStructureEntity(dataset.dataStructureUid!!, dataset.dataStructureName!!, dataset.dataStructureVersion!!)
+            return DataStructureEntity(
+                false,
+                "",
+                dataset.dataStructureUid!!,
+                dataset.dataStructureName!!,
+                dataset.dataStructureVersion!!
+            )
         }
         return null
     }

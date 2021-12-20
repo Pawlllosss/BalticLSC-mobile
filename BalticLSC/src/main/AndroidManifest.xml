@@ -23,6 +23,9 @@
             android:name=".view.computation.activity.ComputationTaskStart"
             android:exported="true" />
         <activity
+            android:name=".view.dataset.activity.DatasetAdd"
+            android:exported="true" />
+        <activity
             android:name=".view.login.LoginView"
             android:exported="true">
             <intent-filter>
