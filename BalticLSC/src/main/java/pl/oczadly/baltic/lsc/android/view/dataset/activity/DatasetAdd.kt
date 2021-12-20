@@ -1,11 +1,14 @@
 package pl.oczadly.baltic.lsc.android.view.dataset.activity
 
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
@@ -35,7 +38,7 @@ class DatasetAdd : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dataTypes = intent.getSerializableExtra(DatasetView.dataTypeListIntent) as? List<DataTypeEntity>
-        val dataStructures = intent.getSerializableExtra(DatasetView.dataTypeListIntent) as? List<DataStructureEntity>
+        val dataStructures = intent.getSerializableExtra(DatasetView.dataStructureListIntent) as? List<DataStructureEntity>
         val accessTypes = intent.getSerializableExtra(DatasetView.accessTypeListIntent) as? List<AccessTypeEntity>
         if (accessTypes == null || dataTypes == null || dataStructures == null) {
             finish()
@@ -47,6 +50,9 @@ class DatasetAdd : AppCompatActivity(), CoroutineScope {
             val dataTypeAdapter: ArrayAdapter<DataTypeEntity> =
                 ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, dataTypes)
             dataTypeSpinner.adapter = dataTypeAdapter
+            val dataStructureTextView = findViewById<TextView>(R.id.dataset_add_data_structure_label_text_view)
+            val dataStructureSpinner = findViewById<Spinner>(R.id.dataset_data_structure_spinner)
+            dataTypeSpinner.onItemSelectedListener = getOnItemSelectedListener(dataStructureTextView, dataStructureSpinner, dataStructures)
 
             val accessTypeSpinner = findViewById<Spinner>(R.id.dataset_access_type_spinner)
             val accessTypeAdapter: ArrayAdapter<AccessTypeEntity> =
@@ -64,6 +70,32 @@ class DatasetAdd : AppCompatActivity(), CoroutineScope {
                 .setOnClickListener {
                     finish()
                 }
+        }
+    }
+
+    private fun getOnItemSelectedListener(textView: TextView, dataStructureSpinner: Spinner, dataStructures: List<DataStructureEntity>) = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(
+            parent: AdapterView<*>,
+            view: View,
+            position: Int,
+            id: Long
+        ) {
+            val dataType = parent.selectedItem as DataTypeEntity
+
+            if (dataType.isStructured) {
+                textView.visibility = View.VISIBLE
+                dataStructureSpinner.visibility = View.VISIBLE
+                val dataStructureAdapter: ArrayAdapter<DataStructureEntity> =
+                    ArrayAdapter(this@DatasetAdd, android.R.layout.simple_spinner_dropdown_item, dataStructures)
+                dataStructureSpinner.adapter = dataStructureAdapter
+            } else {
+                textView.visibility = View.GONE
+                dataStructureSpinner.visibility = View.GONE
+            }
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+            return
         }
     }
 

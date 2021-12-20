@@ -39,6 +39,20 @@
         android:layout_height="wrap_content"
         android:minHeight="48dp" />
 
+    <TextView
+        android:id="@+id/dataset_add_data_structure_label_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data structure:"
+        android:visibility="gone"
+        android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/dataset_data_structure_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:minHeight="48dp" />
 
     <TextView
         android:layout_width="wrap_content"
