@@ -66,6 +66,13 @@
         android:layout_height="wrap_content"
         android:minHeight="48dp" />
 
+    <LinearLayout
+        android:id="@+id/dataset_add_access_type_values_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5sp" />
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

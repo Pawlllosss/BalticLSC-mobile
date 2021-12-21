@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.util.addTextViewToViewGroup
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.AccessTypeEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataStructureEntity
@@ -30,6 +32,7 @@ class DatasetAdd : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
+    private val editTextByAccessValue: MutableMap<String, EditText> = mutableMapOf()
     private val computationApi = ComputationApi(MainActivity.state)
 
     override val coroutineContext: CoroutineContext
@@ -52,13 +55,13 @@ class DatasetAdd : AppCompatActivity(), CoroutineScope {
             dataTypeSpinner.adapter = dataTypeAdapter
             val dataStructureTextView = findViewById<TextView>(R.id.dataset_add_data_structure_label_text_view)
             val dataStructureSpinner = findViewById<Spinner>(R.id.dataset_data_structure_spinner)
-            dataTypeSpinner.onItemSelectedListener = getOnItemSelectedListener(dataStructureTextView, dataStructureSpinner, dataStructures)
+            dataTypeSpinner.onItemSelectedListener = getDataTypeOnItemSelectedListener(dataStructureTextView, dataStructureSpinner, dataStructures)
 
             val accessTypeSpinner = findViewById<Spinner>(R.id.dataset_access_type_spinner)
             val accessTypeAdapter: ArrayAdapter<AccessTypeEntity> =
                 ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, accessTypes)
             accessTypeSpinner.adapter = accessTypeAdapter
-
+            accessTypeSpinner.onItemSelectedListener = getAccessTypeOnItemSelectedListener(accessTypes)
 
             findViewById<Button>(R.id.dataset_add_create_button)
                 .setOnClickListener {
@@ -73,7 +76,7 @@ class DatasetAdd : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    private fun getOnItemSelectedListener(textView: TextView, dataStructureSpinner: Spinner, dataStructures: List<DataStructureEntity>) = object : AdapterView.OnItemSelectedListener {
+    private fun getDataTypeOnItemSelectedListener(textView: TextView, dataStructureSpinner: Spinner, dataStructures: List<DataStructureEntity>) = object : AdapterView.OnItemSelectedListener {
         override fun onItemSelected(
             parent: AdapterView<*>,
             view: View,
@@ -91,6 +94,31 @@ class DatasetAdd : AppCompatActivity(), CoroutineScope {
             } else {
                 textView.visibility = View.GONE
                 dataStructureSpinner.visibility = View.GONE
+            }
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+            return
+        }
+    }
+
+    private fun getAccessTypeOnItemSelectedListener(accessTypes: List<AccessTypeEntity>) = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(
+            parent: AdapterView<*>,
+            view: View,
+            position: Int,
+            id: Long
+        ) {
+            val linearLayout = findViewById<LinearLayout>(R.id.dataset_add_access_type_values_linear_layout)
+            linearLayout.removeAllViews()
+            editTextByAccessValue.clear()
+            val accessType = parent.selectedItem as AccessTypeEntity
+            // assuming all fields are string, therefore not checking map values
+            accessType.fieldNameByType.keys.forEach {
+                addTextViewToViewGroup(it, linearLayout, this@DatasetAdd)
+                val editText = EditText(this@DatasetAdd)
+                linearLayout.addView(editText)
+                editTextByAccessValue[it] = editText
             }
         }
 

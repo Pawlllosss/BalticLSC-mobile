@@ -1,7 +1,6 @@
 package pl.oczadly.baltic.lsc.android.view.computation.activity
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Spinner
@@ -15,6 +14,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.util.addSpinnerToViewGroup
+import pl.oczadly.baltic.lsc.android.util.addTextViewToViewGroup
 import pl.oczadly.baltic.lsc.android.view.app.entity.DatasetPinEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetSpinnerEntity
@@ -84,24 +85,15 @@ class ComputationTaskStart : AppCompatActivity(), CoroutineScope {
         layout: LinearLayout,
         datasetEntitiesByDataTypeUid: Map<String, List<DatasetEntity>>
     ): List<Spinner> = datasets.map { pin ->
-        val textView = TextView(applicationContext)
-        textView.text = pin.name
-        val spinner = Spinner(applicationContext)
-        spinner.adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_dropdown_item,
-            datasetEntitiesByDataTypeUid[pin.dataTypeUid]?.map {
-                DatasetSpinnerEntity(
-                    pin.uid,
-                    it.uid,
-                    it.name
-                )
-            } ?: emptyList()
-        )
-
-        layout.addView(textView)
-        layout.addView(spinner)
-        spinner
+        addTextViewToViewGroup(pin.name, layout, this)
+        val dataSetEntities = datasetEntitiesByDataTypeUid[pin.dataTypeUid]?.map {
+            DatasetSpinnerEntity(
+                pin.uid,
+                it.uid,
+                it.name
+            )
+        } ?: emptyList()
+        addSpinnerToViewGroup(dataSetEntities, layout, this)
     }
 
     private fun getDatasetUidByPinUid(
