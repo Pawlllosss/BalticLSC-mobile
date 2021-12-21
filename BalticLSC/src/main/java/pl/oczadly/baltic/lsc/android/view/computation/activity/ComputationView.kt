@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.gson.Gson
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +50,7 @@ class ComputationView : Fragment(), CoroutineScope {
         DatasetEntityConverter(),
         DataTypeEntityConverter(),
         DataStructureEntityConverter(),
-        AccessTypeEntityConverter()
+        AccessTypeEntityConverter(Gson())
     )
 
     private val appListItemEntityConverter = AppListItemEntityConverter()

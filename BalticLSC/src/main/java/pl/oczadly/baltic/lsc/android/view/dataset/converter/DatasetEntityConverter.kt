@@ -24,6 +24,7 @@ class DatasetEntityConverter {
                 dataset.accessTypeUid,
                 dataset.accessTypeName,
                 dataset.accessTypeVersion,
+                emptyMap(),
                 emptyMap()
             ),
             dataset.accessValues,

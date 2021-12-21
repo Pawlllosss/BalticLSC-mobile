@@ -1,22 +1,22 @@
 package pl.oczadly.baltic.lsc.android.view.dataset.converter
 
-import pl.oczadly.baltic.lsc.android.util.convertFromJsonToMap
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.AccessTypeEntity
 import pl.oczadly.baltic.lsc.dataset.dto.AccessType
 
-class AccessTypeEntityConverter {
+class AccessTypeEntityConverter(private val gson: Gson) {
 
     fun convertFromAccessTypeDTO(accessType: AccessType): AccessTypeEntity {
+        val mapType = object : TypeToken<Map<String, String>>() {}.type
+        val accessSchema = accessType.accessSchema
+
         return AccessTypeEntity(
             accessType.uid,
             accessType.name,
             accessType.version,
-            convertJsonToAccessValues(accessType.accessSchema)
+            if (accessSchema.isNullOrBlank()) emptyMap() else gson.fromJson(accessSchema, mapType),
+            gson.fromJson(accessType.pathSchema, mapType)
         )
     }
-
-    private fun convertJsonToAccessValues(accessSchema: String): Map<String, String> =
-        if (accessSchema.isNullOrBlank()) emptyMap() else
-            convertFromJsonToMap(accessSchema)
-                .mapValues { it.toString() }
 }

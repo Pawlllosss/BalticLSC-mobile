@@ -13,6 +13,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.1")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("com.google.code.gson:gson:2.8.9")
 }
 
 android {

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,15 +17,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
-import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationTaskAdd
 import pl.oczadly.baltic.lsc.android.view.dataset.adapter.DatasetAdapter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.AccessTypeEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.DataStructureEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.DataTypeEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.DatasetEntityConverter
-import pl.oczadly.baltic.lsc.android.view.dataset.entity.AccessTypeEntity
-import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataStructureEntity
-import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataTypeEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.service.DatasetService
 import pl.oczadly.baltic.lsc.dataset.DatasetApi
 
@@ -43,7 +40,7 @@ class DatasetView : Fragment(), CoroutineScope {
         DatasetEntityConverter(),
         DataTypeEntityConverter(),
         DataStructureEntityConverter(),
-        AccessTypeEntityConverter()
+        AccessTypeEntityConverter(Gson())
     )
 
     override val coroutineContext: CoroutineContext
