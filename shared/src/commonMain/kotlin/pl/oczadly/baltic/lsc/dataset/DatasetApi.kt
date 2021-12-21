@@ -6,12 +6,15 @@ import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
+import io.ktor.client.request.put
 import pl.oczadly.baltic.lsc.UserState
 import pl.oczadly.baltic.lsc.dataset.dto.AccessType
 import pl.oczadly.baltic.lsc.dataset.dto.DataStructure
 import pl.oczadly.baltic.lsc.dataset.dto.DataType
+import pl.oczadly.baltic.lsc.dataset.dto.DatasetCreate
 import pl.oczadly.baltic.lsc.dataset.dto.DatasetShelfItem
 import pl.oczadly.baltic.lsc.model.Response
+import pl.oczadly.baltic.lsc.model.SingleResponse
 
 
 class DatasetApi(private val userState: UserState) {
@@ -66,6 +69,17 @@ class DatasetApi(private val userState: UserState) {
                 append("Accept", "application/json")
                 append("Authorization", "Bearer ${userState.accessToken}")
             }
+        }
+    }
+
+    suspend fun addDataSet(dataset: DatasetCreate): SingleResponse<String> {
+        return client.put("https://balticlsc.iem.pw.edu.pl/backend/task/dataSet/") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+                append("Content-Type", "application/json")
+            }
+            body = dataset
         }
     }
 }

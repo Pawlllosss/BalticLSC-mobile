@@ -93,7 +93,6 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
                 .toInt()
         val isPrivate = findViewById<CheckBox>(R.id.computation_task_is_private_checkbox).isChecked
 
-
         return TaskCreate(
             taskName,
             appReleaseEntity.releaseUid,
