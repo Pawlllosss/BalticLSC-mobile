@@ -6,7 +6,7 @@ data class AccessTypeEntity(
     val uid: String,
     val name: String,
     val version: String,
-    val accessSchema: Map<String, String>
+    val fieldNameByType: Map<String, String>
 ): Serializable {
     override fun toString(): String {
         return "$name ($version)"
