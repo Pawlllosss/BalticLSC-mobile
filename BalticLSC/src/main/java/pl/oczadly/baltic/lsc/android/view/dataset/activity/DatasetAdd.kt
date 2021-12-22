@@ -12,6 +12,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
+import java.lang.StringBuilder
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -200,9 +201,40 @@ class DatasetAdd : AppCompatActivity(), CoroutineScope {
             accessType.uid,
             accessType.name,
             accessType.version,
-            gson.toJson(createValueByFieldName(editTextByPathValue)),
-            gson.toJson(createValueByFieldName(editTextByAccessValue))
+            convertToJsonStringWithNewlines(editTextByPathValue),
+            convertToJsonStringWithNewlines(editTextByAccessValue)
         )
+    }
+
+    // webapp uses newlines to display formatted json
+    private fun convertToJsonStringWithNewlines(editTextByValue: Map<String, EditText>): String {
+        val jsonString = gson.toJson(createValueByFieldName(editTextByValue))
+        if (editTextByValue.isEmpty()) {
+            return jsonString
+        }
+        val commaPositions = getCommaPositions(jsonString)
+        val stringBuilder = StringBuilder(jsonString)
+
+        stringBuilder.insert(jsonString.length - 1, '\n')
+        commaPositions.asReversed().forEach {
+            stringBuilder.insert(it + 1, '\n')
+        }
+        stringBuilder.insert(1, '\n')
+
+        return stringBuilder.toString()
+    }
+
+    private fun getCommaPositions(string: String): List<Int> {
+        val list = mutableListOf<Int>()
+
+        var i = -1
+        while (true) {
+            i = string.indexOf(',', i + 1)
+            when (i) {
+                -1 -> return list
+                else -> list.add(i)
+            }
+        }
     }
 
     private fun createValueByFieldName(editTextByFieldName: Map<String, EditText>) =
