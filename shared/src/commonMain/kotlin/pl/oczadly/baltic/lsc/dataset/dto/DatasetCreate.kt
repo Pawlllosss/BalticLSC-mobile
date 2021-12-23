@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class DatasetCreate(
     val name: String,
+    val uid: String?,
     val multiplicity: DatasetMultiplicity,
     val dataTypeUid: String,
     val dataTypeName: String,

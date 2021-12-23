@@ -6,8 +6,8 @@ import android.widget.Button
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.dataset.activity.DatasetArchive
 import pl.oczadly.baltic.lsc.android.view.dataset.activity.DatasetView
-import pl.oczadly.baltic.lsc.android.view.dataset.activity.form.DatasetAdd
-import pl.oczadly.baltic.lsc.android.view.dataset.activity.form.DatasetEdit
+import pl.oczadly.baltic.lsc.android.view.dataset.activity.form.DatasetAddForm
+import pl.oczadly.baltic.lsc.android.view.dataset.activity.form.DatasetEditForm
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.AccessTypeEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataStructureEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataTypeEntity
@@ -26,7 +26,7 @@ class DatasetActionsButtonConfigurator(
         val context = view.context
 
         editButton.setOnClickListener {
-            val intent = Intent(context, DatasetEdit::class.java)
+            val intent = Intent(context, DatasetEditForm::class.java)
             intent.putExtra(DatasetView.datasetEntityIntent, datasetEntity)
             intent.putExtra(DatasetView.accessTypeListIntent, ArrayList(accessTypes))
             intent.putExtra(DatasetView.dataTypeListIntent, ArrayList(dataTypes))
@@ -34,7 +34,7 @@ class DatasetActionsButtonConfigurator(
             context.startActivity(intent)
         }
         copyButton.setOnClickListener {
-            val intent = Intent(context, DatasetAdd::class.java)
+            val intent = Intent(context, DatasetAddForm::class.java)
             intent.putExtra(DatasetView.datasetEntityIntent, datasetEntity)
             intent.putExtra(DatasetView.accessTypeListIntent, ArrayList(accessTypes))
             intent.putExtra(DatasetView.dataTypeListIntent, ArrayList(dataTypes))

@@ -17,7 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
-import pl.oczadly.baltic.lsc.android.view.dataset.activity.form.DatasetAdd
+import pl.oczadly.baltic.lsc.android.view.dataset.activity.form.DatasetAddForm
 import pl.oczadly.baltic.lsc.android.view.dataset.adapter.DatasetAdapter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.AccessTypeEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.DataStructureEntityConverter
@@ -81,7 +81,7 @@ class DatasetView : Fragment(), CoroutineScope {
 
             view.findViewById<FloatingActionButton>(R.id.dataset_add_button)
                 .setOnClickListener {
-                    val intent = Intent(context, DatasetAdd::class.java)
+                    val intent = Intent(context, DatasetAddForm::class.java)
                     intent.putExtra(accessTypeListIntent, ArrayList(accessTypes))
                     intent.putExtra(dataTypeListIntent, ArrayList(dataTypes))
                     intent.putExtra(dataStructureListIntent, ArrayList(dataStructures))

@@ -10,7 +10,7 @@ import pl.oczadly.baltic.lsc.android.view.dataset.service.DatasetService
 import pl.oczadly.baltic.lsc.dataset.DatasetApi
 import pl.oczadly.baltic.lsc.dataset.dto.DatasetCreate
 
-class DatasetEdit : DatasetForm() {
+class DatasetEditForm : DatasetForm() {
 
     private val datasetService = DatasetService(
         DatasetApi(MainActivity.state),
@@ -21,6 +21,7 @@ class DatasetEdit : DatasetForm() {
     )
 
     override suspend fun sendDatasetRequest(datasetCreate: DatasetCreate): String? {
-        return datasetService.editDataset(datasetCreate)
+        datasetService.editDataset(datasetCreate)
+        return ""
     }
 }

@@ -52,7 +52,7 @@ class DatasetService(
         return awaitPromise(createApiPromiseSingleResponse { datasetApi.addDataset(datasetCreate) })
     }
 
-    suspend fun editDataset(datasetCreate: DatasetCreate): String? {
-        return awaitPromise(createApiPromiseSingleResponse { datasetApi.updateDataset(datasetCreate) })
+    suspend fun editDataset(datasetCreate: DatasetCreate) {
+        awaitPromise(createApiPromiseNoDataResponse { datasetApi.updateDataset(datasetCreate) })
     }
 }
