@@ -17,6 +17,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.dataset.activity.form.DatasetAdd
 import pl.oczadly.baltic.lsc.android.view.dataset.adapter.DatasetAdapter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.AccessTypeEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.DataStructureEntityConverter
@@ -28,9 +29,10 @@ import pl.oczadly.baltic.lsc.dataset.DatasetApi
 class DatasetView : Fragment(), CoroutineScope {
 
     companion object {
-        const val dataTypeListIntent = "dataTypeList"
-        const val dataStructureListIntent = "dataStructureList"
-        const val accessTypeListIntent = "accessTypeList"
+        const val datasetEntityIntent = "datasetEntityIntent"
+        const val dataTypeListIntent = "dataTypeListIntent"
+        const val dataStructureListIntent = "dataStructureListIntent"
+        const val accessTypeListIntent = "accessTypeListIntent"
     }
 
     private val job = Job()
@@ -61,7 +63,7 @@ class DatasetView : Fragment(), CoroutineScope {
             val dataStructures = datasetService.getDataStructures()
             val accessTypes = datasetService.getAccessTypes()
 
-            val datasetAdapter = DatasetAdapter(datasetEntities)
+            val datasetAdapter = DatasetAdapter(datasetEntities, dataTypes, dataStructures, accessTypes)
             val recyclerView = view.findViewById<RecyclerView>(R.id.dataset_recycler_view)
             recyclerView.adapter = datasetAdapter
 

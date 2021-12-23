@@ -37,8 +37,8 @@ class DatasetEntityConverter {
             return DataStructureEntity(
                 false,
                 "",
-                dataset.dataStructureUid!!,
                 dataset.dataStructureName!!,
+                dataset.dataStructureUid!!,
                 dataset.dataStructureVersion!!
             )
         }

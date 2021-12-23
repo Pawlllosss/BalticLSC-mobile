@@ -23,7 +23,13 @@
             android:name=".view.computation.activity.ComputationTaskStart"
             android:exported="true" />
         <activity
-            android:name=".view.dataset.activity.DatasetAdd"
+            android:name=".view.dataset.activity.form.DatasetAdd"
+            android:exported="true" />
+        <activity
+            android:name=".view.dataset.activity.DatasetArchive"
+            android:exported="true" />
+        <activity
+            android:name=".view.dataset.activity.form.DatasetEdit"
             android:exported="true" />
         <activity
             android:name=".view.login.LoginView"

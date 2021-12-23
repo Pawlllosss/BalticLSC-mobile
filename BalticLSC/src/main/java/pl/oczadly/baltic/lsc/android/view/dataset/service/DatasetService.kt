@@ -2,6 +2,8 @@ package pl.oczadly.baltic.lsc.android.view.dataset.service
 
 import pl.oczadly.baltic.lsc.android.util.awaitPromise
 import pl.oczadly.baltic.lsc.android.util.createApiPromise
+import pl.oczadly.baltic.lsc.android.util.createApiPromiseNoDataResponse
+import pl.oczadly.baltic.lsc.android.util.createApiPromiseSingleResponse
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.AccessTypeEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.DataStructureEntityConverter
 import pl.oczadly.baltic.lsc.android.view.dataset.converter.DataTypeEntityConverter
@@ -11,6 +13,7 @@ import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataStructureEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataTypeEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetEntity
 import pl.oczadly.baltic.lsc.dataset.DatasetApi
+import pl.oczadly.baltic.lsc.dataset.dto.DatasetCreate
 
 class DatasetService(
     private val datasetApi: DatasetApi,
@@ -39,5 +42,17 @@ class DatasetService(
     suspend fun getAccessTypes(): List<AccessTypeEntity> {
         val accessTypes = awaitPromise(createApiPromise { datasetApi.fetchAccessTypes().data })
         return accessTypes.map(accessTypeEntityConverter::convertFromAccessTypeDTO)
+    }
+
+    suspend fun archiveDataset(datasetUid: String) {
+        awaitPromise(createApiPromiseNoDataResponse { datasetApi.archiveDataset(datasetUid) })
+    }
+
+    suspend fun addDataset(datasetCreate: DatasetCreate): String? {
+        return awaitPromise(createApiPromiseSingleResponse { datasetApi.addDataset(datasetCreate) })
+    }
+
+    suspend fun editDataset(datasetCreate: DatasetCreate): String? {
+        return awaitPromise(createApiPromiseSingleResponse { datasetApi.updateDataset(datasetCreate) })
     }
 }

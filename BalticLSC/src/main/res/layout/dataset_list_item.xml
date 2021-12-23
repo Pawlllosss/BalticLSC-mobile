@@ -70,8 +70,8 @@
             android:layout_height="match_parent"
             android:layout_marginStart="6dp"
             android:text="Data structure:"
-            android:visibility="gone"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/dataset_data_structure_text_view"
@@ -125,6 +125,38 @@
                 android:layout_marginStart="4dp" />
 
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/dataset_edit_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textAllCaps="false" />
+
+
+        <Button
+            android:id="@+id/dataset_copy_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:text="Copy"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/dataset_archive_button"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:text="Archive"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 </LinearLayout>
