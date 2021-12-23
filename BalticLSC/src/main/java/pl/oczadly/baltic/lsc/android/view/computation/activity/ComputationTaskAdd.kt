@@ -45,7 +45,6 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, app.releases)
         versionSpinner.adapter = adapter
 
-        // TODO: https://stackoverflow.com/questions/17713610/how-to-restart-previous-activity-in-android
         findViewById<Button>(R.id.computation_task_add_create_button)
             .setOnClickListener {
                 sendCreateTaskRequestAndFinish(versionSpinner)

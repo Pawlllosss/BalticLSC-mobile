@@ -88,7 +88,7 @@ class DatasetApi(private val userState: UserState) {
     }
 
     // yup, the post method is not a mistake
-    suspend fun updateDataset(dataset: DatasetCreate): SingleResponse<String> {
+    suspend fun updateDataset(dataset: DatasetCreate): NoDataResponse {
         return client.post("https://balticlsc.iem.pw.edu.pl/backend/task/dataSet/") {
             headers {
                 append("Accept", "application/json")

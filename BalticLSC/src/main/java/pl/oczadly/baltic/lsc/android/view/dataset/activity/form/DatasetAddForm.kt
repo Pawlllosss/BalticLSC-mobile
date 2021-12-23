@@ -10,7 +10,7 @@ import pl.oczadly.baltic.lsc.android.view.dataset.service.DatasetService
 import pl.oczadly.baltic.lsc.dataset.DatasetApi
 import pl.oczadly.baltic.lsc.dataset.dto.DatasetCreate
 
-class DatasetAdd : DatasetForm() {
+class DatasetAddForm : DatasetForm() {
 
     private val datasetService = DatasetService(
         DatasetApi(MainActivity.state),

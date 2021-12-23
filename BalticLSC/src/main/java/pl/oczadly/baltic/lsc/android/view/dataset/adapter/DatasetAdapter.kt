@@ -2,6 +2,7 @@ package pl.oczadly.baltic.lsc.android.view.dataset.adapter
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
@@ -56,6 +57,9 @@ class DatasetAdapter(
         if (dataStructure != null) {
             holder.dataStructureLabelTextView.visibility = VISIBLE
             holder.dataStructureTextView.text = dataset.dataStructure.name
+        } else {
+            holder.dataStructureLabelTextView.visibility = GONE
+            holder.dataStructureTextView.text = ""
         }
         holder.dataTypeTextView.text = dataset.dataType.name
         holder.accessValuesTextView.text = dataset.accessValues

@@ -18,6 +18,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.util.addTextViewToViewGroup
+import pl.oczadly.baltic.lsc.android.util.convertFromJsonStringToMap
 import pl.oczadly.baltic.lsc.android.view.dataset.activity.DatasetView
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.AccessTypeEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataStructureEntity
@@ -26,7 +27,6 @@ import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetEntity
 import pl.oczadly.baltic.lsc.dataset.dto.DatasetCreate
 import pl.oczadly.baltic.lsc.dataset.dto.DatasetMultiplicity
 
-// TODO: create some generic view for edit, add and copy
 abstract class DatasetForm : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
@@ -76,12 +76,13 @@ abstract class DatasetForm : AppCompatActivity(), CoroutineScope {
             val accessTypeAdapter: ArrayAdapter<AccessTypeEntity> =
                 ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, accessTypes)
             accessTypeSpinner.adapter = accessTypeAdapter
-            accessTypeSpinner.onItemSelectedListener = getAccessTypeOnItemSelectedListener()
+            accessTypeSpinner.onItemSelectedListener =
+                getAccessTypeOnItemSelectedListener(datasetEntity)
 
-            datasetEntity?.also {
+            datasetEntity?.also { dataset ->
                 selectSpinnerItemByValue(
                     dataTypeSpinner,
-                    it.dataType,
+                    dataset.dataType,
                     { dt1, dt2 -> dt1.uid == dt2.uid })
                 datasetEntity.dataStructure?.also { dataStructure ->
                     selectSpinnerItemByValue(
@@ -91,18 +92,22 @@ abstract class DatasetForm : AppCompatActivity(), CoroutineScope {
                 }
                 selectSpinnerItemByValue(
                     accessTypeSpinner,
-                    it.accessTypeEntity,
+                    dataset.accessTypeEntity,
                     { at1, at2 -> at1.uid == at2.uid })
 
-                findViewById<EditText>(R.id.dataset_form_name_edit_text).setText(it.name)
-                if (it.datasetMultiplicity == DatasetMultiplicity.MULTIPLE) findViewById<CheckBox>(R.id.dataset_form_is_multiple_checkbox).isChecked =
+                findViewById<EditText>(R.id.dataset_form_name_edit_text).setText(dataset.name)
+                if (dataset.datasetMultiplicity == DatasetMultiplicity.MULTIPLE) findViewById<CheckBox>(
+                    R.id.dataset_form_is_multiple_checkbox
+                ).isChecked =
                     true
             }
 
             findViewById<Button>(R.id.dataset_form_create_button)
                 .setOnClickListener {
-                    // request set
-                    sendDatasetRequestAndFinish()
+                    val datasetCreateDTO = getDatasetCreateDTO(datasetEntity?.uid)
+                    launch(job) {
+                        sendDatasetRequest(datasetCreateDTO)
+                    }
                     finish()
                 }
 
@@ -141,7 +146,7 @@ abstract class DatasetForm : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    private fun getAccessTypeOnItemSelectedListener() =
+    private fun getAccessTypeOnItemSelectedListener(initialValue: DatasetEntity?) =
         object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -155,17 +160,25 @@ abstract class DatasetForm : AppCompatActivity(), CoroutineScope {
                 editTextByAccessValue.clear()
                 val accessType = parent.selectedItem as AccessTypeEntity
                 // assuming all fields are string, therefore not checking map values
-                accessType.accessFieldNameByType.keys.forEach {
-                    addTextViewToViewGroup(it, linearLayout, this@DatasetForm)
+                val existingAccessValues =
+                    initialValue?.accessValues?.let { convertFromJsonStringToMap(gson, it) }
+                        ?: emptyMap()
+                accessType.accessFieldNameByType.keys.forEach { fieldName ->
+                    addTextViewToViewGroup(fieldName, linearLayout, this@DatasetForm)
                     val editText = EditText(this@DatasetForm)
+                    existingAccessValues[fieldName]?.also { editText.setText(it) }
                     linearLayout.addView(editText)
-                    editTextByAccessValue[it] = editText
+                    editTextByAccessValue[fieldName] = editText
                 }
-                accessType.pathFieldNameByType.keys.forEach {
-                    addTextViewToViewGroup(it, linearLayout, this@DatasetForm)
+                val existingPathValues =
+                    initialValue?.pathValues?.let { convertFromJsonStringToMap(gson, it) }
+                        ?: emptyMap()
+                accessType.pathFieldNameByType.keys.forEach { fieldName ->
+                    addTextViewToViewGroup(fieldName, linearLayout, this@DatasetForm)
                     val editText = EditText(this@DatasetForm)
+                    existingPathValues[fieldName]?.also { editText.setText(it) }
                     linearLayout.addView(editText)
-                    editTextByPathValue[it] = editText
+                    editTextByPathValue[fieldName] = editText
                 }
             }
 
@@ -174,14 +187,7 @@ abstract class DatasetForm : AppCompatActivity(), CoroutineScope {
             }
         }
 
-    private fun sendDatasetRequestAndFinish() {
-        val datasetCreateDTO = getDatasetCreateDTO()
-        launch(job) {
-            sendDatasetRequest(datasetCreateDTO)
-        }
-    }
-
-    private fun getDatasetCreateDTO(): DatasetCreate {
+    private fun getDatasetCreateDTO(datasetUid: String?): DatasetCreate {
         val name =
             findViewById<EditText>(R.id.dataset_form_name_edit_text).text.toString().trim()
         val isMultiple =
@@ -195,6 +201,7 @@ abstract class DatasetForm : AppCompatActivity(), CoroutineScope {
 
         return DatasetCreate(
             name,
+            datasetUid,
             if (isMultiple) DatasetMultiplicity.MULTIPLE else DatasetMultiplicity.SINGLE,
             dataType.uid,
             dataType.name,
