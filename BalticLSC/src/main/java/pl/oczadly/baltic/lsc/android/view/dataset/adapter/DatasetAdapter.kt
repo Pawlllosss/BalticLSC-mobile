@@ -7,12 +7,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.AccessTypeEntity
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataStructureEntity
+import pl.oczadly.baltic.lsc.android.view.dataset.entity.DataTypeEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetEntity
 
 class DatasetAdapter(
-    private val datasetEntities: MutableList<DatasetEntity>
+    private val datasetEntities: MutableList<DatasetEntity>,
+    dataTypes: List<DataTypeEntity>,
+    dataStructures: List<DataStructureEntity>,
+    accessTypes: List<AccessTypeEntity>
 ) :
     RecyclerView.Adapter<DatasetAdapter.ItemViewHolder>() {
+
+    private val buttonConfigurator = DatasetActionsButtonConfigurator(dataTypes, dataStructures, accessTypes)
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameTextView: TextView = view.findViewById(R.id.dataset_name_text_view)
@@ -37,6 +45,8 @@ class DatasetAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val dataset = datasetEntities[position]
 
+        buttonConfigurator.setupButtons(holder.itemView, dataset)
+
         holder.nameTextView.text = dataset.name
         holder.multiplicityTextView.text = dataset.datasetMultiplicity.description
         holder.dataTypeTextView.text = dataset.dataType.name
@@ -45,7 +55,7 @@ class DatasetAdapter(
         val dataStructure = dataset.dataStructure
         if (dataStructure != null) {
             holder.dataStructureLabelTextView.visibility = VISIBLE
-            holder.dataStructureTextView.text = dataset.dataType.name
+            holder.dataStructureTextView.text = dataset.dataStructure.name
         }
         holder.dataTypeTextView.text = dataset.dataType.name
         holder.accessValuesTextView.text = dataset.accessValues

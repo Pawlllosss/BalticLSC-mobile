@@ -4,8 +4,11 @@ import io.ktor.client.HttpClient
 import io.ktor.client.features.HttpTimeout
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.request.delete
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
 import io.ktor.client.request.put
 import pl.oczadly.baltic.lsc.UserState
 import pl.oczadly.baltic.lsc.dataset.dto.AccessType
@@ -13,6 +16,7 @@ import pl.oczadly.baltic.lsc.dataset.dto.DataStructure
 import pl.oczadly.baltic.lsc.dataset.dto.DataType
 import pl.oczadly.baltic.lsc.dataset.dto.DatasetCreate
 import pl.oczadly.baltic.lsc.dataset.dto.DatasetShelfItem
+import pl.oczadly.baltic.lsc.model.NoDataResponse
 import pl.oczadly.baltic.lsc.model.Response
 import pl.oczadly.baltic.lsc.model.SingleResponse
 
@@ -72,7 +76,7 @@ class DatasetApi(private val userState: UserState) {
         }
     }
 
-    suspend fun addDataSet(dataset: DatasetCreate): SingleResponse<String> {
+    suspend fun addDataset(dataset: DatasetCreate): SingleResponse<String> {
         return client.put("https://balticlsc.iem.pw.edu.pl/backend/task/dataSet/") {
             headers {
                 append("Accept", "application/json")
@@ -80,6 +84,28 @@ class DatasetApi(private val userState: UserState) {
                 append("Content-Type", "application/json")
             }
             body = dataset
+        }
+    }
+
+    // yup, the post method is not a mistake
+    suspend fun updateDataset(dataset: DatasetCreate): SingleResponse<String> {
+        return client.post("https://balticlsc.iem.pw.edu.pl/backend/task/dataSet/") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+                append("Content-Type", "application/json")
+            }
+            body = dataset
+        }
+    }
+
+    suspend fun archiveDataset(datasetUid: String): NoDataResponse {
+        return client.delete("https://balticlsc.iem.pw.edu.pl/backend/task/dataSet/") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+            parameter("dataSetUid", datasetUid)
         }
     }
 }

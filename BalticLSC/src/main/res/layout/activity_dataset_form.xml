@@ -16,7 +16,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/dataset_add_name_edit_text"
+            android:id="@+id/dataset_form_name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="12dp"
@@ -25,7 +25,7 @@
             android:textColor="#000000" />
 
         <CheckBox
-            android:id="@+id/dataset_add_is_multiple_checkbox"
+            android:id="@+id/dataset_form_is_multiple_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -38,13 +38,13 @@
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/dataset_add_data_type_spinner"
+            android:id="@+id/dataset_form_data_type_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp" />
 
         <TextView
-            android:id="@+id/dataset_add_data_structure_label_text_view"
+            android:id="@+id/dataset_form_data_structure_label_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Data structure:"
@@ -52,7 +52,7 @@
             android:visibility="gone" />
 
         <Spinner
-            android:id="@+id/dataset_add_data_structure_spinner"
+            android:id="@+id/dataset_form_data_structure_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
@@ -65,13 +65,13 @@
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/dataset_add_access_type_spinner"
+            android:id="@+id/dataset_form_access_type_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp" />
 
         <LinearLayout
-            android:id="@+id/dataset_add_access_type_values_linear_layout"
+            android:id="@+id/dataset_form_access_type_values_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -84,7 +84,7 @@
             android:padding="5sp">
 
             <Button
-                android:id="@+id/dataset_add_cancel_button"
+                android:id="@+id/dataset_form_cancel_button"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:text="Cancel"
@@ -92,11 +92,11 @@
 
 
             <Button
-                android:id="@+id/dataset_add_create_button"
+                android:id="@+id/dataset_form_create_button"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:text="Create"
+                android:text="Ok"
                 android:textAllCaps="false" />
         </LinearLayout>
 
