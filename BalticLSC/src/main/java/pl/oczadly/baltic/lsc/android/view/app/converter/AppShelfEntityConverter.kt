@@ -11,6 +11,7 @@ class AppShelfEntityConverter {
         val appUnit = appShelfItem.unit
         return AppShelfEntity(
             appUnit.uid,
+            appShelfItem.uid,
             appUnit.name,
             appUnit.icon,
             appShelfItem.date,
