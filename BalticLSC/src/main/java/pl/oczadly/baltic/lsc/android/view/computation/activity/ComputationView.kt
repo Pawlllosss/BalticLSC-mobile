@@ -136,7 +136,7 @@ class ComputationView : Fragment(), CoroutineScope {
     }
 
     private fun createReleaseUidByAppShelfEntity(applicationsShelf: List<AppShelfEntity>) =
-        applicationsShelf.map { it.unitUid to it }
+        applicationsShelf.map { it.releaseUid to it }
             .toMap()
             .toMutableMap()
 
