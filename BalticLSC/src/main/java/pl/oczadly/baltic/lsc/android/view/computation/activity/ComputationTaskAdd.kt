@@ -1,10 +1,12 @@
 package pl.oczadly.baltic.lsc.android.view.computation.activity
 
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.coroutines.CoroutineContext
@@ -44,6 +46,17 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
         val adapter: ArrayAdapter<AppReleaseEntity> =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, app.releases)
         versionSpinner.adapter = adapter
+
+        findViewById<Button>(R.id.computation_task_add_additional_details_button)
+            .setOnClickListener {
+                val layout =
+                    findViewById<LinearLayout>(R.id.computation_task_add_additional_details_layout)
+                if (layout.visibility == View.VISIBLE) {
+                    layout.visibility = View.GONE
+                } else {
+                    layout.visibility = View.VISIBLE
+                }
+            }
 
         findViewById<Button>(R.id.computation_task_add_create_button)
             .setOnClickListener {
