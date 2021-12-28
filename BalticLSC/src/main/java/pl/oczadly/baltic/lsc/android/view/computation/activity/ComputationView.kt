@@ -42,7 +42,11 @@ class ComputationView : Fragment(), CoroutineScope {
     private val job = Job()
 
     private val computationApi = ComputationApi(MainActivity.state)
-    private val appService = AppService(AppApi(MainActivity.state), AppListItemEntityConverter(), AppShelfEntityConverter())
+    private val appService = AppService(
+        AppApi(MainActivity.state),
+        AppListItemEntityConverter(),
+        AppShelfEntityConverter()
+    )
 
     private val datasetService = DatasetService(
         DatasetApi(MainActivity.state),
@@ -68,7 +72,8 @@ class ComputationView : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
             val applicationsShelf = appService.getAppShelf()
-            val applicationsList = appService.getOwnedAppList(appService.getAppList(), applicationsShelf)
+            val applicationsList =
+                appService.getOwnedAppList(appService.getAppList(), applicationsShelf)
             val computationTasks = createFetchComputationTasksPromise().value.await()
             val datasetEntities = datasetService.getDatasets()
 
@@ -94,7 +99,8 @@ class ComputationView : Fragment(), CoroutineScope {
             swipeRefreshLayout.setOnRefreshListener {
                 launch(job) {
                     val applicationsShelf = appService.getAppShelf()
-                    val applicationsList = appService.getOwnedAppList(appService.getAppList(), applicationsShelf)
+                    val applicationsList =
+                        appService.getOwnedAppList(appService.getAppList(), applicationsShelf)
                     val computationTasks = createFetchComputationTasksPromise().value.await()
                     val datasetsEntities = datasetService.getDatasets()
 
@@ -144,8 +150,14 @@ class ComputationView : Fragment(), CoroutineScope {
             computationTasks.filter { applicationByAppVersionUid.containsKey(it.releaseUid) }
                 .map { it to applicationByAppVersionUid[it.releaseUid]!! }
                 .toMap()
-        return computationTasksAndApps.entries
+        val tasksByAppListItemEntity = computationTasksAndApps.entries
             .groupBy({ it.value }, { it.key })
+            .toMutableMap()
+        applications.forEach {
+            if (!tasksByAppListItemEntity.containsKey(it)) tasksByAppListItemEntity[it] =
+                emptyList()
+        }
+        return tasksByAppListItemEntity
     }
 
     private fun createComputationTaskGroups(tasksByApp: Map<AppListItemEntity, List<Task>>) =
