@@ -1,32 +1,51 @@
 package pl.oczadly.baltic.lsc.android.view.app.service
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import pl.oczadly.baltic.lsc.android.util.awaitPromise
+import pl.oczadly.baltic.lsc.android.util.createApiPromise
+import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
+import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.app.AppApi
-import pl.oczadly.baltic.lsc.lazyPromise
 
 
-class AppService(private val appApi: AppApi) {
+class AppService(
+    private val appApi: AppApi,
+    private val appListItemEntityConverter: AppListItemEntityConverter,
+    private val appShelfEntityConverter: AppShelfEntityConverter
+) {
 
-    fun createFetchAppListPromise() = lazyPromise {
-        withContext(Dispatchers.IO) {
-            try {
-                return@withContext appApi.fetchApplicationList().data
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@withContext listOf()
-            }
+    suspend fun getAppList(): List<AppListItemEntity> {
+        val applicationsList = awaitPromise(createApiPromise { appApi.fetchApplicationList().data })
+        return applicationsList.map(appListItemEntityConverter::convertFromAppListItemDTO)
+    }
+
+    suspend fun getAppShelf(): List<AppShelfEntity> {
+        val applicationsShelf =
+            awaitPromise(createApiPromise { appApi.fetchApplicationShelf().data })
+        return applicationsShelf.map(appShelfEntityConverter::convertFromAppShelfItemDTO)
+    }
+
+    fun getOwnedAppList(
+        appList: List<AppListItemEntity>,
+        applicationsShelf: List<AppShelfEntity>
+    ): List<AppListItemEntity> {
+        val ownedReleasesUids = applicationsShelf.map(AppShelfEntity::releaseUid).toSet()
+        return appList.map {
+            AppListItemEntity(
+                it.uid,
+                it.diagramUid,
+                getOwnedReleases(it.releases, ownedReleasesUids),
+                it.name,
+                it.shortDescription,
+                it.longDescription
+            )
         }
     }
 
-    fun createFetchAppShelfPromise() = lazyPromise {
-        withContext(Dispatchers.IO) {
-            try {
-                return@withContext appApi.fetchApplicationShelf().data
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return@withContext listOf()
-            }
-        }
-    }
+    private fun getOwnedReleases(
+        releases: List<AppReleaseEntity>,
+        ownedReleasesUids: Set<String>
+    ): List<AppReleaseEntity> = releases.filter { ownedReleasesUids.contains(it.releaseUid)}
 }

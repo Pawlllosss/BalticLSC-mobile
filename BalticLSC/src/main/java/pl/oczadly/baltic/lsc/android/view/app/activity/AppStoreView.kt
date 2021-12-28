@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.adapter.AppAdapter
+import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.app.AppApi
@@ -24,7 +25,7 @@ class AppStoreView() : Fragment(), CoroutineScope {
 
     private val job = Job()
 
-    private val appService = AppService(AppApi(MainActivity.state))
+    private val appService = AppService(AppApi(MainActivity.state), AppListItemEntityConverter(), AppShelfEntityConverter())
 
     private val appShelfEntityConverter = AppShelfEntityConverter()
 
@@ -41,18 +42,18 @@ class AppStoreView() : Fragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
-            val apps = appService.createFetchAppShelfPromise().value.await()
+            val apps = appService.getAppShelf()
             val recyclerView = view.findViewById<RecyclerView>(R.id.app_store_recycler_view)
             val appAdapter =
-                AppAdapter(convertToAppShelvesEntities(apps).toMutableList())
+                AppAdapter(apps.toMutableList())
             recyclerView.adapter = appAdapter
 
             val swipeRefreshLayout =
                 view.findViewById<SwipeRefreshLayout>(R.id.apps_swipe_refresh_layout)
             swipeRefreshLayout.setOnRefreshListener {
                 launch(job) {
-                    val apps = appService.createFetchAppShelfPromise().value.await()
-                    appAdapter.updateData(convertToAppShelvesEntities(apps).toMutableList())
+                    val apps = appService.getAppShelf()
+                    appAdapter.updateData(apps.toMutableList())
                     swipeRefreshLayout.isRefreshing = false
                 }
             }
@@ -63,7 +64,4 @@ class AppStoreView() : Fragment(), CoroutineScope {
         super.onDestroy()
         job.cancel()
     }
-
-    private fun convertToAppShelvesEntities(apps: List<AppShelfItem>) =
-        apps.map(appShelfEntityConverter::convertFromAppShelfItemDTO)
 }
