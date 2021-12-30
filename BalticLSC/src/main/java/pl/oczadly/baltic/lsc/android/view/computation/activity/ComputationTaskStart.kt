@@ -21,14 +21,14 @@ import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetEntity
 import pl.oczadly.baltic.lsc.android.view.dataset.entity.DatasetSpinnerEntity
 import pl.oczadly.baltic.lsc.app.dto.dataset.DatasetBinding
 import pl.oczadly.baltic.lsc.computation.ComputationApi
-import pl.oczadly.baltic.lsc.computation.ComputationService
+import pl.oczadly.baltic.lsc.computation.ComputationFacade
 import pl.oczadly.baltic.lsc.lazyPromise
 
 class ComputationTaskStart : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
-    private val computationService = ComputationService(ComputationApi(MainActivity.state))
+    private val computationService = ComputationFacade(ComputationApi(MainActivity.state))
 
     override val coroutineContext: CoroutineContext
         get() = job
