@@ -8,9 +8,9 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.RadioGroup
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -24,8 +24,13 @@ import pl.oczadly.baltic.lsc.android.view.computation.entity.ClusterEntity
 import pl.oczadly.baltic.lsc.android.view.computation.service.ComputationService
 import pl.oczadly.baltic.lsc.computation.ComputationApi
 import pl.oczadly.baltic.lsc.computation.dto.TaskCreate
+import kotlin.coroutines.CoroutineContext
 
 class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
+
+    companion object {
+        private val defaultCluster = ClusterEntity("", "Determined by LSC")
+    }
 
     private val job = Job()
 
@@ -69,7 +74,7 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
 
             findViewById<Button>(R.id.computation_task_add_create_button)
                 .setOnClickListener {
-                    sendCreateTaskRequest(versionSpinner)
+                    sendCreateTaskRequest()
                     finish()
                 }
 
@@ -97,8 +102,7 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
                 val clusterAdapter = clusterSpinner.adapter as? ArrayAdapter<ClusterEntity>
                 clusterAdapter?.let {
                     it.clear()
-                    val defaultCluster = ClusterEntity("", "Determined by LSC")
-                    it.add(defaultCluster)
+                    it.add(ComputationTaskAdd.defaultCluster)
                     it.addAll(clusters)
                 }
             }
@@ -109,9 +113,9 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    private fun sendCreateTaskRequest(versionSpinner: Spinner) {
+    private fun sendCreateTaskRequest() {
         val appReleaseEntity =
-            versionSpinner.selectedItem as AppReleaseEntity
+            findViewById<Spinner>(R.id.computation_task_version_spinner).selectedItem as AppReleaseEntity
         val taskCreateDTO = getTaskCreateDTO(appReleaseEntity)
         launch(job) {
             computationService.createTask(taskCreateDTO, appReleaseEntity.releaseUid)
@@ -121,12 +125,24 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
     private fun getTaskCreateDTO(appReleaseEntity: AppReleaseEntity): TaskCreate {
         val taskName =
             findViewById<EditText>(R.id.computation_task_name_edit_text).text.toString().trim()
-        val taskPriority =
-            findViewById<EditText>(R.id.computation_task_priority_edit_text).text.toString().toInt()
+        val taskPriority = getNumberFromEditText(R.id.computation_task_priority_edit_text)
         val reservedCredits =
-            findViewById<EditText>(R.id.computation_task_reserved_credits_edit_text).text.toString()
-                .toInt()
+            getNumberFromEditText(R.id.computation_task_reserved_credits_edit_text)
         val isPrivate = findViewById<CheckBox>(R.id.computation_task_is_private_checkbox).isChecked
+        val clusterSpinner = findViewById<Spinner>(R.id.computation_task_add_cluster_spinner)
+        val clusterAllocation = getClusterAllocation()
+        val clusterUid = (clusterSpinner.selectedItem as? ClusterEntity)?.uid ?: ComputationTaskAdd.defaultCluster.uid
+        val auxStorageCredits =
+            getNumberFromEditText(R.id.computation_task_add_aux_storage_credit_edit_text)
+        val minCpu = getNumberFromEditText(R.id.computation_task_add_cpu_min_edit_text)
+        val maxCpu = getNumberFromEditText(R.id.computation_task_add_cpu_max_edit_text)
+        val minGpu = getNumberFromEditText(R.id.computation_task_add_gpu_min_edit_text)
+        val maxGpu = getNumberFromEditText(R.id.computation_task_add_gpu_max_edit_text)
+        val minMemory = getNumberFromEditText(R.id.computation_task_add_memory_min_edit_text)
+        val maxMemory = getNumberFromEditText(R.id.computation_task_add_memory_max_text)
+        val minStorage = getNumberFromEditText(R.id.computation_task_add_storage_min_edit_text)
+        val maxStorage = getNumberFromEditText(R.id.computation_task_add_storage_max_edit_text)
+        val failurePolicy = getFailureHandlingPolicy()
 
         return TaskCreate(
             taskName,
@@ -135,18 +151,42 @@ class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
             reservedCredits,
             isPrivate,
             emptyList(),
-            "strong",
-            "",
-            100,
-            22,
-            33,
-            31,
-            45,
-            54,
-            77,
-            41,
-            56,
-            "Break"
+            clusterAllocation,
+            clusterUid,
+            auxStorageCredits,
+            minCpu,
+            maxCpu,
+            minGpu,
+            maxGpu,
+            minMemory,
+            maxMemory,
+            minStorage,
+            maxStorage,
+            failurePolicy
         )
+    }
+
+    private fun getNumberFromEditText(viewId: Int) =
+        findViewById<EditText>(viewId).text.toString().toInt()
+
+    private fun getClusterAllocation(): String {
+        val checkedRadioButtonId =
+            findViewById<RadioGroup>(R.id.computation_task_add_allocation_radio_group).checkedRadioButtonId
+        return when (checkedRadioButtonId) {
+            R.id.computation_task_add_strong_cluster_radio_button -> "Strong"
+            R.id.computation_task_add_weak_cluster_radio_button -> "Weak"
+            else -> "Strong"
+        }
+    }
+
+    private fun getFailureHandlingPolicy(): String {
+        val checkedRadioButtonId =
+            findViewById<RadioGroup>(R.id.computation_task_add_break_fh_radio_group).checkedRadioButtonId
+        return when (checkedRadioButtonId) {
+            R.id.computation_task_add_break_fh_radio_button -> "Break"
+            R.id.computation_task_add_continue_fh_radio_button -> "Continue"
+            R.id.computation_task_add_freeze_fh_radio_button -> "Freeze"
+            else -> "Break"
+        }
     }
 }
