@@ -2,7 +2,7 @@ package pl.oczadly.baltic.lsc.computation
 
 import pl.oczadly.baltic.lsc.model.NoDataResponse
 
-class ComputationService(private val computationApi: ComputationApi) {
+class ComputationFacade(private val computationApi: ComputationApi) {
 
     suspend fun startComputationTask(
         taskUid: String,

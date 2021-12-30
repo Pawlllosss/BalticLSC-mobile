@@ -12,7 +12,7 @@ data class TaskCreate(
     val isPrivate: Boolean,
     val invariants: List<String>,
     val clusterAllocation: String,
-    val clusterId: String,
+    val clusterUid: String,
     val auxStorageCredits: Int,
     val minCPUs: Int,
     val maxCPUs: Int,

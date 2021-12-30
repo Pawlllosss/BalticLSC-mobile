@@ -5,12 +5,14 @@ import io.ktor.client.features.HttpTimeout
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.request.delete
+import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import pl.oczadly.baltic.lsc.QueryParams
 import pl.oczadly.baltic.lsc.UserState
+import pl.oczadly.baltic.lsc.computation.dto.Cluster
 import pl.oczadly.baltic.lsc.computation.dto.Task
 import pl.oczadly.baltic.lsc.computation.dto.TaskCreate
 import pl.oczadly.baltic.lsc.model.NoDataResponse
@@ -45,6 +47,16 @@ class ComputationApi(private val userState: UserState) {
                 append("Content-Type", "application/json")
             }
             body = QueryParams("")
+        }
+    }
+
+    suspend fun fetchComputationTaskCluster(appReleaseUid: String): Response<Cluster> {
+        return client.get("https://balticlsc.iem.pw.edu.pl/backend/task/clusters") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+            parameter("appReleaseUid", appReleaseUid)
         }
     }
 

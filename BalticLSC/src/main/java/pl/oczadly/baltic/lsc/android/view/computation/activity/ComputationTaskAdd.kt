@@ -2,6 +2,7 @@ package pl.oczadly.baltic.lsc.android.view.computation.activity
 
 import android.os.Bundle
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
@@ -14,84 +15,106 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
+import pl.oczadly.baltic.lsc.android.view.computation.converter.ClusterEntityConverter
+import pl.oczadly.baltic.lsc.android.view.computation.entity.ClusterEntity
+import pl.oczadly.baltic.lsc.android.view.computation.service.ComputationService
 import pl.oczadly.baltic.lsc.computation.ComputationApi
 import pl.oczadly.baltic.lsc.computation.dto.TaskCreate
-import pl.oczadly.baltic.lsc.lazyPromise
 
 class ComputationTaskAdd : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
-    private val computationApi = ComputationApi(MainActivity.state)
+    private val computationService =
+        ComputationService(ComputationApi(MainActivity.state), ClusterEntityConverter())
 
     override val coroutineContext: CoroutineContext
         get() = job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val appIntent = intent.getSerializableExtra("appListItemEntity") as? AppListItemEntity
-        if (appIntent == null) {
+        val app = intent.getSerializableExtra("appListItemEntity") as? AppListItemEntity
+        if (app == null) {
             finish()
-        }
-        setContentView(R.layout.activity_computation_task_add)
-        setSupportActionBar(findViewById(R.id.toolbar))
+        } else {
+            setContentView(R.layout.activity_computation_task_add)
+            setSupportActionBar(findViewById(R.id.toolbar))
 
-        val app = appIntent!!
-        val versionSpinner = findViewById<Spinner>(R.id.computation_task_version_spinner)
-        val adapter: ArrayAdapter<AppReleaseEntity> =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, app.releases)
-        versionSpinner.adapter = adapter
+            val versionSpinner = findViewById<Spinner>(R.id.computation_task_version_spinner)
+            val versionAdapter: ArrayAdapter<AppReleaseEntity> =
+                ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, app.releases)
+            versionSpinner.adapter = versionAdapter
 
-        findViewById<Button>(R.id.computation_task_add_additional_details_button)
-            .setOnClickListener {
-                val layout =
-                    findViewById<LinearLayout>(R.id.computation_task_add_additional_details_layout)
-                if (layout.visibility == View.VISIBLE) {
-                    layout.visibility = View.GONE
-                } else {
-                    layout.visibility = View.VISIBLE
+            val clusterSpinner = findViewById<Spinner>(R.id.computation_task_add_cluster_spinner)
+            val clusterAdapter: ArrayAdapter<ClusterEntity> =
+                ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item)
+            clusterSpinner.adapter = clusterAdapter
+
+            versionSpinner.onItemSelectedListener = getVersionOnItemSelectedListener(clusterSpinner)
+
+            findViewById<Button>(R.id.computation_task_add_additional_details_button)
+                .setOnClickListener {
+                    val layout =
+                        findViewById<LinearLayout>(R.id.computation_task_add_additional_details_layout)
+                    if (layout.visibility == View.VISIBLE) {
+                        layout.visibility = View.GONE
+                    } else {
+                        layout.visibility = View.VISIBLE
+                    }
                 }
-            }
 
-        findViewById<Button>(R.id.computation_task_add_create_button)
-            .setOnClickListener {
-                sendCreateTaskRequestAndFinish(versionSpinner)
-                finish()
-            }
+            findViewById<Button>(R.id.computation_task_add_create_button)
+                .setOnClickListener {
+                    sendCreateTaskRequest(versionSpinner)
+                    finish()
+                }
 
-        findViewById<Button>(R.id.computation_task_add_cancel_button)
-            .setOnClickListener {
-                finish()
-            }
+            findViewById<Button>(R.id.computation_task_add_cancel_button)
+                .setOnClickListener {
+                    finish()
+                }
+        }
     }
 
-    private fun sendCreateTaskRequestAndFinish(versionSpinner: Spinner) {
-        launch(Dispatchers.Main) {
-            try {
-                lazyPromise {
-                    withContext(Dispatchers.IO) {
-                        try {
-                            val appReleaseEntity =
-                                versionSpinner.selectedItem as AppReleaseEntity
-                            val taskCreateDTO = getTaskCreateDTO(appReleaseEntity)
-                            return@withContext computationApi.initiateComputationTask(
-                                taskCreateDTO, appReleaseEntity.releaseUid
-                            ).data
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            return@withContext null
-                        }
-                    }
-                }.value.await()
-                finish()
-            } catch (e: Exception) {
-                e.printStackTrace()
+    private fun getVersionOnItemSelectedListener(
+        clusterSpinner: Spinner
+    ) = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(
+            parent: AdapterView<*>,
+            view: View,
+            position: Int,
+            id: Long
+        ) {
+            val appReleaseEntity = parent.selectedItem as AppReleaseEntity
+
+            launch(Dispatchers.Main) {
+                val clusters =
+                    computationService.getClustersAvailableForTask(appReleaseEntity.releaseUid)
+                val clusterAdapter = clusterSpinner.adapter as? ArrayAdapter<ClusterEntity>
+                clusterAdapter?.let {
+                    it.clear()
+                    val defaultCluster = ClusterEntity("", "Determined by LSC")
+                    it.add(defaultCluster)
+                    it.addAll(clusters)
+                }
             }
+        }
+
+        override fun onNothingSelected(parent: AdapterView<*>?) {
+            return
+        }
+    }
+
+    private fun sendCreateTaskRequest(versionSpinner: Spinner) {
+        val appReleaseEntity =
+            versionSpinner.selectedItem as AppReleaseEntity
+        val taskCreateDTO = getTaskCreateDTO(appReleaseEntity)
+        launch(job) {
+            computationService.createTask(taskCreateDTO, appReleaseEntity.releaseUid)
         }
     }
 
