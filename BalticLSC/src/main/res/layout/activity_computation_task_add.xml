@@ -96,6 +96,7 @@
                 android:textStyle="bold" />
 
             <RadioGroup
+                android:id="@+id/computation_task_add_allocation_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -133,6 +134,7 @@
                 android:textStyle="bold" />
 
             <RadioGroup
+                android:id="@+id/computation_task_add_break_fh_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -333,7 +335,7 @@
                         android:text="Max:" />
 
                     <EditText
-                        android:id="@+id/computation_task_add_gpu_max_memory_text"
+                        android:id="@+id/computation_task_add_memory_max_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginBottom="12dp"
