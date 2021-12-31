@@ -27,6 +27,18 @@ class AppService(
         return applicationsShelf.map(appShelfEntityConverter::convertFromAppShelfItemDTO)
     }
 
+    fun getReleasedAppList(appList: List<AppListItemEntity>): List<AppListItemEntity> {
+        return appList.filter { it.releases.isNotEmpty() }
+    }
+
+    fun sortOwnedAppsFirst(
+        appList: List<AppListItemEntity>,
+        applicationsShelf: List<AppShelfEntity>
+    ): List<AppListItemEntity> {
+        val ownedAppsUids = applicationsShelf.map(AppShelfEntity::unitUid).toSet()
+        return appList.sortedByDescending { ownedAppsUids.contains(it.uid) }
+    }
+
     fun getOwnedAppList(
         appList: List<AppListItemEntity>,
         applicationsShelf: List<AppShelfEntity>
@@ -38,6 +50,7 @@ class AppService(
                 it.diagramUid,
                 getOwnedReleases(it.releases, ownedReleasesUids),
                 it.name,
+                it.iconUrl,
                 it.shortDescription,
                 it.longDescription
             )
@@ -47,5 +60,5 @@ class AppService(
     private fun getOwnedReleases(
         releases: List<AppReleaseEntity>,
         ownedReleasesUids: Set<String>
-    ): List<AppReleaseEntity> = releases.filter { ownedReleasesUids.contains(it.releaseUid)}
+    ): List<AppReleaseEntity> = releases.filter { ownedReleasesUids.contains(it.releaseUid) }
 }

@@ -8,7 +8,7 @@ data class AppRelease(
     val uid: String,
     val diagramUid: String?,
     val version: String,
-    val status: Int,
+    val status: ReleaseStatus,
     val date: LocalDateTime,
     val openSource: Boolean
 )

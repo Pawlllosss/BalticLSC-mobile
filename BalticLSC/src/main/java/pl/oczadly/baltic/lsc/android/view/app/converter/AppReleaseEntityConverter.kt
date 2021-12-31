@@ -7,6 +7,8 @@ class AppReleaseEntityConverter {
 
     fun convertFromAppReleaseDTO(appRelease: AppRelease): AppReleaseEntity = AppReleaseEntity(
         appRelease.uid,
-        appRelease.version
+        appRelease.version,
+        appRelease.status,
+        appRelease.date
     )
 }
