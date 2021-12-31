@@ -12,6 +12,7 @@ class AppListItemEntityConverter {
         appListItem.diagramUid,
         appListItem.releases.map(appReleaseEntityConverter::convertFromAppReleaseDTO),
         appListItem.name,
+        appListItem.icon,
         appListItem.shortDescription,
         appListItem.longDescription
     )

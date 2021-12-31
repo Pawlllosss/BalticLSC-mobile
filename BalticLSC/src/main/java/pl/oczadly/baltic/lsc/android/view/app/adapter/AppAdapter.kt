@@ -1,5 +1,6 @@
 package pl.oczadly.baltic.lsc.android.view.app.adapter
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,12 +8,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import kotlinx.datetime.LocalDateTime
 import java.time.format.DateTimeFormatter
 import kotlinx.datetime.toJavaLocalDateTime
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 
-class AppAdapter(private val appShelves: MutableList<AppShelfEntity>) :
+class AppAdapter(
+    private val appShelf: MutableList<AppShelfEntity>,
+    private val appsList: MutableList<AppListItemEntity>
+) :
     RecyclerView.Adapter<AppAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -30,28 +36,42 @@ class AppAdapter(private val appShelves: MutableList<AppShelfEntity>) :
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val app = appShelves[position]
+        val app = appsList[position]
+        val ownedApps = appShelf.map(AppShelfEntity::unitUid).toSet()
+        val paintFlag = if (ownedApps.contains(app.uid)) Paint.UNDERLINE_TEXT_FLAG else 0
+        holder.appNameTextView.paintFlags = paintFlag
         holder.appNameTextView.text = app.name
         holder.updateDateTextView.text = createUpdatedOnText(app)
-        app.description?.let { holder.descriptionTextView.text = it }
+        if (app.shortDescription != null) {
+            holder.descriptionTextView.text = app.shortDescription
+        } else {
+            holder.descriptionTextView.text = null
+        }
         holder.imageView.apply {
             Glide.with(context)
-                .load(app.icon)
+                .load(app.iconUrl)
                 .into(holder.imageView)
         }
     }
 
-    private fun createUpdatedOnText(appShelf: AppShelfEntity): String {
+    override fun getItemCount() = appsList.size
+
+    fun updateData(appShelves: List<AppShelfEntity>, appsList: MutableList<AppListItemEntity>) {
+        this.appShelf.clear()
+        this.appShelf.addAll(appShelves)
+        this.appsList.clear()
+        this.appsList.addAll(appsList)
+        notifyDataSetChanged()
+    }
+
+    private fun createUpdatedOnText(app: AppListItemEntity): String {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-        val formattedDate: String = appShelf.updateDate.toJavaLocalDateTime().format(formatter)
+        val newestReleaseDate = getNewestReleaseDate(app)
+        val formattedDate: String =
+            newestReleaseDate?.toJavaLocalDateTime()?.format(formatter) ?: ""
         return "Updated on $formattedDate"
     }
 
-    override fun getItemCount() = appShelves.size
-
-    fun updateData(appShelves: List<AppShelfEntity>) {
-        this.appShelves.clear()
-        this.appShelves.addAll(appShelves)
-        notifyDataSetChanged()
-    }
+    private fun getNewestReleaseDate(app: AppListItemEntity): LocalDateTime? = app.releases
+        .maxByOrNull { it.date }?.date
 }

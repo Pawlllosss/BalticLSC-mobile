@@ -7,6 +7,7 @@ data class AppListItemEntity(
     val diagramUid: String?,
     val releases: List<AppReleaseEntity>,
     val name: String,
+    val iconUrl: String,
     val shortDescription: String?,
     val longDescription: String?
 ): Serializable

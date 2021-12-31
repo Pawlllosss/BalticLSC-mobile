@@ -8,6 +8,7 @@ data class AppListItem(
     val diagramUid: String?,
     val releases: List<AppRelease>,
     val name: String,
+    val icon: String,
     val shortDescription: String?,
     val longDescription: String?
 )
