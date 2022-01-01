@@ -1,5 +1,6 @@
 package pl.oczadly.baltic.lsc.android.view.app.converter
 
+import kotlinx.datetime.toJavaLocalDateTime
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
 
@@ -14,7 +15,7 @@ class AppShelfEntityConverter {
             appShelfItem.uid,
             appUnit.name,
             appUnit.icon,
-            appShelfItem.date,
+            appShelfItem.date.toJavaLocalDateTime(),
             appUnit.shortDescription,
             appShelfItem.pins.map(dataSetPinEntityConverter::convertFromDataSetPinDTO)
         )

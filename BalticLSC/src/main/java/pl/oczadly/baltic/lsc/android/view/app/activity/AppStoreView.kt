@@ -22,6 +22,11 @@ import pl.oczadly.baltic.lsc.app.AppApi
 
 class AppStoreView() : Fragment(), CoroutineScope {
 
+    companion object {
+        const val appListItemIntent = "appListItemEntity"
+        const val appShelfEntity = "appShelfEntity"
+    }
+
     private val job = Job()
 
     private val appService = AppService(
@@ -48,7 +53,11 @@ class AppStoreView() : Fragment(), CoroutineScope {
             val appsSortedByOwnership = appService.sortOwnedAppsFirst(releasedApps, ownedApps)
             val recyclerView = view.findViewById<RecyclerView>(R.id.app_store_recycler_view)
             val appAdapter =
-                AppAdapter(ownedApps.toMutableList(), appsSortedByOwnership.toMutableList())
+                AppAdapter(
+                    appsSortedByOwnership.toMutableList(),
+                    ownedApps.toMutableList(),
+                    context!!
+                )
             recyclerView.adapter = appAdapter
 
             val swipeRefreshLayout =

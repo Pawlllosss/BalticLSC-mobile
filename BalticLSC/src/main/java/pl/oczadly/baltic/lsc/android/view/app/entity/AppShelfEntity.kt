@@ -1,6 +1,7 @@
 package pl.oczadly.baltic.lsc.android.view.app.entity
 
-import kotlinx.datetime.LocalDateTime
+import java.io.Serializable
+import java.time.LocalDateTime
 
 data class AppShelfEntity(
     val unitUid: String,
@@ -10,4 +11,4 @@ data class AppShelfEntity(
     val updateDate: LocalDateTime,
     val description: String?,
     val pins: List<DatasetPinEntity>
-)
+): Serializable
