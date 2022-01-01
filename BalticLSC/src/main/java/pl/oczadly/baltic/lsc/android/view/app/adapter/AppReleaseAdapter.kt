@@ -10,13 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.util.formatDate
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
+import pl.oczadly.baltic.lsc.app.action.AppReleaseActionConverter
 
 class AppReleaseAdapter(
     private val appReleases: List<AppReleaseEntity>,
     private val ownedReleasesIds: Set<String>,
     private val context: Context
-) :
-    RecyclerView.Adapter<AppReleaseAdapter.ItemViewHolder>() {
+) : RecyclerView.Adapter<AppReleaseAdapter.ItemViewHolder>() {
+
+    private val releaseActionsConverter: AppReleaseActionConverter = AppReleaseActionConverter()
+    private val buttonCreator: ReleaseActionsButtonCreator = ReleaseActionsButtonCreator()
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val releaseVersionTextView: TextView = view.findViewById(R.id.app_release_version_text_view)
@@ -40,12 +43,21 @@ class AppReleaseAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val release = appReleases[position]
         val isOwned = ownedReleasesIds.contains(release.releaseUid)
+        // TODO: get info from endpoint about isInToolboxFlag
+        val actions = releaseActionsConverter.getActionsBasedOnOwnership(
+            isOwned,
+            false,
+            release.releaseStatus
+        )
+        val buttons = buttonCreator.createButtonsForActions(actions, release, context)
 
         holder.releaseVersionTextView.text = release.versionName
         holder.releaseDateTextView.text = formatDate(release.date)
         holder.releaseStatusTextView.text = release.releaseStatus.description
         holder.releaseDescriptionTextView.text = release.description
         holder.isOpenSourceTextView.text = if (release.isOpenSource) "Yes" else "No"
+        holder.buttonsLayout.removeAllViews()
+        buttons.forEach { holder.buttonsLayout.addView(it) }
     }
 
     override fun getItemCount() = appReleases.size

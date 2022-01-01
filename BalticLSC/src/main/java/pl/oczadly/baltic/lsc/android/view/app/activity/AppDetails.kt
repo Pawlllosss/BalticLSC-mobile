@@ -16,7 +16,6 @@ import pl.oczadly.baltic.lsc.android.view.app.adapter.AppReleaseAdapter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
-import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.android.view.app.util.createUpdatedOnText
 import pl.oczadly.baltic.lsc.app.AppApi
@@ -38,10 +37,9 @@ class AppDetails : AppCompatActivity(), CoroutineScope {
         super.onCreate(savedInstanceState)
         val appListItem =
             intent.getSerializableExtra(AppStoreView.appListItemIntent) as? AppListItemEntity
-        // TODO: pass owned ids
-        val appShelfEntity =
-            intent.getSerializableExtra(AppStoreView.appShelfEntity) as? AppShelfEntity
-        if (appListItem == null || appShelfEntity == null) {
+        val ownedReleasesUids =
+            intent.getSerializableExtra(AppStoreView.ownedReleasesUidsIntent) as? HashSet<String>
+        if (appListItem == null || ownedReleasesUids == null) {
             finish()
         } else {
             setContentView(R.layout.activity_app_details)
@@ -57,9 +55,8 @@ class AppDetails : AppCompatActivity(), CoroutineScope {
             findViewById<TextView>(R.id.app_details_update_date).text =
                 createUpdatedOnText(appListItem)
 
-            // TODO: pass owned ids
             findViewById<RecyclerView>(R.id.app_details_releases_recycler_view).adapter =
-                AppReleaseAdapter(appListItem.releases, emptySet(), applicationContext)
+                AppReleaseAdapter(appListItem.releases, ownedReleasesUids, applicationContext)
 
             findViewById<Button>(R.id.app_details_cancel_button)
                 .setOnClickListener {
