@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AppRelease(
+    val description: String?,
     val uid: String,
     val diagramUid: String?,
     val version: String,

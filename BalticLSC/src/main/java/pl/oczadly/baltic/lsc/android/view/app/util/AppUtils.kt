@@ -1,14 +1,13 @@
 package pl.oczadly.baltic.lsc.android.view.app.util
 
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import pl.oczadly.baltic.lsc.android.util.formatDate
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
 
 fun createUpdatedOnText(app: AppListItemEntity): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
     val newestReleaseDate = getNewestReleaseDate(app)
     val formattedDate: String =
-        newestReleaseDate?.format(formatter) ?: ""
+        newestReleaseDate?.let { formatDate(it) } ?: ""
     return "Updated on $formattedDate"
 }
 

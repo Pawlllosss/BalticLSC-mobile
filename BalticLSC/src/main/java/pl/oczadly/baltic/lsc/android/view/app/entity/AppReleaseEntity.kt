@@ -5,6 +5,8 @@ import java.io.Serializable
 import java.time.LocalDateTime
 
 data class AppReleaseEntity(
+    val description: String?,
+    val isOpenSource: Boolean,
     val releaseUid: String,
     val versionName: String,
     val releaseStatus: ReleaseStatus,
