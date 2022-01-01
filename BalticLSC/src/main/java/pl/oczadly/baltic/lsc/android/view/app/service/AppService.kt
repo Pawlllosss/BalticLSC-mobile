@@ -2,12 +2,14 @@ package pl.oczadly.baltic.lsc.android.view.app.service
 
 import pl.oczadly.baltic.lsc.android.util.awaitPromise
 import pl.oczadly.baltic.lsc.android.util.createApiPromise
+import pl.oczadly.baltic.lsc.android.util.createApiPromiseNoDataResponse
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.app.AppApi
+import pl.oczadly.baltic.lsc.app.dto.AppEdit
 
 
 class AppService(
@@ -52,7 +54,9 @@ class AppService(
                 it.name,
                 it.iconUrl,
                 it.shortDescription,
-                it.longDescription
+                it.longDescription,
+                it.pClass,
+                it.keywords
             )
         }
     }
@@ -61,4 +65,8 @@ class AppService(
         releases: List<AppReleaseEntity>,
         ownedReleasesUids: Set<String>
     ): List<AppReleaseEntity> = releases.filter { ownedReleasesUids.contains(it.releaseUid) }
+
+    suspend fun editApp(appEditDTO: AppEdit) {
+        awaitPromise(createApiPromiseNoDataResponse { appApi.editApp(appEditDTO) })
+    }
 }

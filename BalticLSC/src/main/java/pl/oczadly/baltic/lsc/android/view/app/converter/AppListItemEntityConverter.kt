@@ -14,6 +14,8 @@ class AppListItemEntityConverter {
         appListItem.name,
         appListItem.icon,
         appListItem.shortDescription,
-        appListItem.longDescription
+        appListItem.longDescription,
+        appListItem.pClass,
+        appListItem.keywords
     )
 }

@@ -9,5 +9,7 @@ data class AppListItemEntity(
     val name: String,
     val iconUrl: String,
     val shortDescription: String?,
-    val longDescription: String?
+    val longDescription: String?,
+    val pClass: String?,
+    val keywords: List<String>?
 ): Serializable
