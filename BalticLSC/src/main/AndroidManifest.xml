@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".view.app.activity.AppDetails"
+            android:exported="true" />
+        <activity
             android:name=".view.computation.activity.ComputationTaskAbort"
             android:exported="true" />
         <activity
