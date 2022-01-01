@@ -7,6 +7,8 @@ import pl.oczadly.baltic.lsc.app.dto.list.AppRelease
 class AppReleaseEntityConverter {
 
     fun convertFromAppReleaseDTO(appRelease: AppRelease): AppReleaseEntity = AppReleaseEntity(
+        appRelease.description,
+        appRelease.openSource,
         appRelease.uid,
         appRelease.version,
         appRelease.status,
