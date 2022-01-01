@@ -59,11 +59,11 @@ class AppAdapter(
                 .load(app.iconUrl)
                 .into(holder.imageView)
         }
+        val ownedReleases = appShelf.map { AppShelfEntity::releaseUid }.toSet()
         holder.appDetailsButton.setOnClickListener {
             val intent = Intent(context, AppDetails::class.java)
             intent.putExtra(AppStoreView.appListItemIntent, app)
-            // TODO: it need to be a list of owned releases
-            intent.putExtra(AppStoreView.appShelfEntity, appShelf[0])
+            intent.putExtra(AppStoreView.ownedReleasesUidsIntent, HashSet(ownedReleases))
             context.startActivity(intent)
         }
     }

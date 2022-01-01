@@ -24,7 +24,7 @@ class AppStoreView() : Fragment(), CoroutineScope {
 
     companion object {
         const val appListItemIntent = "appListItemEntity"
-        const val appShelfEntity = "appShelfEntity"
+        const val ownedReleasesUidsIntent = "ownedReleases"
     }
 
     private val job = Job()
