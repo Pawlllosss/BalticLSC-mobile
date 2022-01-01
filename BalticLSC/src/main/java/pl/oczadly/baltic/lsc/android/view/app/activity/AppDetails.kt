@@ -1,5 +1,6 @@
 package pl.oczadly.baltic.lsc.android.view.app.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -24,6 +25,7 @@ class AppDetails : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
+    // TODO: remove if won't be used
     private val appService = AppService(
         AppApi(MainActivity.state),
         AppListItemEntityConverter(),
@@ -35,6 +37,8 @@ class AppDetails : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_app_details)
+        setSupportActionBar(findViewById(R.id.toolbar))
         val appListItem =
             intent.getSerializableExtra(AppStoreView.appListItemIntent) as? AppListItemEntity
         val ownedReleasesUids =
@@ -42,9 +46,6 @@ class AppDetails : AppCompatActivity(), CoroutineScope {
         if (appListItem == null || ownedReleasesUids == null) {
             finish()
         } else {
-            setContentView(R.layout.activity_app_details)
-            setSupportActionBar(findViewById(R.id.toolbar))
-
             findViewById<ImageView>(R.id.app_details_image).let {
                 Glide.with(it.context)
                     .load(appListItem.iconUrl)
@@ -61,6 +62,13 @@ class AppDetails : AppCompatActivity(), CoroutineScope {
             findViewById<Button>(R.id.app_details_cancel_button)
                 .setOnClickListener {
                     finish()
+                }
+
+            findViewById<Button>(R.id.app_details_edit_button)
+                .setOnClickListener {
+                    val intent = Intent(this, AppEditView::class.java)
+                    intent.putExtra(AppStoreView.appListItemIntent, appListItem)
+                    startActivity(intent)
                 }
         }
     }

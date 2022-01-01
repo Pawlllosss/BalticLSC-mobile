@@ -10,5 +10,7 @@ data class AppListItem(
     val name: String,
     val icon: String,
     val shortDescription: String?,
-    val longDescription: String?
+    val longDescription: String?,
+    val pClass: String?,
+    val keywords: List<String>?
 )

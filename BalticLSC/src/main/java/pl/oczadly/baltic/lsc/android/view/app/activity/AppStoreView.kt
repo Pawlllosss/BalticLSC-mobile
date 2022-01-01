@@ -43,7 +43,7 @@ class AppStoreView() : Fragment(), CoroutineScope {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.app_store_view, container, false)
+        return inflater.inflate(R.layout.activity_app_store_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,7 +56,7 @@ class AppStoreView() : Fragment(), CoroutineScope {
                 AppAdapter(
                     appsSortedByOwnership.toMutableList(),
                     ownedApps.toMutableList(),
-                    context!!
+                    activity!!
                 )
             recyclerView.adapter = appAdapter
 
