@@ -11,10 +11,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".view.app.activity.AppDeleteView"
+            android:exported="true" />
+        <activity
             android:name=".view.app.activity.AppDetails"
             android:exported="true" />
         <activity
             android:name=".view.app.activity.AppEditView"
+            android:exported="true" />
+        <activity
+            android:name=".view.app.activity.AppReleaseCreateView"
             android:exported="true" />
         <activity
             android:name=".view.computation.activity.ComputationTaskAbort"

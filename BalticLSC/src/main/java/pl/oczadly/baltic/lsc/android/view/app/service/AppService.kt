@@ -66,7 +66,20 @@ class AppService(
         ownedReleasesUids: Set<String>
     ): List<AppReleaseEntity> = releases.filter { ownedReleasesUids.contains(it.releaseUid) }
 
+    suspend fun createRelease(releaseName: String, appUid: String) {
+        awaitPromise(createApiPromiseNoDataResponse {
+            appApi.createAppRelease(
+                releaseName,
+                appUid
+            )
+        })
+    }
+
     suspend fun editApp(appEditDTO: AppEdit) {
         awaitPromise(createApiPromiseNoDataResponse { appApi.editApp(appEditDTO) })
+    }
+
+    suspend fun deleteApp(appUid: String) {
+        awaitPromise(createApiPromiseNoDataResponse { appApi.deleteApp(appUid) })
     }
 }

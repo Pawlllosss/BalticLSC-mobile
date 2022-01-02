@@ -70,6 +70,22 @@ class AppDetails : AppCompatActivity(), CoroutineScope {
                     intent.putExtra(AppStoreView.appListItemIntent, appListItem)
                     startActivity(intent)
                 }
+
+            // TODO: need to make sure that there's no releases attached
+            findViewById<Button>(R.id.app_details_delete_button)
+                .setOnClickListener {
+                    val intent = Intent(this, AppDeleteView::class.java)
+                    intent.putExtra(AppStoreView.appListItemIntent, appListItem)
+                    startActivity(intent)
+                    finish()
+                }
+
+            findViewById<Button>(R.id.app_details_release_create_button)
+                .setOnClickListener {
+                    val intent = Intent(this, AppReleaseCreateView::class.java)
+                    intent.putExtra(AppStoreView.appListItemIntent, appListItem)
+                    startActivity(intent)
+                }
         }
     }
 }
