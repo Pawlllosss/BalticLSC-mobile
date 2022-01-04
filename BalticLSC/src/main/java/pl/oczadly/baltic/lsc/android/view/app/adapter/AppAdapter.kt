@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import pl.oczadly.baltic.lsc.android.R
-import pl.oczadly.baltic.lsc.android.view.app.activity.AppDetails
+import pl.oczadly.baltic.lsc.android.view.app.activity.AppDetailsView
 import pl.oczadly.baltic.lsc.android.view.app.activity.AppStoreView
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
@@ -61,7 +61,7 @@ class AppAdapter(
         }
         val ownedReleases = appShelf.map(AppShelfEntity::releaseUid).toSet()
         holder.appDetailsButton.setOnClickListener {
-            val intent = Intent(context, AppDetails::class.java)
+            val intent = Intent(context, AppDetailsView::class.java)
             intent.putExtra(AppStoreView.appListItemIntent, app)
             intent.putExtra(AppStoreView.ownedReleasesUidsIntent, HashSet(ownedReleases))
             context.startActivity(intent)

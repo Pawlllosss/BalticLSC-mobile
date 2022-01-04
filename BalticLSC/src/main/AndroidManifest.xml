@@ -14,7 +14,7 @@
             android:name=".view.app.activity.AppDeleteView"
             android:exported="true" />
         <activity
-            android:name=".view.app.activity.AppDetails"
+            android:name=".view.app.activity.AppDetailsView"
             android:exported="true" />
         <activity
             android:name=".view.app.activity.AppEditView"

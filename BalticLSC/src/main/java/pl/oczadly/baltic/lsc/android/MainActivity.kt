@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         tabLayout.setupWithViewPager(pager)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.action_bar_settings, menu)
         return true

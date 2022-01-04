@@ -7,6 +7,8 @@ dependencies {
     implementation(project(":shared"))
     implementation("com.google.android.material:material:1.4.0")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.activity:activity-ktx:1.4.0")
+    implementation("androidx.fragment:fragment:1.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1")
     implementation("com.github.bumptech.glide:glide:4.11.0")
     implementation("androidx.datastore:datastore-preferences:1.0.0")
