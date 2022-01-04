@@ -122,6 +122,16 @@ class AppApi(private val userState: UserState) {
         }
     }
 
+    suspend fun createApp(appName: String): NoDataResponse {
+        return client.put("https://balticlsc.iem.pw.edu.pl/backend/dev/app") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+            parameter("name", appName)
+        }
+    }
+
     suspend fun editApp(appEditDTO: AppEdit): NoDataResponse {
         return client.post("https://balticlsc.iem.pw.edu.pl/backend/dev/unit") {
             headers {
@@ -132,7 +142,6 @@ class AppApi(private val userState: UserState) {
             body = appEditDTO
         }
     }
-
 
     suspend fun deleteApp(appUid: String): NoDataResponse {
         return client.delete("https://balticlsc.iem.pw.edu.pl/backend/dev/unit") {

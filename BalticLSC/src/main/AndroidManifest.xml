@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".view.app.activity.AppCreateView"
+            android:exported="true" />
+        <activity
             android:name=".view.app.activity.AppDeleteView"
             android:exported="true" />
         <activity

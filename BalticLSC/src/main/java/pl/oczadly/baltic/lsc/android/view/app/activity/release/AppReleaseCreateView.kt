@@ -47,9 +47,9 @@ class AppReleaseCreateView : AppCompatActivity(), CoroutineScope {
                             .trim()
                     launch(job) {
                         appService.createRelease(releaseName, appListItem.uid)
+                        setResult(Activity.RESULT_OK)
+                        finish()
                     }
-                    setResult(Activity.RESULT_OK)
-                    finish()
                 }
 
             findViewById<Button>(R.id.app_release_create_cancel_button)
