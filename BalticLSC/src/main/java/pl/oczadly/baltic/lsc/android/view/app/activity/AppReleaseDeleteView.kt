@@ -12,11 +12,11 @@ import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
-import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
 import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.app.AppApi
 
-class AppDeleteView : AppCompatActivity(), CoroutineScope {
+class AppReleaseDeleteView : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
@@ -31,22 +31,23 @@ class AppDeleteView : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val appListItem =
-            intent.getSerializableExtra(AppStoreView.appListItemIntent) as? AppListItemEntity
+        val appRelease =
+            intent.getSerializableExtra(AppStoreView.appReleaseIntent) as? AppReleaseEntity
         setContentView(R.layout.activity_delete_resource)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        if (appListItem == null) {
+        if (appRelease == null) {
             finish()
         } else {
 
             findViewById<TextView>(R.id.resource_delete_message_text_view).text =
-                "Are you sure you want to delete the app?"
-            findViewById<TextView>(R.id.resource_delete_name_text_view).text = appListItem.name
+                "Are you sure you want to delete the app release?"
+            findViewById<TextView>(R.id.resource_delete_name_text_view).text =
+                appRelease.versionName
             findViewById<Button>(R.id.resource_delete_delete_button)
                 .setOnClickListener {
                     launch(job) {
-                        appService.deleteApp(appListItem.uid)
+                        appService.deleteRelease(appRelease.releaseUid)
                     }
                     finish()
                 }

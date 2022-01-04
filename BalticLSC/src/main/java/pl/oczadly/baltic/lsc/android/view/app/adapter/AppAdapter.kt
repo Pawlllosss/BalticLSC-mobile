@@ -59,7 +59,7 @@ class AppAdapter(
                 .load(app.iconUrl)
                 .into(holder.imageView)
         }
-        val ownedReleases = appShelf.map { AppShelfEntity::releaseUid }.toSet()
+        val ownedReleases = appShelf.map(AppShelfEntity::releaseUid).toSet()
         holder.appDetailsButton.setOnClickListener {
             val intent = Intent(context, AppDetails::class.java)
             intent.putExtra(AppStoreView.appListItemIntent, app)
