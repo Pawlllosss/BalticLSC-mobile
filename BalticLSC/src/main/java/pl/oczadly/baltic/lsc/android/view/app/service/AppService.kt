@@ -99,6 +99,10 @@ class AppService(
         awaitPromise(createApiPromiseNoDataResponse { appApi.deleteReleaseFromCockpit(releaseUid) })
     }
 
+    suspend fun createApp(appName: String) {
+        awaitPromise(createApiPromiseNoDataResponse { appApi.createApp(appName) })
+    }
+
     suspend fun editApp(appEditDTO: AppEdit) {
         awaitPromise(createApiPromiseNoDataResponse { appApi.editApp(appEditDTO) })
     }

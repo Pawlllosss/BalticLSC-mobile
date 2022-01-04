@@ -1,5 +1,6 @@
 package pl.oczadly.baltic.lsc.android.view.app.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,8 +52,8 @@ class AppStoreView() : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
             val ownedApps = appService.getAppShelf()
-            val releasedApps = appService.getReleasedAppList(appService.getAppList())
-            val appsSortedByOwnership = appService.sortOwnedAppsFirst(releasedApps, ownedApps)
+            val appList = appService.getAppList()
+            val appsSortedByOwnership = appService.sortOwnedAppsFirst(appList, ownedApps)
             val recyclerView = view.findViewById<RecyclerView>(R.id.app_store_recycler_view)
             val appAdapter =
                 AppAdapter(
@@ -61,14 +63,20 @@ class AppStoreView() : Fragment(), CoroutineScope {
                 )
             recyclerView.adapter = appAdapter
 
+            view.findViewById<FloatingActionButton>(R.id.app_store_add_app_button)
+                .setOnClickListener {
+                    val intent = Intent(context, AppCreateView::class.java)
+                    startActivity(intent)
+                }
+
             val swipeRefreshLayout =
                 view.findViewById<SwipeRefreshLayout>(R.id.apps_swipe_refresh_layout)
             swipeRefreshLayout.setOnRefreshListener {
                 launch(job) {
                     val ownedApps = appService.getAppShelf()
-                    val releasedApps = appService.getReleasedAppList(appService.getAppList())
+                    val appList = appService.getAppList()
                     val appsSortedByOwnership =
-                        appService.sortOwnedAppsFirst(releasedApps, ownedApps)
+                        appService.sortOwnedAppsFirst(appList, ownedApps)
                     appAdapter.updateData(
                         ownedApps.toMutableList(),
                         appsSortedByOwnership.toMutableList()

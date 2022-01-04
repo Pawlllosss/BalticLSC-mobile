@@ -51,9 +51,9 @@ class AppEditView : AppCompatActivity(), CoroutineScope {
                     val appUpdateDTO = getAppUpdateDTO(appListItem)
                     launch(job) {
                         appService.editApp(appUpdateDTO)
+                        setResult(Activity.RESULT_OK)
+                        finish()
                     }
-                    setResult(Activity.RESULT_OK)
-                    finish()
                 }
 
             findViewById<Button>(R.id.app_edit_cancel_button)
