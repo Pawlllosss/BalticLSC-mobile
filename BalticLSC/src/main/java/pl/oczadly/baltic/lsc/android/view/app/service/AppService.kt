@@ -3,6 +3,7 @@ package pl.oczadly.baltic.lsc.android.view.app.service
 import pl.oczadly.baltic.lsc.android.util.awaitPromise
 import pl.oczadly.baltic.lsc.android.util.createApiPromise
 import pl.oczadly.baltic.lsc.android.util.createApiPromiseNoDataResponse
+import pl.oczadly.baltic.lsc.android.util.createApiPromiseSingleResponse
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
@@ -22,6 +23,12 @@ class AppService(
     suspend fun getAppList(): List<AppListItemEntity> {
         val applicationsList = awaitPromise(createApiPromise { appApi.fetchApplicationList().data })
         return applicationsList.map(appListItemEntityConverter::convertFromAppListItemDTO)
+    }
+
+    suspend fun getAppListItemByUid(appUid: String): AppListItemEntity {
+        val appListItem = awaitPromise(
+            createApiPromiseSingleResponse { appApi.fetchApplicationListItemByUid(appUid) })
+        return appListItemEntityConverter.convertFromAppListItemDTO(appListItem!!)
     }
 
     suspend fun getAppShelf(): List<AppShelfEntity> {

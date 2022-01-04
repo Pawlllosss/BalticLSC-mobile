@@ -18,6 +18,7 @@ import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
 import pl.oczadly.baltic.lsc.app.dto.list.AppListItem
 import pl.oczadly.baltic.lsc.model.NoDataResponse
 import pl.oczadly.baltic.lsc.model.Response
+import pl.oczadly.baltic.lsc.model.SingleResponse
 
 
 class AppApi(private val userState: UserState) {
@@ -56,6 +57,16 @@ class AppApi(private val userState: UserState) {
                 append("Content-Type", "application/json")
             }
             body = QueryParams("")
+        }
+    }
+
+    suspend fun fetchApplicationListItemByUid(appUid: String): SingleResponse<AppListItem> {
+        return client.get("https://balticlsc.iem.pw.edu.pl/backend/app") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+            parameter("appUid", appUid)
         }
     }
 

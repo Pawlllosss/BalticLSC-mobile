@@ -1,5 +1,6 @@
 package pl.oczadly.baltic.lsc.android.view.app.activity
 
+import android.app.Activity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -51,6 +52,7 @@ class AppEditView : AppCompatActivity(), CoroutineScope {
                     launch(job) {
                         appService.editApp(appUpdateDTO)
                     }
+                    setResult(Activity.RESULT_OK)
                     finish()
                 }
 

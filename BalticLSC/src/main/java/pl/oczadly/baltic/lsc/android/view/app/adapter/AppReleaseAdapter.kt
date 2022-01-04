@@ -17,13 +17,15 @@ import pl.oczadly.baltic.lsc.android.util.formatDate
 import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseDeleteView
 import pl.oczadly.baltic.lsc.android.view.app.activity.AppStoreView
 import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseEditView
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
+import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.app.action.AppReleaseAction
 import pl.oczadly.baltic.lsc.app.action.AppReleaseActionConverter
 
 class AppReleaseAdapter(
-    private val appReleases: List<AppReleaseEntity>,
+    private val appReleases: MutableList<AppReleaseEntity>,
     private val ownedReleasesIds: Set<String>,
     private val appService: AppService,
     private val context: Context
@@ -119,4 +121,10 @@ class AppReleaseAdapter(
     }
 
     override fun getItemCount() = appReleases.size
+
+    fun updateData(appReleases: List<AppReleaseEntity>) {
+        this.appReleases.clear()
+        this.appReleases.addAll(appReleases)
+        notifyDataSetChanged()
+    }
 }

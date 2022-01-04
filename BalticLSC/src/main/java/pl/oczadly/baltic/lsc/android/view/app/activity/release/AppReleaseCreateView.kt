@@ -1,5 +1,6 @@
 package pl.oczadly.baltic.lsc.android.view.app.activity.release
 
+import android.app.Activity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -47,6 +48,7 @@ class AppReleaseCreateView : AppCompatActivity(), CoroutineScope {
                     launch(job) {
                         appService.createRelease(releaseName, appListItem.uid)
                     }
+                    setResult(Activity.RESULT_OK)
                     finish()
                 }
 
