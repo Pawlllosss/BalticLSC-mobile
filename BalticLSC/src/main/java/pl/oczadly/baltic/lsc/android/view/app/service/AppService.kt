@@ -10,6 +10,7 @@ import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.app.AppApi
 import pl.oczadly.baltic.lsc.app.dto.AppEdit
+import pl.oczadly.baltic.lsc.app.dto.AppReleaseEdit
 
 
 class AppService(
@@ -77,6 +78,10 @@ class AppService(
 
     suspend fun deleteRelease(releaseUid: String) {
         awaitPromise(createApiPromiseNoDataResponse { appApi.deleteAppRelease(releaseUid) })
+    }
+
+    suspend fun editAppRelease(appReleaseEditDTO: AppReleaseEdit) {
+        awaitPromise(createApiPromiseNoDataResponse { appApi.editAppRelease(appReleaseEditDTO) })
     }
 
     suspend fun addReleaseToCockpit(releaseUid: String) {

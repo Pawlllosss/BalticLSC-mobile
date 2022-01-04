@@ -2,6 +2,7 @@ package pl.oczadly.baltic.lsc.app.dto.list
 
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
+import pl.oczadly.baltic.lsc.app.dto.dataset.DatasetPin
 
 @Serializable
 data class AppRelease(
@@ -11,5 +12,7 @@ data class AppRelease(
     val version: String,
     val status: ReleaseStatus,
     val date: LocalDateTime,
-    val openSource: Boolean
+    val openSource: Boolean,
+    val pins: List<DatasetPin>,
+    val supportedResourcesRange: ResourceRange
 )

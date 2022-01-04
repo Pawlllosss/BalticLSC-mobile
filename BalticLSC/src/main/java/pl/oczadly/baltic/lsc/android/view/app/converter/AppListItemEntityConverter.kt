@@ -5,7 +5,8 @@ import pl.oczadly.baltic.lsc.app.dto.list.AppListItem
 
 class AppListItemEntityConverter {
 
-    private val appReleaseEntityConverter = AppReleaseEntityConverter()
+    private val appReleaseEntityConverter =
+        AppReleaseEntityConverter(DataSetPinEntityConverter(), AppResourceRangeEntityConverter())
 
     fun convertFromAppListItemDTO(appListItem: AppListItem): AppListItemEntity = AppListItemEntity(
         appListItem.uid,

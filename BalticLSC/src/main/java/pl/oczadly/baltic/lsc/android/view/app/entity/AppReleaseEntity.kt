@@ -10,7 +10,9 @@ data class AppReleaseEntity(
     val releaseUid: String,
     val versionName: String,
     val releaseStatus: ReleaseStatus,
-    val date: LocalDateTime
+    val date: LocalDateTime,
+    val datasetPins: List<DatasetPinEntity>,
+    val resourceRange: AppResourceRangeEntity
 ) : Serializable {
     override fun toString(): String {
         return versionName
