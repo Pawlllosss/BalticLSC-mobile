@@ -23,6 +23,9 @@
             android:name=".view.app.activity.AppReleaseCreateView"
             android:exported="true" />
         <activity
+            android:name=".view.app.activity.AppReleaseDeleteView"
+            android:exported="true" />
+        <activity
             android:name=".view.computation.activity.ComputationTaskAbort"
             android:exported="true" />
         <activity

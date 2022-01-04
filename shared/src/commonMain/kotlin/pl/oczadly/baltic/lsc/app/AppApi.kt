@@ -69,6 +69,36 @@ class AppApi(private val userState: UserState) {
         }
     }
 
+    suspend fun deleteAppRelease(releaseUid: String): NoDataResponse {
+        return client.delete("https://balticlsc.iem.pw.edu.pl/backend/dev/release") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+            parameter("releaseUid", releaseUid)
+        }
+    }
+
+    suspend fun addReleaseToCockpit(releaseUid: String): NoDataResponse {
+        return client.post("https://balticlsc.iem.pw.edu.pl/backend/app/shelf") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+            parameter("releaseUid", releaseUid)
+        }
+    }
+
+    suspend fun deleteReleaseFromCockpit(releaseUid: String): NoDataResponse {
+        return client.delete("https://balticlsc.iem.pw.edu.pl/backend/app/shelf") {
+            headers {
+                append("Accept", "application/json")
+                append("Authorization", "Bearer ${userState.accessToken}")
+            }
+            parameter("releaseUid", releaseUid)
+        }
+    }
+
     suspend fun editApp(appEditDTO: AppEdit): NoDataResponse {
         return client.post("https://balticlsc.iem.pw.edu.pl/backend/dev/unit") {
             headers {
@@ -79,6 +109,7 @@ class AppApi(private val userState: UserState) {
             body = appEditDTO
         }
     }
+
 
     suspend fun deleteApp(appUid: String): NoDataResponse {
         return client.delete("https://balticlsc.iem.pw.edu.pl/backend/dev/unit") {

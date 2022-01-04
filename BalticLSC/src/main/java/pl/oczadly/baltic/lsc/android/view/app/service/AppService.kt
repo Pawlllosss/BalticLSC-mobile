@@ -75,6 +75,18 @@ class AppService(
         })
     }
 
+    suspend fun deleteRelease(releaseUid: String) {
+        awaitPromise(createApiPromiseNoDataResponse { appApi.deleteAppRelease(releaseUid) })
+    }
+
+    suspend fun addReleaseToCockpit(releaseUid: String) {
+        awaitPromise(createApiPromiseNoDataResponse { appApi.addReleaseToCockpit(releaseUid) })
+    }
+
+    suspend fun deleteReleaseFromCockpit(releaseUid: String) {
+        awaitPromise(createApiPromiseNoDataResponse { appApi.deleteReleaseFromCockpit(releaseUid) })
+    }
+
     suspend fun editApp(appEditDTO: AppEdit) {
         awaitPromise(createApiPromiseNoDataResponse { appApi.editApp(appEditDTO) })
     }

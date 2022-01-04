@@ -25,7 +25,6 @@ class AppDetails : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
-    // TODO: remove if won't be used
     private val appService = AppService(
         AppApi(MainActivity.state),
         AppListItemEntityConverter(),
@@ -57,7 +56,7 @@ class AppDetails : AppCompatActivity(), CoroutineScope {
                 createUpdatedOnText(appListItem)
 
             findViewById<RecyclerView>(R.id.app_details_releases_recycler_view).adapter =
-                AppReleaseAdapter(appListItem.releases, ownedReleasesUids, applicationContext)
+                AppReleaseAdapter(appListItem.releases, ownedReleasesUids, appService, this)
 
             findViewById<Button>(R.id.app_details_cancel_button)
                 .setOnClickListener {
