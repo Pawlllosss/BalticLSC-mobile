@@ -14,9 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.util.formatDate
-import pl.oczadly.baltic.lsc.android.view.app.activity.AppDeleteView
-import pl.oczadly.baltic.lsc.android.view.app.activity.AppReleaseDeleteView
+import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseDeleteView
 import pl.oczadly.baltic.lsc.android.view.app.activity.AppStoreView
+import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseEditView
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
 import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.app.action.AppReleaseAction
@@ -97,7 +97,14 @@ class AppReleaseAdapter(
 
         holder.modificationButtonsLayout.removeAllViews()
         if (actions.contains(AppReleaseAction.EDIT)) {
-//            holder.modificationButtonsLayout.addView()
+            val button = Button(context)
+            button.text = "Edit"
+            button.setOnClickListener {
+                val intent = Intent(context, AppReleaseEditView::class.java)
+                intent.putExtra(AppStoreView.appReleaseIntent, release)
+                context.startActivity(intent)
+            }
+            holder.modificationButtonsLayout.addView(button)
         }
         if (actions.contains(AppReleaseAction.DELETE)) {
             val button = Button(context)

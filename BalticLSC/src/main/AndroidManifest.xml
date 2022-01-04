@@ -20,10 +20,13 @@
             android:name=".view.app.activity.AppEditView"
             android:exported="true" />
         <activity
-            android:name=".view.app.activity.AppReleaseCreateView"
+            android:name=".view.app.activity.release.AppReleaseCreateView"
             android:exported="true" />
         <activity
-            android:name=".view.app.activity.AppReleaseDeleteView"
+            android:name=".view.app.activity.release.AppReleaseDeleteView"
+            android:exported="true" />
+        <activity
+            android:name=".view.app.activity.release.AppReleaseEditView"
             android:exported="true" />
         <activity
             android:name=".view.computation.activity.ComputationTaskAbort"
