@@ -66,8 +66,13 @@ class AppReleaseAdapter(
         holder.releaseVersionTextView.text = release.versionName
         holder.releaseDateTextView.text = formatDate(release.date)
         holder.releaseStatusTextView.text = release.releaseStatus.description
-        holder.releaseDescriptionTextView.text = release.description
         holder.isOpenSourceTextView.text = if (release.isOpenSource) "Yes" else "No"
+        if (release.description != null) {
+            holder.releaseDescriptionTextView.visibility = View.VISIBLE
+            holder.releaseDescriptionTextView.text = release.description
+        } else {
+            holder.releaseDescriptionTextView.visibility = View.GONE
+        }
         if (holder.isOwned) holder.cockpitButton.text =
             "Remove from cockpit" else holder.cockpitButton.text = "Add to cockpit"
         holder.cockpitButton.setOnClickListener {

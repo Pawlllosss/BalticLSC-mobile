@@ -51,9 +51,13 @@ class AppStoreView() : Fragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
+            val swipeRefreshLayout =
+                view.findViewById<SwipeRefreshLayout>(R.id.apps_swipe_refresh_layout)
+            swipeRefreshLayout.isRefreshing = true
             val ownedApps = appService.getAppShelf()
             val appList = appService.getAppList()
             val appsSortedByOwnership = appService.sortOwnedAppsFirst(appList, ownedApps)
+            swipeRefreshLayout.isRefreshing = false
             val recyclerView = view.findViewById<RecyclerView>(R.id.app_store_recycler_view)
             val appAdapter =
                 AppAdapter(
@@ -69,8 +73,6 @@ class AppStoreView() : Fragment(), CoroutineScope {
                     startActivity(intent)
                 }
 
-            val swipeRefreshLayout =
-                view.findViewById<SwipeRefreshLayout>(R.id.apps_swipe_refresh_layout)
             swipeRefreshLayout.setOnRefreshListener {
                 launch(job) {
                     val ownedApps = appService.getAppShelf()
