@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -14,12 +13,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.util.formatDate
-import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseDeleteView
 import pl.oczadly.baltic.lsc.android.view.app.activity.AppStoreView
+import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseDeleteView
 import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseEditView
-import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
-import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.app.action.AppReleaseAction
 import pl.oczadly.baltic.lsc.app.action.AppReleaseActionConverter
@@ -43,10 +40,9 @@ class AppReleaseAdapter(
         val isOpenSourceTextView: TextView =
             view.findViewById(R.id.app_release_open_source_text_view)
         val cockpitButton: Button = view.findViewById(R.id.app_release_cockpit_button)
-
         //        val toolboxButton: Button = view.findViewById(R.id.app_release_toolbox_button)
-        val modificationButtonsLayout: LinearLayout =
-            view.findViewById(R.id.app_release_modification_buttons_linear_layout)
+        val editButton: Button = view.findViewById(R.id.app_release_edit_button)
+        val deleteButton: Button = view.findViewById(R.id.app_release_delete_button)
         var isOwned: Boolean = false
         var isInToolbox: Boolean = false
     }
@@ -97,26 +93,25 @@ class AppReleaseAdapter(
 //        }
 
 
-        holder.modificationButtonsLayout.removeAllViews()
         if (actions.contains(AppReleaseAction.EDIT)) {
-            val button = Button(context)
-            button.text = "Edit"
-            button.setOnClickListener {
+            holder.editButton.setOnClickListener {
                 val intent = Intent(context, AppReleaseEditView::class.java)
                 intent.putExtra(AppStoreView.appReleaseIntent, release)
                 context.startActivity(intent)
             }
-            holder.modificationButtonsLayout.addView(button)
+            holder.editButton.visibility = View.VISIBLE
+        } else {
+            holder.editButton.visibility = View.GONE
         }
         if (actions.contains(AppReleaseAction.DELETE)) {
-            val button = Button(context)
-            button.text = "Delete"
-            button.setOnClickListener {
+            holder.deleteButton.setOnClickListener {
                 val intent = Intent(context, AppReleaseDeleteView::class.java)
                 intent.putExtra(AppStoreView.appReleaseIntent, release)
                 context.startActivity(intent)
             }
-            holder.modificationButtonsLayout.addView(button)
+            holder.deleteButton.visibility = View.VISIBLE
+        } else {
+            holder.deleteButton.visibility = View.GONE
         }
     }
 
