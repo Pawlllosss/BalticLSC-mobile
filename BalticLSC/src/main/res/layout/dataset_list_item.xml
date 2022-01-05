@@ -1,162 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="5sp">
+    android:layout_margin="8dp"
+    app:strokeColor="@color/cardview_dark_background"
+    app:strokeWidth="1dp">
 
-    <TextView
-        android:id="@+id/dataset_name_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:orientation="horizontal">
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="1dp">
 
         <TextView
+            android:id="@+id/dataset_name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Multiplicity:"
+            android:layout_gravity="center"
+            android:padding="4dp"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/dataset_multiplicity_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:text="Data type:"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/dataset_data_type_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Access type:"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/dataset_access_type_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp" />
-
-        <TextView
-            android:id="@+id/dataset_data_structure_label_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="6dp"
-            android:text="Data structure:"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/dataset_data_structure_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Access values:"
+                android:text="Multiplicity:"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/dataset_access_values_text_view"
+                android:id="@+id/dataset_multiplicity_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="6dp"
-                android:text="Path values:"
+                android:text="Data type:"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/dataset_path_values_text_view"
+                android:id="@+id/dataset_data_type_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Access type:"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dataset_access_type_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp" />
 
+            <TextView
+                android:id="@+id/dataset_data_structure_label_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="6dp"
+                android:text="Data structure:"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/dataset_data_structure_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Access values:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dataset_access_values_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Path values:"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dataset_path_values_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dataset_edit_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="0.5"
+                android:text="Edit"
+                android:textAllCaps="false" />
+
+
+            <Button
+                android:id="@+id/dataset_copy_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="0.5"
+                android:text="Copy"
+                android:textAllCaps="false" />
+
+            <Button
+                android:id="@+id/dataset_archive_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="0.5"
+                android:text="Archive"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="6dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/dataset_edit_button"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="Edit"
-            android:textAllCaps="false" />
-
-
-        <Button
-            android:id="@+id/dataset_copy_button"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:text="Copy"
-            android:textAllCaps="false" />
-
-        <Button
-            android:id="@+id/dataset_archive_button"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:text="Archive"
-            android:textAllCaps="false" />
-
-    </LinearLayout>
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
