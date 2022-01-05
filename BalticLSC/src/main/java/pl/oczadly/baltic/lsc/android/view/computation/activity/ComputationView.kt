@@ -71,11 +71,15 @@ class ComputationView : Fragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
+            val swipeRefreshLayout =
+                view.findViewById<SwipeRefreshLayout>(R.id.computation_swipe_refresh_layout)
+            swipeRefreshLayout.isRefreshing = true
             val applicationsShelf = appService.getAppShelf()
             val applicationsList =
                 appService.getOwnedAppList(appService.getAppList(), applicationsShelf)
             val computationTasks = createFetchComputationTasksPromise().value.await()
             val datasetEntities = datasetService.getDatasets()
+            swipeRefreshLayout.isRefreshing = false
 
             val appShelfEntityByReleaseUid: MutableMap<String, AppShelfEntity> =
                 createReleaseUidByAppShelfEntity(applicationsShelf)
@@ -94,8 +98,6 @@ class ComputationView : Fragment(), CoroutineScope {
             recyclerView.adapter =
                 computationTaskGroupAdapter
 
-            val swipeRefreshLayout =
-                view.findViewById<SwipeRefreshLayout>(R.id.computation_swipe_refresh_layout)
             swipeRefreshLayout.setOnRefreshListener {
                 launch(job) {
                     val applicationsShelf = appService.getAppShelf()

@@ -26,22 +26,24 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5sp">
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/app_create_cancel_button"
-                android:layout_width="150dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="0.5"
                 android:text="Cancel"
                 android:textAllCaps="false" />
 
 
             <Button
                 android:id="@+id/app_create_create_button"
-                android:layout_width="150dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
+                android:layout_marginHorizontal="5dp"
+                android:layout_weight="0.5"
                 android:text="Ok"
                 android:textAllCaps="false" />
         </LinearLayout>
