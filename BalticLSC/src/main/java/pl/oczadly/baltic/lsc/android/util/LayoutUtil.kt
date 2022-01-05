@@ -26,3 +26,5 @@ fun addTextViewToViewGroup(value: String, layout: ViewGroup, context: Context): 
 
     return textView
 }
+
+fun convertDpToPixels(dp: Int, density: Float): Int = (dp * density + 0.5f).toInt()
