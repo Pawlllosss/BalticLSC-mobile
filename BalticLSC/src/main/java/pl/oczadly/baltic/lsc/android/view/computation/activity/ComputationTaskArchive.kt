@@ -26,29 +26,29 @@ class ComputationTaskArchive : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val taskNameIntent = intent.getStringExtra("computationTaskName")
-        val taskUidIntent = intent.getStringExtra("computationTaskUid")
-
-        if (taskNameIntent == null || taskUidIntent == null) {
-            finish()
-        }
-        setContentView(R.layout.activity_computation_task_archive)
+        val taskName = intent.getStringExtra("computationTaskName")
+        val taskUid = intent.getStringExtra("computationTaskUid")
+        setContentView(R.layout.activity_delete_resource)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        val taskName = taskNameIntent!!
-        val taskUid = taskUidIntent!!
+        if (taskName == null || taskUid == null) {
+            finish()
+        } else {
+            findViewById<TextView>(R.id.resource_delete_message_text_view).text =
+                "Are you sure you want to archive the task?"
+            findViewById<TextView>(R.id.resource_delete_name_text_view).text =
+                taskName
+            findViewById<Button>(R.id.resource_delete_delete_button)
+                .setOnClickListener {
+                    sendArchiveTaskRequestAndFinish(taskUid)
+                    finish()
+                }
 
-        findViewById<TextView>(R.id.computation_task_archive_task_name_text_view).text = taskName
-        findViewById<Button>(R.id.computation_task_archive_archive_button)
-            .setOnClickListener {
-                sendArchiveTaskRequestAndFinish(taskUid)
-                finish()
-            }
-
-        findViewById<Button>(R.id.computation_task_archive_cancel_button)
-            .setOnClickListener {
-                finish()
-            }
+            findViewById<Button>(R.id.resource_delete_cancel_button)
+                .setOnClickListener {
+                    finish()
+                }
+        }
     }
 
     private fun sendArchiveTaskRequestAndFinish(taskUid: String) {

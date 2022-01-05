@@ -39,7 +39,6 @@ class AppDeleteView : AppCompatActivity(), CoroutineScope {
         if (appListItem == null) {
             finish()
         } else {
-
             findViewById<TextView>(R.id.resource_delete_message_text_view).text =
                 "Are you sure you want to delete the app?"
             findViewById<TextView>(R.id.resource_delete_name_text_view).text = appListItem.name

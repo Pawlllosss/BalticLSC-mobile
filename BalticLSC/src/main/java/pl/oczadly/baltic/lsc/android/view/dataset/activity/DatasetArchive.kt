@@ -36,16 +36,18 @@ class DatasetArchive : AppCompatActivity(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val datasetEntity = intent.getSerializableExtra(DatasetView.datasetEntityIntent) as? DatasetEntity
+        val datasetEntity =
+            intent.getSerializableExtra(DatasetView.datasetEntityIntent) as? DatasetEntity
+        setContentView(R.layout.activity_delete_resource)
+        setSupportActionBar(findViewById(R.id.toolbar))
 
         if (datasetEntity == null) {
             finish()
         } else {
-            setContentView(R.layout.activity_dataset_archive)
-            setSupportActionBar(findViewById(R.id.toolbar))
-
-            findViewById<TextView>(R.id.dataset_archive_dataset_name_text_view).text = datasetEntity.name
-            findViewById<Button>(R.id.dataset_archive_archive_button)
+            findViewById<TextView>(R.id.resource_delete_message_text_view).text =
+                "Are you sure you want to archive the dataset?"
+            findViewById<TextView>(R.id.resource_delete_name_text_view).text = datasetEntity.name
+            findViewById<Button>(R.id.resource_delete_delete_button)
                 .setOnClickListener {
                     launch(job) {
                         datasetService.archiveDataset(datasetEntity.uid)
@@ -53,7 +55,7 @@ class DatasetArchive : AppCompatActivity(), CoroutineScope {
                     }
                 }
 
-            findViewById<Button>(R.id.dataset_archive_cancel_button)
+            findViewById<Button>(R.id.resource_delete_cancel_button)
                 .setOnClickListener {
                     finish()
                 }
