@@ -58,17 +58,19 @@ class DatasetView : Fragment(), CoroutineScope {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launch(Dispatchers.Main) {
+            val swipeRefreshLayout =
+                view.findViewById<SwipeRefreshLayout>(R.id.dataset_swipe_refresh_layout)
+            swipeRefreshLayout.isRefreshing = true
             val datasetEntities = datasetService.getDatasets().toMutableList()
             val dataTypes = datasetService.getDataTypes()
             val dataStructures = datasetService.getDataStructures()
             val accessTypes = datasetService.getAccessTypes()
+            swipeRefreshLayout.isRefreshing = false
 
             val datasetAdapter = DatasetAdapter(datasetEntities, dataTypes, dataStructures, accessTypes)
             val recyclerView = view.findViewById<RecyclerView>(R.id.dataset_recycler_view)
             recyclerView.adapter = datasetAdapter
 
-            val swipeRefreshLayout =
-                view.findViewById<SwipeRefreshLayout>(R.id.dataset_swipe_refresh_layout)
             swipeRefreshLayout.setOnRefreshListener {
                 launch(job) {
                     val datasetEntities = datasetService.getDatasets().toMutableList()

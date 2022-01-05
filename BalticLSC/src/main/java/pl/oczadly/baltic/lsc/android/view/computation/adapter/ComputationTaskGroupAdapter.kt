@@ -4,10 +4,10 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
 import pl.oczadly.baltic.lsc.android.view.computation.activity.ComputationTaskAdd
@@ -27,7 +27,7 @@ class ComputationTaskGroupAdapter(
         datasetEntitiesByDataTypeUid: Map<String, List<DatasetEntity>>
     ) : RecyclerView.ViewHolder(view) {
         val appNameTextView: TextView = view.findViewById(R.id.computation_task_group_app_name)
-        val computationTaskAddButton: FloatingActionButton =
+        val computationTaskAddButton: Button =
             view.findViewById(R.id.computation_task_add_button)
         val computationTaskRecyclerView: RecyclerView =
             view.findViewById(R.id.computation_task_recycler_view)
@@ -59,7 +59,7 @@ class ComputationTaskGroupAdapter(
         val taskGroup = taskGroups[position]
         holder.appNameTextView.text = taskGroup.application.name
 
-        holder.computationTaskAddButton.findViewById<FloatingActionButton>(R.id.computation_task_add_button)
+        holder.computationTaskAddButton.findViewById<Button>(R.id.computation_task_add_button)
             .setOnClickListener {
                 val intent = Intent(holder.context, ComputationTaskAdd::class.java)
                 intent.putExtra("appListItemEntity", taskGroup.application)
