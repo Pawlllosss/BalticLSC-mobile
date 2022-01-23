@@ -2,6 +2,7 @@ package pl.oczadly.baltic.lsc.android.view.dataset.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,7 +68,8 @@ class DatasetView : Fragment(), CoroutineScope {
             val accessTypes = datasetService.getAccessTypes()
             swipeRefreshLayout.isRefreshing = false
 
-            val datasetAdapter = DatasetAdapter(datasetEntities, dataTypes, dataStructures, accessTypes)
+            val datasetAdapter =
+                DatasetAdapter(datasetEntities, dataTypes, dataStructures, accessTypes)
             val recyclerView = view.findViewById<RecyclerView>(R.id.dataset_recycler_view)
             recyclerView.adapter = datasetAdapter
 
@@ -89,6 +91,7 @@ class DatasetView : Fragment(), CoroutineScope {
                     intent.putExtra(dataStructureListIntent, ArrayList(dataStructures))
                     context?.startActivity(intent)
                 }
+            Log.i("DatasetView", "View has been created: ${System.nanoTime()}")
         }
     }
 

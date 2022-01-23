@@ -1,6 +1,7 @@
 package pl.oczadly.baltic.lsc.android.view.computation.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +19,10 @@ import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppListItemEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
-import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppListItemEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppShelfEntity
+import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.android.view.computation.adapter.ComputationTaskGroupAdapter
 import pl.oczadly.baltic.lsc.android.view.computation.converter.ComputationTaskEntityConverter
 import pl.oczadly.baltic.lsc.android.view.computation.entity.ComputationTaskGroup
@@ -121,8 +122,8 @@ class ComputationView : Fragment(), CoroutineScope {
                     )
                     swipeRefreshLayout.isRefreshing = false
                 }
-
             }
+            Log.i("ComputationView", "View has been created: ${System.nanoTime()}")
         }
     }
 

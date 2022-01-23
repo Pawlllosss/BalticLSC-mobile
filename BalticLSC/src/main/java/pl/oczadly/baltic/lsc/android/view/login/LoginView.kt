@@ -2,6 +2,7 @@ package pl.oczadly.baltic.lsc.android.view.login
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -38,6 +39,7 @@ class LoginView : AppCompatActivity(), CoroutineScope {
 
         val button: Button = findViewById(R.id.button_sign_in)
         button.setOnClickListener {
+            Log.i(this.localClassName, "Clicked login button: ${System.nanoTime()}")
             loginUser(userState)
         }
 
