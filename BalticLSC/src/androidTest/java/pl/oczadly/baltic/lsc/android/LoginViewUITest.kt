@@ -16,20 +16,28 @@ import pl.oczadly.baltic.lsc.android.view.login.LoginView
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class SampleTest {
+class LoginViewUITest {
+
+    companion object {
+        const val DEFAULT_LOGIN = "demo"
+        const val DEFAULT_PASSWORD = "BalticDemo"
+        const val STRING_TO_BE_TYPED = "Modified"
+    }
 
     @get:Rule
     var activityScenarioRule = activityScenarioRule<LoginView>()
 
     @Test
-    fun changeText_sameActivity() {
+    fun loginAndPasswordEditFieldsShouldBeVisibleAndEditableWhenEnteringText() {
+        onView(withId(R.id.edit_text_email)).check(matches(withText(DEFAULT_LOGIN)))
+        onView(withId(R.id.edit_text_password)).check(matches(withText(DEFAULT_PASSWORD)))
+
         onView(withId(R.id.edit_text_email))
             .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard())
+        onView(withId(R.id.edit_text_password))
+            .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard())
 
-        onView(withId(R.id.edit_text_email)).check(matches(withText(STRING_TO_BE_TYPED)))
-    }
-
-    companion object {
-        val STRING_TO_BE_TYPED = "Espresso"
+        onView(withId(R.id.edit_text_email)).check(matches(withText("$DEFAULT_LOGIN$STRING_TO_BE_TYPED")))
+        onView(withId(R.id.edit_text_password)).check(matches(withText("$DEFAULT_PASSWORD$STRING_TO_BE_TYPED")))
     }
 }
