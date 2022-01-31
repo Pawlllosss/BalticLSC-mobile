@@ -26,6 +26,7 @@ class LoginView : AppCompatActivity(), CoroutineScope {
 
     private val loginApi = LoginApi()
     private val tokenVerifier = JWTVerifier()
+    private val releaseChecker = ReleaseChecker() // TODO: temporary way to check app validity
 
     override val coroutineContext: CoroutineContext
         get() = job
@@ -33,6 +34,7 @@ class LoginView : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val userState = AndroidUserState(applicationContext)
+        releaseChecker.validateRelease()
 
         setContentView(R.layout.login_view)
 
