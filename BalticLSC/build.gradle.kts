@@ -45,17 +45,7 @@ dependencies {
     // classpath.
     androidTestImplementation( "androidx.test.espresso:espresso-idling-resource:$espressoVersion")
 
-
-    androidTestImplementation("com.github.tomakehurst:wiremock:2.26.3")
-    {
-        exclude("org.apache.httpcomponents:httpclient")
-        exclude("org.apache.httpcomponents:httpcore")
-        exclude("asm:asm")
-        exclude("org.json:json")
-        exclude("com.google.guava:guava")
-    }
-    androidTestImplementation("org.apache.httpcomponents:httpclient-android:4.3.5")
-
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")
 }
 
 android {

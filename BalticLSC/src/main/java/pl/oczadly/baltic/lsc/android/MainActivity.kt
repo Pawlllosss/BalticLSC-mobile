@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         get() = job
 
     companion object {
-
+        var apiBasePath = "balticlsc.iem.pw.edu.pl"
+        var apiPort = 443
         lateinit var state: UserState
 
         fun setUserState(userState: UserState) {

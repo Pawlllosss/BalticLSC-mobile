@@ -34,7 +34,7 @@ class AppStoreView : Fragment(), CoroutineScope {
     private val job = Job()
 
     private val appService = AppService(
-        AppApi(MainActivity.state),
+        AppApi(MainActivity.apiBasePath, MainActivity.apiPort, MainActivity.state),
         AppListItemEntityConverter(),
         AppShelfEntityConverter()
     )
@@ -56,7 +56,9 @@ class AppStoreView : Fragment(), CoroutineScope {
                 view.findViewById<SwipeRefreshLayout>(R.id.apps_swipe_refresh_layout)
             swipeRefreshLayout.isRefreshing = true
             val ownedApps = appService.getAppShelf()
+            Log.i("AppStoreView", "Retrieved ownedApps $ownedApps")
             val appList = appService.getAppList()
+            Log.i("AppStoreView", "Retrieved appList $appList")
             val appsSortedByOwnership = appService.sortOwnedAppsFirst(appList, ownedApps)
             swipeRefreshLayout.isRefreshing = false
             val recyclerView = view.findViewById<RecyclerView>(R.id.app_store_recycler_view)

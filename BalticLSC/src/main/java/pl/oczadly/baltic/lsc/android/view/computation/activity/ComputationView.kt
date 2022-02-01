@@ -44,7 +44,7 @@ class ComputationView : Fragment(), CoroutineScope {
 
     private val computationApi = ComputationApi(MainActivity.state)
     private val appService = AppService(
-        AppApi(MainActivity.state),
+        AppApi(MainActivity.apiBasePath, MainActivity.apiPort, MainActivity.state),
         AppListItemEntityConverter(),
         AppShelfEntityConverter()
     )

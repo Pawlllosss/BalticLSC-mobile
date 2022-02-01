@@ -23,7 +23,7 @@ class AppReleaseCreateView : AppCompatActivity(), CoroutineScope {
     private val job = Job()
 
     private val appService = AppService(
-        AppApi(MainActivity.state),
+        AppApi(MainActivity.apiBasePath, MainActivity.apiPort, MainActivity.state),
         AppListItemEntityConverter(),
         AppShelfEntityConverter()
     )
