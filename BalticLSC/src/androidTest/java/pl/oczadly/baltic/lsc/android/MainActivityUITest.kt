@@ -18,6 +18,7 @@ import org.junit.runner.RunWith
 import pl.oczadly.baltic.lsc.ApiConfig
 import pl.oczadly.baltic.lsc.UserState
 import pl.oczadly.baltic.lsc.android.utils.atPosition
+import java.io.BufferedReader
 
 
 @RunWith(AndroidJUnit4::class)
@@ -30,20 +31,24 @@ class MainActivityUITest {
 
     val dispatcher: Dispatcher = object : Dispatcher() {
         override fun dispatch(request: RecordedRequest): MockResponse {
-//            this.javaClass.classLoader.getResourceAsStream("test2.keystore.bks") way to retrieve file from resources
             when (request.path) {
                 "/backend/app/shelf/" -> {
                     return MockResponse().setResponseCode(200)
                         .addHeader("Content-Type", "application/json; charset=utf-8")
-                        .setBody(
-                            "{\"success\":true,\"message\":\"ok\",\"data\":[{\"diagramUid\":\"9f0fddf8-ac41-4db5-a5bc-5ff8c00f1bb8\",\"unit\":{\"name\":\"Edging Image Processor\",\"uid\":\"1f7a053a-ae08-48cf-ae13-ce3c5c9fa4dd\",\"pClass\":null,\"shortDescription\":\"Edges color images.\",\"longDescription\":\"Processes images by splitting into RGB and edging.\",\"keywords\":null,\"icon\":\"https://www.balticlsc.eu/model/_icons/yap_001.png\",\"isApp\":true,\"isService\":false},\"version\":\"0.1\",\"uid\":\"MarekImageProcessor2_rel_001\",\"status\":2,\"date\":\"2021-09-23T10:00:19.019816\",\"description\":\"First version of the processor\",\"openSource\":false,\"usageCounter\":0,\"pins\":[{\"uid\":\"fcd7411b-efae-49d7-9671-cc27ffe89e6f\",\"name\":\"InputImages\",\"binding\":0,\"tokenMultiplicity\":0,\"dataMultiplicity\":1,\"dataTypeUid\":\"dd-003-000\",\"dataTypeName\":\"ImageFile\",\"dataStructureUid\":null,\"dataStructureName\":null,\"accessTypeUid\":\"dd-006-000\",\"accessTypeName\":\"FTP\"},{\"uid\":\"2bbb7077-a955-438e-b4cc-e2d16139f05d\",\"name\":\"OutputImages\",\"binding\":2,\"tokenMultiplicity\":0,\"dataMultiplicity\":1,\"dataTypeUid\":\"dd-003-000\",\"dataTypeName\":\"ImageFile\",\"dataStructureUid\":null,\"dataStructureName\":null,\"accessTypeUid\":\"dd-006-000\",\"accessTypeName\":\"FTP\"}],\"supportedResourcesRange\":{\"minCPUs\":0,\"minGPUs\":0,\"minMemory\":0,\"minStorage\":0,\"maxCPUs\":0,\"maxGPUs\":0,\"maxMemory\":0,\"maxStorage\":0}}]}"
-                        )
+                        .setBody(getResponseFromResource("AppShelfResponse.json"))
                 }
                 "/backend/app/list/" -> return MockResponse().setResponseCode(200)
                     .addHeader("Content-Type", "application/json; charset=utf-8")
-                    .setBody("{\"success\":true,\"message\":\"ok\",\"data\":[{\"diagramUid\":\"0e200c07-08b1-42de-aa85-1165311b7f91\",\"releases\":[],\"name\":\"Added new app\",\"uid\":\"1f7a053a-ae08-48cf-ae13-ce3c5c9fa4dd\",\"pClass\":null,\"shortDescription\":null,\"longDescription\":null,\"keywords\":null,\"icon\":\"https://www.balticlsc.eu/model/_icons/default.png\",\"isApp\":true,\"isService\":false}]}")
+                    .setBody(getResponseFromResource("AppListResponse.json"))
             }
             return MockResponse().setResponseCode(404)
+        }
+
+        private fun getResponseFromResource(fileName: String): String {
+            val appShelfResponse =
+                this.javaClass.classLoader.getResourceAsStream(fileName)
+            val response = appShelfResponse.bufferedReader().use(BufferedReader::readText)
+            return response
         }
     }
 
@@ -63,9 +68,6 @@ class MainActivityUITest {
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("BalticLSC"))))
 
         onView(withId(R.id.app_store_recycler_view))
-            .check(matches(atPosition(0, hasDescendant(withText("Added new app (Owned)")))));
-
-
-        val request1 = server.takeRequest()
+            .check(matches(atPosition(0, hasDescendant(withText("Added new app (Owned)")))))
     }
 }
