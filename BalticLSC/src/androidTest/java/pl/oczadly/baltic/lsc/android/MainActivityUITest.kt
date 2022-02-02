@@ -1,9 +1,9 @@
 package pl.oczadly.baltic.lsc.android
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.swipeUp
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -69,13 +69,15 @@ class MainActivityUITest {
     @Test
     fun shouldDisplayToolbarAndAppListAfterLoading() {
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("BalticLSC"))))
-        onView(withId(R.id.tab_layout)).check(matches(
-            allOf(
-                matchTabTitleAtPosition("APPS", 0),
-                matchTabTitleAtPosition("COMPUTE", 1),
-                matchTabTitleAtPosition("DATA", 2)
+        onView(withId(R.id.tab_layout)).check(
+            matches(
+                allOf(
+                    matchTabTitleAtPosition("APPS", 0),
+                    matchTabTitleAtPosition("COMPUTE", 1),
+                    matchTabTitleAtPosition("DATA", 2)
+                )
             )
-        ))
+        )
         sleep(500)
 
         onView(withId(R.id.app_store_recycler_view))
@@ -83,7 +85,11 @@ class MainActivityUITest {
                 matches(
                     matchRecyclerViewItemAtPosition(
                         0,
-                        getAppListItemMatchers("Test 1 app (Owned)", "2021-09-23 10:00:19", "Edges color images.")
+                        getAppListItemMatchers(
+                            "Test 1 app (Owned)",
+                            "2021-09-23 10:00:19",
+                            "Edges color images."
+                        )
                     )
                 )
             )
@@ -93,7 +99,26 @@ class MainActivityUITest {
                 matches(
                     matchRecyclerViewItemAtPosition(
                         1,
-                        getAppListItemMatchers("Covid-2 Analyzer", "2021-09-23 10:00:19", "Analysis of Covid-2")
+                        getAppListItemMatchers(
+                            "Covid-2 Analyzer",
+                            "2021-09-23 10:00:19",
+                            "Analysis of Covid-2"
+                        )
+                    )
+                )
+            )
+
+        onView(withId(R.id.app_store_recycler_view)).perform(swipeUp())
+        onView(withId(R.id.app_store_recycler_view))
+            .check(
+                matches(
+                    matchRecyclerViewItemAtPosition(
+                        2,
+                        getAppListItemMatchers(
+                            "Distance Matrix Calculator (Can be added)",
+                            "2022-01-02 20:26:12",
+                            "Finds all distances between given addresses using user-provided map"
+                        )
                     )
                 )
             )

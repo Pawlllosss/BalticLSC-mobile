@@ -138,6 +138,203 @@
       "icon": "https://www.balticlsc.eu/model/_icons/cva_001.png",
       "isApp": true,
       "isService": false
+    },
+    {
+      "diagramUid": "64a1a648-d45e-4c3a-8308-47d2f40bbaa4",
+      "releases": [
+        {
+          "diagramUid": "bd37887e-3c8d-49d4-9988-fd06a1f8eaa8",
+          "version": "v0.1",
+          "uid": "12f8248a-fc17-48f6-8305-f5f85cfdfaf6",
+          "status": 0,
+          "date": "2021-10-22T10:47:45.686311",
+          "description": null,
+          "openSource": false,
+          "usageCounter": 0,
+          "pins": [
+            {
+              "uid": "c28002b5-af5f-4665-83b7-319151219171",
+              "name": "Geo Objects",
+              "binding": 0,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-001",
+              "dataTypeName": "JSON",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": "dd-006-000",
+              "accessTypeName": "FTP"
+            },
+            {
+              "uid": "57dc55d7-dc7e-4a24-9a9f-ea9b99ac35e7",
+              "name": "Map",
+              "binding": 0,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-000",
+              "dataTypeName": "DataFile",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": "dd-006-000",
+              "accessTypeName": "FTP"
+            },
+            {
+              "uid": "6c38bfcb-a498-4a7e-b745-000655ed2680",
+              "name": "Matrix",
+              "binding": 2,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-001",
+              "dataTypeName": "JSON",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": "dd-006-000",
+              "accessTypeName": "FTP"
+            }
+          ],
+          "supportedResourcesRange": {
+            "minCPUs": 0,
+            "minGPUs": 0,
+            "minMemory": 0,
+            "minStorage": 0,
+            "maxCPUs": 0,
+            "maxGPUs": 0,
+            "maxMemory": 0,
+            "maxStorage": 0
+          }
+        },
+        {
+          "diagramUid": "7511ea8c-4184-48fd-9f2c-0a181e3f1df3",
+          "version": "New release",
+          "uid": "c013be93-69a5-4769-b7f8-bd296785e1ce",
+          "status": 0,
+          "date": "2022-01-02T20:25:32.107428",
+          "description": null,
+          "openSource": false,
+          "usageCounter": 0,
+          "pins": [
+            {
+              "uid": "982a9fa2-1d88-41a1-9518-924ffddf06a0",
+              "name": "Geo Objects",
+              "binding": 0,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-001",
+              "dataTypeName": "JSON",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": "dd-006-000",
+              "accessTypeName": "FTP"
+            },
+            {
+              "uid": "75bad469-d9be-49cb-9cc8-329b59c2e1a6",
+              "name": "Map",
+              "binding": 0,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-000",
+              "dataTypeName": "DataFile",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": "dd-006-000",
+              "accessTypeName": "FTP"
+            },
+            {
+              "uid": "b96988db-8f45-4d30-bc15-2e08eac965bd",
+              "name": "Matrix",
+              "binding": 2,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-001",
+              "dataTypeName": "JSON",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": "dd-006-000",
+              "accessTypeName": "FTP"
+            }
+          ],
+          "supportedResourcesRange": {
+            "minCPUs": 0,
+            "minGPUs": 0,
+            "minMemory": 0,
+            "minStorage": 0,
+            "maxCPUs": 0,
+            "maxGPUs": 0,
+            "maxMemory": 0,
+            "maxStorage": 0
+          }
+        },
+        {
+          "diagramUid": "9f642fe8-f994-482c-8f3e-36ef1ba6cac3",
+          "version": "Another release",
+          "uid": "b1b1979e-4226-4be6-92a6-699327bf8b54",
+          "status": 0,
+          "date": "2022-01-02T20:26:12.699276",
+          "description": null,
+          "openSource": false,
+          "usageCounter": 0,
+          "pins": [
+            {
+              "uid": "08a37a4e-9f9f-4462-843e-f5dd1177a3c4",
+              "name": "Geo Objects",
+              "binding": 0,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-001",
+              "dataTypeName": "JSON",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": "dd-006-000",
+              "accessTypeName": "FTP"
+            },
+            {
+              "uid": "bba9cb95-a13b-4759-99d4-42fe1fcb1a5f",
+              "name": "Map",
+              "binding": 0,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-000",
+              "dataTypeName": "DataFile",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": "dd-006-000",
+              "accessTypeName": "FTP"
+            },
+            {
+              "uid": "75f92ba8-711e-4852-a907-91498a2abf90",
+              "name": "Matrix",
+              "binding": 2,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-001",
+              "dataTypeName": "JSON",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": "dd-006-000",
+              "accessTypeName": "FTP"
+            }
+          ],
+          "supportedResourcesRange": {
+            "minCPUs": 0,
+            "minGPUs": 0,
+            "minMemory": 0,
+            "minStorage": 0,
+            "maxCPUs": 0,
+            "maxGPUs": 0,
+            "maxMemory": 0,
+            "maxStorage": 0
+          }
+        }
+      ],
+      "name": "Distance Matrix Calculator",
+      "uid": "6d0be02e-4860-45cd-8cde-0d766feefa48",
+      "pClass": null,
+      "shortDescription": "Finds all distances between given addresses using user-provided map",
+      "longDescription": null,
+      "keywords": null,
+      "icon": "https://www.balticlsc.eu/model/_icons/default.png",
+      "isApp": true,
+      "isService": false
     }
   ]
 }
