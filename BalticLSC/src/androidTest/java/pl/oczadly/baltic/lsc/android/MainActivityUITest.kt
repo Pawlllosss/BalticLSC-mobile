@@ -12,6 +12,8 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
+import org.hamcrest.CoreMatchers.allOf
+import org.hamcrest.CoreMatchers.anyOf
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -57,17 +59,26 @@ class MainActivityUITest {
         MainActivity.setUserState(UserState("test-access-token"))
         server.start()
         server.dispatcher = dispatcher
+        val baseUrl = server.url("")
+        MainActivity.apiConfig = ApiConfig(baseUrl.host, baseUrl.port, false)
+        mainViewRule.launchActivity(null)
     }
 
     @Test
     fun shouldDisplayAppListAfterLoading() {
-        val baseUrl = server.url("")
-        MainActivity.apiConfig = ApiConfig(baseUrl.host, baseUrl.port, false)
-        mainViewRule.launchActivity(null)
-
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("BalticLSC"))))
-
         onView(withId(R.id.app_store_recycler_view))
-            .check(matches(atPosition(0, hasDescendant(withText("Added new app (Owned)")))))
+            .check(
+                matches(
+                    atPosition(
+                        0,
+                        allOf(
+                            hasDescendant((withText("Test 1 app (Owned)"))),
+                            hasDescendant(withText("Updated on 2021-09-23 10:00:19")),
+                            hasDescendant(withText("Edges color images."))
+                        )
+                    )
+                )
+            )
     }
 }

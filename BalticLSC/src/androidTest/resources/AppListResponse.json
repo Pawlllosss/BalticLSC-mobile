@@ -1,1 +1,68 @@
-{"success":true,"message":"ok","data":[{"diagramUid":"0e200c07-08b1-42de-aa85-1165311b7f91","releases":[],"name":"Added new app","uid":"1f7a053a-ae08-48cf-ae13-ce3c5c9fa4dd","pClass":null,"shortDescription":null,"longDescription":null,"keywords":null,"icon":"https://www.balticlsc.eu/model/_icons/default.png","isApp":true,"isService":false}]}
+{
+  "success": true,
+  "message": "ok",
+  "data": [
+    {
+      "diagramUid": "0e200c07-08b1-42de-aa85-1165311b7f91",
+      "releases": [
+        {
+          "diagramUid": null,
+          "version": "0.1",
+          "uid": "SimpleImageProcessor_rel_001",
+          "status": 3,
+          "date": "2021-09-23T10:00:19.093552",
+          "description": "First version of the processor",
+          "openSource": false,
+          "usageCounter": 0,
+          "pins": [
+            {
+              "uid": "f8596c3b-9a99-4c7c-ae27-db455d184941",
+              "name": "InputImpages",
+              "binding": 0,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-003-000",
+              "dataTypeName": "ImageFile",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": null,
+              "accessTypeName": null
+            },
+            {
+              "uid": "757c6eee-41f1-4c10-8b76-1c27b417a162",
+              "name": "OutputImages",
+              "binding": 2,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-003-000",
+              "dataTypeName": "ImageFile",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": null,
+              "accessTypeName": null
+            }
+          ],
+          "supportedResourcesRange": {
+            "minCPUs": 0,
+            "minGPUs": 0,
+            "minMemory": 0,
+            "minStorage": 0,
+            "maxCPUs": 0,
+            "maxGPUs": 0,
+            "maxMemory": 0,
+            "maxStorage": 0
+          }
+        }
+      ],
+      "name": "Test 1 app",
+      "uid": "1f7a053a-ae08-48cf-ae13-ce3c5c9fa4dd",
+      "pClass": null,
+      "shortDescription": "Edges color images.",
+      "longDescription": null,
+      "keywords": null,
+      "icon": "https://www.balticlsc.eu/model/_icons/default.png",
+      "isApp": true,
+      "isService": false
+    }
+  ]
+}
