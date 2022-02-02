@@ -1,56 +1,33 @@
 package pl.oczadly.baltic.lsc.android
 
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions
+import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.ActivityTestRule
 import com.google.gson.Gson
-import kotlinx.datetime.LocalDateTime
 import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-import pl.oczadly.baltic.lsc.UserState
 import okhttp3.mockwebserver.MockResponse
-
+import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import pl.oczadly.baltic.lsc.app.dto.App
-import pl.oczadly.baltic.lsc.app.dto.AppShelfItem
-import pl.oczadly.baltic.lsc.app.dto.list.AppListItem
-import pl.oczadly.baltic.lsc.model.Response
-import okhttp3.HttpUrl
-
-import okhttp3.Interceptor
-import okhttp3.Request
-import java.net.InetAddress
-import java.net.InetSocketAddress
-import com.google.gson.JsonParseException
-
-import com.google.gson.JsonDeserializationContext
-
-import com.google.gson.JsonDeserializer
-
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonElement
-import kotlinx.datetime.Instant
-import java.lang.reflect.Type
-import java.time.ZoneId
-import java.time.ZonedDateTime
-import androidx.test.espresso.matcher.BoundedMatcher
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import pl.oczadly.baltic.lsc.ApiConfig
+import pl.oczadly.baltic.lsc.UserState
+import java.security.KeyStore
+import javax.net.ssl.KeyManagerFactory
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManagerFactory
 
 
 @RunWith(AndroidJUnit4::class)
@@ -117,22 +94,46 @@ class MainActivityUITest {
 //            .setBody(gson.toJson(appShelfResponse)))
 //        server.enqueue(MockResponse().setResponseCode(200)
 //            .setBody(Gson().toJson(appShelfResponse)))
+//        server.useHttps(createSslSocketFactory(), false);
         server.start()
 
 //        mock
 //        server.start(InetAddress.getByName("localhost"), 443)
 //        server.start(443)
-        val baseUrl = server.url("backend/")
 //        MainActivity.apiBasePath = baseUrl.toString()
         server.dispatcher = dispatcher
 //        server.requireClientAuth()
     }
 
+//    https://stackoverflow.com/questions/11117486/wrong-version-of-keystore-on-android-call
+//    https://stackoverflow.com/questions/34037491/how-to-use-ssl-in-square-mockwebserver
+    private fun createSslSocketFactory(): SSLSocketFactory {
+//    TODO: handle certificate
+        val keystoreStream = this.javaClass.classLoader.getResourceAsStream("test2.keystore.bks")
+//        val stream = FileInputStream("test.keystore.jks")
+        val serverKeyStorePassword = "test".toCharArray()
+        val serverKeyStore: KeyStore = KeyStore.getInstance(KeyStore.getDefaultType())
+//        val serverKeyStore: KeyStore = KeyStore.getInstance("JKS")
+
+//        serverKeyStore.load(stream, serverKeyStorePassword)
+        serverKeyStore.load(keystoreStream, serverKeyStorePassword)
+
+        val kmfAlgorithm: String = KeyManagerFactory.getDefaultAlgorithm()
+        val kmf: KeyManagerFactory = KeyManagerFactory.getInstance(kmfAlgorithm)
+        kmf.init(serverKeyStore, serverKeyStorePassword)
+
+        val trustManagerFactory: TrustManagerFactory = TrustManagerFactory.getInstance(kmfAlgorithm)
+        trustManagerFactory.init(serverKeyStore)
+
+        val sslContext = SSLContext.getInstance("SSL")
+        sslContext.init(kmf.getKeyManagers(), trustManagerFactory.getTrustManagers(), null)
+        return sslContext.socketFactory
+    }
+
     @Test
     fun shouldDisplayAppListAfterLoading() {
         val baseUrl = server.url("")
-        MainActivity.apiBasePath = baseUrl.host
-        MainActivity.apiPort = baseUrl.port
+        MainActivity.apiConfig = ApiConfig(baseUrl.host, baseUrl.port, false)
         mainViewRule.launchActivity(null)
 
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("BalticLSC"))))

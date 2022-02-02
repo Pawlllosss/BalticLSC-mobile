@@ -23,7 +23,7 @@ class AppEditView : AppCompatActivity(), CoroutineScope {
     private val job = Job()
 
     private val appService = AppService(
-        AppApi(MainActivity.apiBasePath, MainActivity.apiPort, MainActivity.state),
+        AppApi(MainActivity.apiConfig, MainActivity.state),
         AppListItemEntityConverter(),
         AppShelfEntityConverter()
     )

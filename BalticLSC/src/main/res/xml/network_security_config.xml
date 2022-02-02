@@ -6,8 +6,7 @@
             <certificates src="@raw/lsc_certificate" />
         </trust-anchors>
     </domain-config>
-<!--    TODO: temporary for UI tests with http mock server-->
-        <domain-config cleartextTrafficPermitted="true">
-            <domain includeSubdomains="true">localhost</domain>
-        </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
 </network-security-config>

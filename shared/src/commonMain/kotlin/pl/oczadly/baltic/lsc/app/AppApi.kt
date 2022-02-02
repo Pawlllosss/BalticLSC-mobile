@@ -14,6 +14,7 @@ import io.ktor.client.request.port
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.http.URLProtocol
+import pl.oczadly.baltic.lsc.ApiConfig
 import pl.oczadly.baltic.lsc.QueryParams
 import pl.oczadly.baltic.lsc.UserState
 import pl.oczadly.baltic.lsc.app.dto.AppEdit
@@ -25,14 +26,14 @@ import pl.oczadly.baltic.lsc.model.Response
 import pl.oczadly.baltic.lsc.model.SingleResponse
 
 
-class AppApi(private val apiBasePath: String, private val apiPort: Int, private val userState: UserState) {
+class AppApi(private val apiConfig: ApiConfig, private val userState: UserState) {
 
     private val client = HttpClient {
         defaultRequest {
-            host = apiBasePath
-            port = apiPort
+            host = apiConfig.host
+            port = apiConfig.port
             url {
-                protocol = URLProtocol.HTTP // TODO: temporary for UI test implementation, should be https!
+                protocol = if (apiConfig.https) URLProtocol.HTTPS else URLProtocol.HTTP
             }
         }
         install(JsonFeature) {
