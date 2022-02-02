@@ -2,6 +2,7 @@ package pl.oczadly.baltic.lsc.android.view.app.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,7 @@ import pl.oczadly.baltic.lsc.android.view.app.converter.AppShelfEntityConverter
 import pl.oczadly.baltic.lsc.android.view.app.service.AppService
 import pl.oczadly.baltic.lsc.app.AppApi
 
-class AppStoreView() : Fragment(), CoroutineScope {
+class AppStoreView : Fragment(), CoroutineScope {
 
     companion object {
         const val appListItemIntent = "appListItemEntity"
@@ -33,7 +34,7 @@ class AppStoreView() : Fragment(), CoroutineScope {
     private val job = Job()
 
     private val appService = AppService(
-        AppApi(MainActivity.state),
+        AppApi(MainActivity.apiConfig, MainActivity.state),
         AppListItemEntityConverter(),
         AppShelfEntityConverter()
     )
@@ -86,6 +87,7 @@ class AppStoreView() : Fragment(), CoroutineScope {
                     swipeRefreshLayout.isRefreshing = false
                 }
             }
+            Log.i("AppStoreView", "View has been created: ${System.nanoTime()}")
         }
     }
 

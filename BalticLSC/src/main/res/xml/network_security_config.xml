@@ -6,4 +6,7 @@
             <certificates src="@raw/lsc_certificate" />
         </trust-anchors>
     </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
 </network-security-config>

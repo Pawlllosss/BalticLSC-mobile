@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import pl.oczadly.baltic.lsc.ApiConfig
 import pl.oczadly.baltic.lsc.UserState
 import pl.oczadly.baltic.lsc.android.user.AndroidUserState
 import pl.oczadly.baltic.lsc.android.view.ViewPageAdapter
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         get() = job
 
     companion object {
-
+        var apiConfig = ApiConfig("balticlsc.iem.pw.edu.pl", 443, true)
         lateinit var state: UserState
 
         fun setUserState(userState: UserState) {
