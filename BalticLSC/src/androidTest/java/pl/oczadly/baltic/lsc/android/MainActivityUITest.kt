@@ -13,13 +13,13 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.anyOf
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import pl.oczadly.baltic.lsc.ApiConfig
 import pl.oczadly.baltic.lsc.UserState
-import pl.oczadly.baltic.lsc.android.utils.atPosition
+import pl.oczadly.baltic.lsc.android.utils.matchRecyclerViewItemAtPosition
+import pl.oczadly.baltic.lsc.android.utils.matchTabTitleAtPosition
 import java.io.BufferedReader
 
 
@@ -65,12 +65,20 @@ class MainActivityUITest {
     }
 
     @Test
-    fun shouldDisplayAppListAfterLoading() {
+    fun shouldDisplayToolbarAndAppListAfterLoading() {
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText("BalticLSC"))))
+        onView(withId(R.id.tab_layout)).check(matches(
+            allOf(
+                matchTabTitleAtPosition("APPS", 0),
+                matchTabTitleAtPosition("COMPUTE", 1),
+                matchTabTitleAtPosition("DATA", 2)
+            )
+        ))
+
         onView(withId(R.id.app_store_recycler_view))
             .check(
                 matches(
-                    atPosition(
+                    matchRecyclerViewItemAtPosition(
                         0,
                         allOf(
                             hasDescendant((withText("Test 1 app (Owned)"))),
