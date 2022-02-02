@@ -63,6 +63,81 @@
       "icon": "https://www.balticlsc.eu/model/_icons/default.png",
       "isApp": true,
       "isService": false
+    },
+    {
+      "diagramUid": null,
+      "releases": [
+        {
+          "diagramUid": null,
+          "version": "0.1",
+          "uid": "Covid2Analyzer_rel_001",
+          "status": 3,
+          "date": "2021-09-23T10:00:19.111635",
+          "description": "First version of the analyzer",
+          "openSource": false,
+          "usageCounter": 0,
+          "pins": [
+            {
+              "uid": "AnalysisParams02",
+              "name": "AnalysisParams",
+              "binding": 0,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-000",
+              "dataTypeName": "DataFile",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": null,
+              "accessTypeName": null
+            },
+            {
+              "uid": "AnalysisResults01",
+              "name": "AnalysisResults",
+              "binding": 2,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-000",
+              "dataTypeName": "DataFile",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": null,
+              "accessTypeName": null
+            },
+            {
+              "uid": "GeographicDistribution01",
+              "name": "GeographicDistribution",
+              "binding": 0,
+              "tokenMultiplicity": 0,
+              "dataMultiplicity": 0,
+              "dataTypeUid": "dd-001-000",
+              "dataTypeName": "DataFile",
+              "dataStructureUid": null,
+              "dataStructureName": null,
+              "accessTypeUid": null,
+              "accessTypeName": null
+            }
+          ],
+          "supportedResourcesRange": {
+            "minCPUs": 0,
+            "minGPUs": 0,
+            "minMemory": 0,
+            "minStorage": 0,
+            "maxCPUs": 0,
+            "maxGPUs": 0,
+            "maxMemory": 0,
+            "maxStorage": 0
+          }
+        }
+      ],
+      "name": "Covid-2 Analyzer",
+      "uid": "441c1cbf-7bf5-4dce-a3c4-fd170d710896",
+      "pClass": null,
+      "shortDescription": "Analysis of Covid-2",
+      "longDescription": "Analyzes pandemics data, specific to Covid-2",
+      "keywords": null,
+      "icon": "https://www.balticlsc.eu/model/_icons/cva_001.png",
+      "isApp": true,
+      "isService": false
     }
   ]
 }

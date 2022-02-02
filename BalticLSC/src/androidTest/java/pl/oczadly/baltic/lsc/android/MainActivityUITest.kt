@@ -3,6 +3,7 @@ package pl.oczadly.baltic.lsc.android
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isRoot
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -21,6 +22,7 @@ import pl.oczadly.baltic.lsc.UserState
 import pl.oczadly.baltic.lsc.android.utils.matchRecyclerViewItemAtPosition
 import pl.oczadly.baltic.lsc.android.utils.matchTabTitleAtPosition
 import java.io.BufferedReader
+import java.lang.Thread.sleep
 
 
 @RunWith(AndroidJUnit4::class)
@@ -74,19 +76,32 @@ class MainActivityUITest {
                 matchTabTitleAtPosition("DATA", 2)
             )
         ))
+        sleep(500)
 
         onView(withId(R.id.app_store_recycler_view))
             .check(
                 matches(
                     matchRecyclerViewItemAtPosition(
                         0,
-                        allOf(
-                            hasDescendant((withText("Test 1 app (Owned)"))),
-                            hasDescendant(withText("Updated on 2021-09-23 10:00:19")),
-                            hasDescendant(withText("Edges color images."))
-                        )
+                        getAppListItemMatchers("Test 1 app (Owned)", "2021-09-23 10:00:19", "Edges color images.")
+                    )
+                )
+            )
+
+        onView(withId(R.id.app_store_recycler_view))
+            .check(
+                matches(
+                    matchRecyclerViewItemAtPosition(
+                        1,
+                        getAppListItemMatchers("Covid-2 Analyzer", "2021-09-23 10:00:19", "Analysis of Covid-2")
                     )
                 )
             )
     }
+
+    private fun getAppListItemMatchers(name: String, date: String, description: String) = allOf(
+        hasDescendant((withText(name))),
+        hasDescendant(withText("Updated on $date")),
+        hasDescendant(withText(description))
+    )
 }
