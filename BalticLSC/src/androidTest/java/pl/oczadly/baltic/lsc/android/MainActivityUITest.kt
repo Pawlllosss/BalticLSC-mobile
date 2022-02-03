@@ -124,6 +124,7 @@ class MainActivityUITest {
                     )
                 )
             )
+        onView(withId(R.id.app_store_add_app_button)).check(matches(isDisplayed()))
     }
 
     private fun getAppListItemMatchers(name: String, date: String, description: String) = allOf(
