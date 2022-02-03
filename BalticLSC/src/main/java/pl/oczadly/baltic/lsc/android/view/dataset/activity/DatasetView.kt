@@ -54,6 +54,7 @@ class DatasetView : Fragment(), CoroutineScope {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.i("DatasetView", "Started creating view: ${System.nanoTime()}")
         return inflater.inflate(R.layout.activity_dataset_view, container, false)
     }
 
