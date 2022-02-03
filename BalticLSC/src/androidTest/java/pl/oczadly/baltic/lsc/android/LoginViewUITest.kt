@@ -4,6 +4,7 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.activityScenarioRule
@@ -31,6 +32,7 @@ class LoginViewUITest {
     fun loginAndPasswordEditFieldsShouldBeVisibleAndEditableWhenEnteringText() {
         onView(withId(R.id.edit_text_email)).check(matches(withText(DEFAULT_LOGIN)))
         onView(withId(R.id.edit_text_password)).check(matches(withText(DEFAULT_PASSWORD)))
+        onView(withId(R.id.button_sign_in)).check(matches(isDisplayed()))
 
         onView(withId(R.id.edit_text_email))
             .perform(typeText(STRING_TO_BE_TYPED), closeSoftKeyboard())
