@@ -1,4 +1,4 @@
-package pl.oczadly.baltic.lsc.android.view.cal.activity
+package pl.oczadly.baltic.lsc.android.view.diagram.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

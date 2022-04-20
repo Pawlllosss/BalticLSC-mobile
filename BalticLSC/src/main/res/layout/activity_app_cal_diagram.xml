@@ -7,7 +7,7 @@
     app:strokeColor="@color/cardview_dark_background"
     app:strokeWidth="1dp">
 
-    <pl.oczadly.baltic.lsc.android.view.cal.activity.CalDiagramCanvasView
+    <pl.oczadly.baltic.lsc.android.view.diagram.activity.CalDiagramCanvasView
         android:id="@+id/cal_diagram_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

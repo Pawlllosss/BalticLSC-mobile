@@ -18,7 +18,7 @@ import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseDeleteV
 import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseEditView
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
 import pl.oczadly.baltic.lsc.android.view.app.service.AppService
-import pl.oczadly.baltic.lsc.android.view.cal.activity.CalDiagramView
+import pl.oczadly.baltic.lsc.android.view.diagram.activity.CalDiagramView
 import pl.oczadly.baltic.lsc.app.action.AppReleaseAction
 import pl.oczadly.baltic.lsc.app.action.AppReleaseActionConverter
 

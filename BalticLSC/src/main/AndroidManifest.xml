@@ -33,7 +33,7 @@
             android:name=".view.app.activity.release.AppReleaseEditView"
             android:exported="true" />
         <activity
-            android:name=".view.cal.activity.CalDiagramView"
+            android:name="pl.oczadly.baltic.lsc.android.view.diagram.activity.CalDiagramView"
             android:exported="true" />
         <activity
             android:name=".view.computation.activity.ComputationTaskAbort"
