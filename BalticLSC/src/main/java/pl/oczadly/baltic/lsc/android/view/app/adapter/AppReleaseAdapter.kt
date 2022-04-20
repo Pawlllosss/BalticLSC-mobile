@@ -18,6 +18,7 @@ import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseDeleteV
 import pl.oczadly.baltic.lsc.android.view.app.activity.release.AppReleaseEditView
 import pl.oczadly.baltic.lsc.android.view.app.entity.AppReleaseEntity
 import pl.oczadly.baltic.lsc.android.view.app.service.AppService
+import pl.oczadly.baltic.lsc.android.view.cal.activity.CalDiagramView
 import pl.oczadly.baltic.lsc.app.action.AppReleaseAction
 import pl.oczadly.baltic.lsc.app.action.AppReleaseActionConverter
 
@@ -39,9 +40,9 @@ class AppReleaseAdapter(
             view.findViewById(R.id.app_release_description_text_view)
         val isOpenSourceTextView: TextView =
             view.findViewById(R.id.app_release_open_source_text_view)
-        val cockpitButton: Button = view.findViewById(R.id.app_release_cockpit_button)
-        //        val toolboxButton: Button = view.findViewById(R.id.app_release_toolbox_button)
+        val calDiagramButton: Button = view.findViewById(R.id.app_release_cal_diagram_button)
         val editButton: Button = view.findViewById(R.id.app_release_edit_button)
+        val cockpitButton: Button = view.findViewById(R.id.app_release_cockpit_button)
         val deleteButton: Button = view.findViewById(R.id.app_release_delete_button)
         var isOwned: Boolean = false
         var isInToolbox: Boolean = false
@@ -67,6 +68,12 @@ class AppReleaseAdapter(
         holder.releaseDateTextView.text = formatDate(release.date)
         holder.releaseStatusTextView.text = release.releaseStatus.description
         holder.isOpenSourceTextView.text = if (release.isOpenSource) "Yes" else "No"
+
+        holder.calDiagramButton.setOnClickListener {
+            val intent = Intent(context, CalDiagramView::class.java)
+            context.startActivity(intent)
+        }
+
         if (release.description != null) {
             holder.releaseDescriptionTextView.visibility = View.VISIBLE
             holder.releaseDescriptionTextView.text = release.description
@@ -90,13 +97,6 @@ class AppReleaseAdapter(
                 holder.isOwned = true
             }
         }
-
-//        if (actions.contains(AppReleaseAction.ADD_TOOLBOX)) {
-//
-//        } else {
-//
-//        }
-
 
         if (actions.contains(AppReleaseAction.EDIT)) {
             holder.editButton.setOnClickListener {
