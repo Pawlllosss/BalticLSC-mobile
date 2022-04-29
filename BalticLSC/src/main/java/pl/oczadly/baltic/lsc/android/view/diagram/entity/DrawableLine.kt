@@ -1,3 +1,3 @@
 package pl.oczadly.baltic.lsc.android.view.diagram.entity
 
-data class DrawableLine(val xyCoordinates: List<Pair<Int, Int>>)
+data class DrawableLine(val lineParts: List<DrawableLinePart>)

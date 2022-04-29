@@ -27,6 +27,10 @@ class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(conte
             canvas?.drawCircle(it.x.toFloat(), it.y.toFloat(), it.width.toFloat(), drawPaint)
         }
 
+        diagram.lines.forEach {
+            it.xyCoordinates.forEach(canvas.drawLine(it))
+        }
+
 //        canvas?.drawCircle(50f, 50f, 20f, drawPaint)
 //        drawPaint.color = Color.GREEN
 //        canvas?.drawCircle(50f, 150f, 20f, drawPaint)
