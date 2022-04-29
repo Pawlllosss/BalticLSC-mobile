@@ -13,6 +13,7 @@ class AppReleaseEntityConverter(
         appRelease.description,
         appRelease.openSource,
         appRelease.uid,
+        appRelease.diagramUid,
         appRelease.version,
         appRelease.status,
         appRelease.date.toJavaLocalDateTime(),

@@ -8,6 +8,7 @@ data class AppReleaseEntity(
     val description: String?,
     val isOpenSource: Boolean,
     val releaseUid: String,
+    val diagramUid: String?,
     val versionName: String,
     val releaseStatus: ReleaseStatus,
     val date: LocalDateTime,

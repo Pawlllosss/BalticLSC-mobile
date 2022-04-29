@@ -12,10 +12,15 @@ class DiagramService(
     private val diagramEntityConverter: DiagramEntityConverter
 ) {
 
-    suspend fun getDiagramByReleaseUid(releaseUid: String): DiagramEntity {
+    suspend fun getDiagramByDiagramUid(diagramUid: String): DiagramEntity {
         val diagram = awaitPromise(createApiPromiseSingleResponse {
-            diagramApi.fetchDiagramByReleaseUid(releaseUid)
-        })!!
-        return diagramEntityConverter.convertFromDataStructureDTO(diagram)
+            diagramApi.fetchDiagramByDiagramUid(diagramUid)
+        })
+        return if (diagram != null) diagramEntityConverter.convertFromDataStructureDTO(diagram) else DiagramEntity(
+            "",
+            null,
+            emptyList(),
+            emptyList()
+        )
     }
 }

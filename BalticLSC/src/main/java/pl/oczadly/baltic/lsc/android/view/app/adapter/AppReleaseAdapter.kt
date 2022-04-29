@@ -71,6 +71,7 @@ class AppReleaseAdapter(
 
         holder.calDiagramButton.setOnClickListener {
             val intent = Intent(context, CalDiagramView::class.java)
+            intent.putExtra(AppStoreView.appReleaseIntent, release)
             context.startActivity(intent)
         }
 

@@ -42,8 +42,8 @@ class DiagramApi(private val apiConfig: ApiConfig, private val userState: UserSt
         }
     }
 
-    suspend fun fetchDiagramByReleaseUid(releaseUid: String): SingleResponse<Diagram> {
-        return client.get("backend/editor/diagram/${releaseUid}") {
+    suspend fun fetchDiagramByDiagramUid(diagramUid: String): SingleResponse<Diagram> {
+        return client.get("backend/editor/diagram/${diagramUid}") {
             headers {
                 append("Accept", "application/json")
                 append("Authorization", "Bearer ${userState.accessToken}")

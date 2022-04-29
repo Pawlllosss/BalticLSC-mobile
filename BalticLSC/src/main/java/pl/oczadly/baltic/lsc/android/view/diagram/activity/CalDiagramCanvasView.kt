@@ -9,6 +9,8 @@ import android.view.View
 
 class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
+    // TODO: add diagram property and iterate over it in onDraw https://stackoverflow.com/questions/9233800/how-to-get-current-canvas
+
     override fun onDraw(canvas: Canvas?) {
         var drawPaint = Paint()
         drawPaint.color = Color.BLACK
@@ -18,10 +20,10 @@ class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(conte
         drawPaint.strokeJoin = Paint.Join.ROUND
         drawPaint.strokeCap = Paint.Cap.ROUND
 
-        canvas?.drawCircle(50f, 50f, 20f, drawPaint);
-        drawPaint.color = Color.GREEN;
-        canvas?.drawCircle(50f, 150f, 20f, drawPaint);
-        drawPaint.color = Color.BLUE;
-        canvas?.drawCircle(50f, 250f, 20f, drawPaint);
+        canvas?.drawCircle(50f, 50f, 20f, drawPaint)
+        drawPaint.color = Color.GREEN
+        canvas?.drawCircle(50f, 150f, 20f, drawPaint)
+        drawPaint.color = Color.BLUE
+        canvas?.drawCircle(50f, 250f, 20f, drawPaint)
     }
 }
