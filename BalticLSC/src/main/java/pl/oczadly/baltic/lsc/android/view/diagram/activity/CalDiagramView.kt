@@ -11,6 +11,7 @@ import pl.oczadly.baltic.lsc.android.R
 import pl.oczadly.baltic.lsc.android.view.diagram.converter.DiagramEntityConverter
 import pl.oczadly.baltic.lsc.android.view.diagram.converter.DrawableElementConverter
 import pl.oczadly.baltic.lsc.android.view.diagram.converter.DrawableLineConverter
+import pl.oczadly.baltic.lsc.android.view.diagram.converter.DrawableShapeConverter
 import pl.oczadly.baltic.lsc.android.view.diagram.service.DiagramService
 import pl.oczadly.baltic.lsc.diagram.DiagramApi
 import kotlin.coroutines.CoroutineContext
@@ -21,7 +22,10 @@ class CalDiagramView : AppCompatActivity(), CoroutineScope {
 
     private val diagramService = DiagramService(
         DiagramApi(MainActivity.apiConfig, MainActivity.state),
-        DiagramEntityConverter(DrawableElementConverter(), DrawableLineConverter())
+        DiagramEntityConverter(
+            DrawableElementConverter(DrawableShapeConverter()),
+            DrawableLineConverter()
+        )
     )
 
     override val coroutineContext: CoroutineContext
