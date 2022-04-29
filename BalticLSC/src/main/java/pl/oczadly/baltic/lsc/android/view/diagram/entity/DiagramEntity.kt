@@ -1,3 +1,3 @@
 package pl.oczadly.baltic.lsc.android.view.diagram.entity
 
-data class DiagramEntity(val id: String)
+data class DiagramEntity(val id: String, val name: String?, val elements: List<DrawableElement>, val lines: List<DrawableLine>)

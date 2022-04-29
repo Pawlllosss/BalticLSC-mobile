@@ -8,7 +8,6 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,6 +19,7 @@ import pl.oczadly.baltic.lsc.android.user.AndroidUserState
 import pl.oczadly.baltic.lsc.lazyPromise
 import pl.oczadly.baltic.lsc.login.LoginApi
 import pl.oczadly.baltic.lsc.util.JWTVerifier
+import kotlin.coroutines.CoroutineContext
 
 class LoginView : AppCompatActivity(), CoroutineScope {
 
@@ -27,7 +27,6 @@ class LoginView : AppCompatActivity(), CoroutineScope {
 
     private val loginApi = LoginApi()
     private val tokenVerifier = JWTVerifier()
-    private val releaseChecker = ReleaseChecker() // TODO: temporary way to check app validity
 
     override val coroutineContext: CoroutineContext
         get() = job
@@ -35,7 +34,6 @@ class LoginView : AppCompatActivity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val userState = AndroidUserState(applicationContext)
-        releaseChecker.validateRelease()
 
         setContentView(R.layout.login_view)
 

@@ -2,22 +2,26 @@ package pl.oczadly.baltic.lsc.android.view.diagram.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import pl.oczadly.baltic.lsc.android.MainActivity
 import pl.oczadly.baltic.lsc.android.R
+import pl.oczadly.baltic.lsc.android.view.diagram.converter.DiagramEntityConverter
+import pl.oczadly.baltic.lsc.android.view.diagram.converter.DrawableElementConverter
+import pl.oczadly.baltic.lsc.android.view.diagram.converter.DrawableLineConverter
 import pl.oczadly.baltic.lsc.android.view.diagram.service.DiagramService
 import pl.oczadly.baltic.lsc.diagram.DiagramApi
+import kotlin.coroutines.CoroutineContext
 
 class CalDiagramView : AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
 
     private val diagramService = DiagramService(
-        DiagramApi(MainActivity.apiConfig, MainActivity.state)
+        DiagramApi(MainActivity.apiConfig, MainActivity.state),
+        DiagramEntityConverter(DrawableElementConverter(), DrawableLineConverter())
     )
 
     override val coroutineContext: CoroutineContext
