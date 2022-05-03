@@ -21,8 +21,8 @@ class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(conte
 
     companion object {
         private const val textSize = 18f
-        private const val arrowWidth = 10
-        private const val arrowHeight = 20
+        private const val arrowWidth = 10f
+        private const val arrowHeight = 20f
     }
 
     init {
@@ -35,12 +35,19 @@ class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(conte
     }
 
     override fun onDraw(canvas: Canvas?) {
+        val maxX = diagram.elements.map(DrawableElement::x).map(Int::toFloat).maxOrNull()
+            ?: width.toFloat()
+        val maxY = diagram.elements.map(DrawableElement::y).map(Int::toFloat).maxOrNull()
+            ?: height.toFloat()
+
         canvas?.let {
             it.rotate(90f, width / 2f, height / 2f)
-            it.translate(
-                -width / 2.7f, height / 4f
-            )
-            it.scale(1.5f, 1.5f)
+            it.translate(-height / 5f, width / 3f)
+            val scaleX = height / maxX
+            val scaleY = width / maxY
+            val scale = if (scaleX < scaleY) scaleX else scaleY
+
+            it.scale(scale * 0.87f, scale * 0.87f)
         }
 
         diagram.elements.forEach {
