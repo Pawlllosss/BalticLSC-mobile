@@ -33,8 +33,8 @@ class DrawableElementConverter(private val shapeConverter: DrawableShapeConverte
             shapeConverter.convertFromElementTypeId(portDrawing.elementTypeId),
             portDrawing.location.x + parentX,
             portDrawing.location.y + parentY,
-            25,
-            25
+            30,
+            30
         )
     }
 
