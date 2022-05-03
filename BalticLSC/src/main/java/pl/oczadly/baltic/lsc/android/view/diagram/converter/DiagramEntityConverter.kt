@@ -10,7 +10,9 @@ class DiagramEntityConverter(
 
     fun convertFromDataStructureDTO(diagram: Diagram): DiagramEntity {
         val drawableBoxes = diagram.boxes.map(elementConverter::convertFromBoxDrawing)
-        val drawablePorts = diagram.ports.map(elementConverter::convertFromPortDrawing)
+        val drawableElementById = drawableBoxes.map { it.id to it }.toMap()
+        val drawablePorts =
+            diagram.ports.map { elementConverter.convertFromPortDrawing(it, drawableElementById) }
         val drawableElements = drawableBoxes + drawablePorts
         val drawableLines = diagram.lines.map(lineConverter::convertFromDrawableLine)
 

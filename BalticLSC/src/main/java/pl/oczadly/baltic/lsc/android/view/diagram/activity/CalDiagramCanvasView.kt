@@ -12,8 +12,6 @@ class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(conte
 
     var diagram = DiagramEntity.emptyDiagram
 
-    // TODO: add diagram property and iterate over it in onDraw https://stackoverflow.com/questions/9233800/how-to-get-current-canvas
-
     override fun onDraw(canvas: Canvas?) {
         var drawPaint = Paint()
         drawPaint.color = Color.BLACK
@@ -24,17 +22,22 @@ class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(conte
         drawPaint.strokeCap = Paint.Cap.ROUND
 
         diagram.elements.forEach {
-            canvas?.drawCircle(it.x.toFloat(), it.y.toFloat(), it.width.toFloat(), drawPaint)
+            val x = it.x.toFloat()
+            val y = it.y.toFloat()
+            canvas?.drawRect(x, y, x + it.width, y + it.height, drawPaint)
+            canvas?.drawText(it.name, x, y, drawPaint)
         }
 
         diagram.lines.forEach {
-            it.xyCoordinates.forEach(canvas.drawLine(it))
+            it.lineParts.forEach { part ->
+                canvas?.drawLine(
+                    part.startXY.first.toFloat(),
+                    part.startXY.second.toFloat(),
+                    part.endXY.first.toFloat(),
+                    part.endXY.second.toFloat(),
+                    drawPaint
+                )
+            }
         }
-
-//        canvas?.drawCircle(50f, 50f, 20f, drawPaint)
-//        drawPaint.color = Color.GREEN
-//        canvas?.drawCircle(50f, 150f, 20f, drawPaint)
-//        drawPaint.color = Color.BLUE
-//        canvas?.drawCircle(50f, 250f, 20f, drawPaint)
     }
 }

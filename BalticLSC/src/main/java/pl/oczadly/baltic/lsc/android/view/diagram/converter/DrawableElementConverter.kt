@@ -9,6 +9,7 @@ class DrawableElementConverter(private val shapeConverter: DrawableShapeConverte
 
     fun convertFromBoxDrawing(boxDrawing: BoxDrawing): DrawableElement {
         return DrawableElement(
+            boxDrawing.id,
             getNameFromElementTypeId(boxDrawing.compartments, boxDrawing.elementTypeId) ?: "",
             shapeConverter.convertFromElementTypeId(boxDrawing.elementTypeId),
             boxDrawing.location.x,
@@ -18,14 +19,22 @@ class DrawableElementConverter(private val shapeConverter: DrawableShapeConverte
         )
     }
 
-    fun convertFromPortDrawing(portDrawing: PortDrawing): DrawableElement {
+    fun convertFromPortDrawing(
+        portDrawing: PortDrawing,
+        drawableElementById: Map<String, DrawableElement>
+    ): DrawableElement {
+        val parentElement = drawableElementById[portDrawing.parentId]
+        val parentX = parentElement?.x ?: 0
+        val parentY = parentElement?.y ?: 0
+
         return DrawableElement(
-            getNameFromElementTypeId(portDrawing.compartments, portDrawing.elementTypeId) ?: "",
+            portDrawing.id,
+            getPortName(portDrawing.compartments, portDrawing.elementTypeId) ?: "",
             shapeConverter.convertFromElementTypeId(portDrawing.elementTypeId),
-            portDrawing.location.x,
-            portDrawing.location.y,
-            portDrawing.location.width,
-            portDrawing.location.height
+            portDrawing.location.x + parentX,
+            portDrawing.location.y + parentY,
+            25,
+            25
         )
     }
 
@@ -33,6 +42,20 @@ class DrawableElementConverter(private val shapeConverter: DrawableShapeConverte
         compartments: List<Compartment>,
         elementTypeId: String
     ): String? =
-        compartments.filter { compartment -> compartment.compartmentTypeId == "${elementTypeId}Name" }
+        findCompartmentValueByTypeId(compartments, "${elementTypeId}Name")
+
+    private fun findCompartmentValueByTypeId(
+        compartments: List<Compartment>,
+        typeId: String
+    ) =
+        compartments.filter { compartment -> compartment.compartmentTypeId == typeId }
             .map { compartment -> compartment.value }.firstOrNull()
+
+    private fun getPortName(compartments: List<Compartment>, elementTypeId: String): String? {
+        return when (elementTypeId) {
+            "RequiredComputedPin" -> findCompartmentValueByTypeId(compartments, "RequiredPortName")
+            "ProvidedComputedPin" -> findCompartmentValueByTypeId(compartments, "ProvidedPortName")
+            else -> null
+        }
+    }
 }
