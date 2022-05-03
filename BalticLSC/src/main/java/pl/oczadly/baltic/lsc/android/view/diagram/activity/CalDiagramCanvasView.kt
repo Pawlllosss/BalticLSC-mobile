@@ -41,8 +41,8 @@ class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(conte
             ?: height.toFloat()
 
         canvas?.let {
-            it.rotate(90f, width / 2f, height / 2f)
-            it.translate(-height / 5f, width / 3f)
+            it.rotate(90f)
+            it.translate(0f, -width.toFloat())
             val scaleX = height / maxX
             val scaleY = width / maxY
             val scale = if (scaleX < scaleY) scaleX else scaleY
