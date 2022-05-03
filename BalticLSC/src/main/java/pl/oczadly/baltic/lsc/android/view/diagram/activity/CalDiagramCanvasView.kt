@@ -4,36 +4,35 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.util.AttributeSet
 import android.view.View
 import pl.oczadly.baltic.lsc.android.view.diagram.entity.DiagramEntity
+import pl.oczadly.baltic.lsc.android.view.diagram.entity.DrawableElement
 
 class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
     var diagram = DiagramEntity.emptyDiagram
-    private val shapePaint: Paint = Paint()
     private val linePaint: Paint = Paint()
     private val textPaint: Paint = Paint()
 
-    init {
-        shapePaint.color = Color.BLACK
-        shapePaint.isAntiAlias = true
-        shapePaint.strokeWidth = 3f
-        shapePaint.style = Paint.Style.STROKE
-        shapePaint.strokeJoin = Paint.Join.ROUND
-        shapePaint.strokeCap = Paint.Cap.ROUND
+    companion object {
+        private const val textSize = 18f
+    }
 
+    init {
         linePaint.color = Color.BLACK
 
         textPaint.color = Color.BLUE
-        textPaint.strokeWidth = 2f
+        textPaint.textSize = textSize
+        textPaint.typeface = Typeface.DEFAULT_BOLD
     }
 
     override fun onDraw(canvas: Canvas?) {
         canvas?.let {
             it.rotate(90f, width / 2f, height / 2f)
             it.translate(
-                -width / 2.5f, height / 4f
+                -width / 2.7f, height / 4f
             )
             it.scale(1.5f, 1.5f)
         }
@@ -41,8 +40,9 @@ class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(conte
         diagram.elements.forEach {
             val x = it.x.toFloat()
             val y = it.y.toFloat()
-            canvas?.drawRect(x, y, x + it.width, y + it.height, shapePaint)
-            canvas?.drawText(it.name, x, y, textPaint)
+            canvas?.drawRect(x, y, x + it.width, y + it.height, it.shape.paint)
+            val nameX = calculateNameXPosition(it)
+            canvas?.drawText(it.name, nameX, y - 5, textPaint)
         }
 
         diagram.lines.forEach {
@@ -57,4 +57,7 @@ class CalDiagramCanvasView(context: Context?, attrs: AttributeSet?) : View(conte
             }
         }
     }
+
+    private fun calculateNameXPosition(element: DrawableElement) =
+        element.x + element.width / 2 - element.name.length / 2 * textSize / 2
 }
