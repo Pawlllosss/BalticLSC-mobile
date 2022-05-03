@@ -42,7 +42,10 @@ class DrawableElementConverter(private val shapeConverter: DrawableShapeConverte
         compartments: List<Compartment>,
         elementTypeId: String
     ): String? =
-        findCompartmentValueByTypeId(compartments, "${elementTypeId}Name")
+        findCompartmentValueByTypeId(
+            compartments,
+            if (elementTypeId.startsWith("Cal")) "${elementTypeId}CUName" else "${elementTypeId}Name"
+        )
 
     private fun findCompartmentValueByTypeId(
         compartments: List<Compartment>,
